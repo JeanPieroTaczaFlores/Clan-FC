@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TiendaMenos — Tecnología y hogar hasta 40% menos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+  <!-- ================= BARRA DE ANUNCIOS ================= -->
+  <div class="bg-slate-900 text-slate-200 text-[11px] md:text-xs text-center py-2 px-4 tracking-wide">
+    🚚 Envío GRATIS en compras +$999 &nbsp;·&nbsp; 💳 12 MSI con tarjetas participantes &nbsp;·&nbsp; 🔄 30 días de garantía
+  </div>
+
+  <!-- ================= NAVBAR PRINCIPAL (sticky) ================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-5">
+      <!-- Logo -->
+      <a href="index.html" class="text-2xl font-extrabold tracking-tight text-indigo-600 shrink-0">
+        Tienda<span class="text-emerald-500">Menos</span><span class="text-rose-500">.</span>
+      </a>
+
+      <!-- Buscador -->
+      <div class="relative flex-1 max-w-xl hidden sm:block">
+        <input id="buscador" type="search" placeholder="Buscar productos, marcas, SKU…"
+               class="w-full rounded-full border border-slate-300 bg-slate-50 pl-10 pr-4 py-2 text-sm
+                      focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+      </div>
+
+      <!-- Enlaces -->
+      <nav class="hidden lg:flex items-center gap-5 text-sm font-medium text-slate-600">
+        <a href="#ofertas" class="hover:text-indigo-600">Ofertas</a>
+        <a href="#categorias" class="hover:text-indigo-600">Categorías</a>
+        <a href="#catalogo" class="hover:text-indigo-600">Productos</a>
+        <a href="admin.html" id="link-admin" class="hidden hover:text-indigo-600 text-indigo-600 font-semibold">Panel Admin</a>
+      </nav>
+
+      <!-- Zona sesión + carrito -->
+      <div id="zona-sesion" class="ml-auto flex items-center gap-2"></div>
+
+      <button id="btn-carrito" title="Carrito — disponible próximamente"
+              class="relative p-2 rounded-full hover:bg-slate-100 transition text-xl">
+        🛒
+        <span id="carrito-badge" class="hidden absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full items-center justify-center">0</span>
+      </button>
+    </nav>
+
+    <!-- Buscador móvil -->
+    <div class="sm:hidden px-4 pb-3">
+      <input id="buscador-movil" type="search" placeholder="Buscar productos…"
+             class="w-full rounded-full border border-slate-300 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <!-- ================= HERO / PROMOCIÓN PRINCIPAL ================= -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 text-white">
+      <div class="absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 22px 22px;"></div>
+
+      <div class="max-w-7xl mx-auto px-4 py-14 md:py-20 grid md:grid-cols-2 gap-10 items-center relative">
+        <div class="fade-in">
+          <span class="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-widest">
+            ⚡ Semana de bienvenida
+          </span>
+          <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-[1.1]">
+            Todo lo que buscas,<br /><span class="text-amber-300">hasta 40% menos.</span>
+          </h1>
+          <p class="mt-4 text-indigo-100/90 max-w-md text-sm md:text-base">
+            Electrónica, hogar, oficina y deporte con precios que sí te convienen.
+            Compra sin registrarte; inicia sesión solo al pagar.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#catalogo" class="bg-white text-indigo-700 font-bold px-6 py-3 rounded-full shadow-lg shadow-indigo-900/30 hover:-translate-y-0.5 hover:shadow-xl transition text-sm">
+              Comprar ahora →
+            </a>
+            <a href="#ofertas" class="border border-white/40 px-6 py-3 rounded-full hover:bg-white/10 transition text-sm font-semibold">
+              Ver ofertas 🔥
+            </a>
+          </div>
+
+          <!-- Métricas de confianza -->
+          <div class="mt-9 flex gap-8 text-sm">
+            <div><p class="font-extrabold text-lg">+500</p><p class="text-indigo-200 text-xs">Productos</p></div>
+            <div><p class="font-extrabold text-lg">24h</p><p class="text-indigo-200 text-xs">Envío express</p></div>
+            <div><p class="font-extrabold text-lg">4.9★</p><p class="text-indigo-200 text-xs">Valoración</p></div>
+          </div>
+        </div>
+
+        <!-- Collage flotante decorativo -->
+        <div class="hidden md:flex justify-center gap-4 relative h-72">
+          <div class="anim-flotar bg-white text-indigo-950 rounded-2xl shadow-2xl w-32 h-40 flex flex-col items-center justify-center gap-1 rotate-[-6deg]">
+            <span class="text-5xl">🎧</span><span class="text-[10px] font-bold">Audio Pro</span><span class="text-[10px] text-rose-600 font-extrabold">-25%</span>
+          </div>
+          <div class="anim-flotar-2 bg-white text-indigo-950 rounded-2xl shadow-2xl w-36 h-48 flex flex-col items-center justify-center gap-1 mt-6 z-10">
+            <span class="text-6xl">☕</span><span class="text-[10px] font-bold">Espresso 15 Bar</span><span class="text-[10px] text-emerald-600 font-extrabold">$2,399</span>
+          </div>
+          <div class="anim-flotar-3 bg-white text-indigo-950 rounded-2xl shadow-2xl w-32 h-40 flex flex-col items-center justify-center gap-1 rotate-[6deg]">
+            <span class="text-5xl">🏋️</span><span class="text-[10px] font-bold">Fitness 20kg</span><span class="text-[10px] text-rose-600 font-extrabold">-15%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FRANJA DE BENEFICIOS ================= -->
+    <section class="bg-white border-b border-slate-100">
+      <div class="max-w-7xl mx-auto px-4 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs md:text-sm text-slate-600">
+        <p class="flex items-center gap-2"><span class="text-xl">🚚</span> Envío gratis +$999</p>
+        <p class="flex items-center gap-2"><span class="text-xl">🔒</span> Pago 100% seguro</p>
+        <p class="flex items-center gap-2"><span class="text-xl">↩️</span> Devoluciones fáciles</p>
+        <p class="flex items-center gap-2"><span class="text-xl">💬</span> Soporte 24/7</p>
+      </div>
+    </section>
+
+    <!-- ================= BANNERS PROMOCIONALES ================= -->
+    <section id="ofertas" class="max-w-7xl mx-auto px-4 pt-12 scroll-mt-20">
+      <h2 class="text-2xl font-extrabold text-slate-800 mb-5">🔥 Ofertas de la semana</h2>
+      <div class="grid md:grid-cols-3 gap-4">
+
+        <button data-filtro-categoria="1" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-rose-500 to-orange-400 text-white p-6 text-left min-h-[140px] hover:shadow-xl hover:-translate-y-0.5 transition">
+          <p class="text-xs font-bold uppercase tracking-widest text-white/80">Electrónica</p>
+          <p class="text-2xl font-extrabold mt-1 leading-tight">Hasta -30%<br />en audio y gadgets</p>
+          <span class="inline-block mt-3 text-xs font-semibold bg-white/20 rounded-full px-3 py-1 group-hover:bg-white group-hover:text-rose-600 transition">Ver productos →</span>
+          <span class="absolute -right-4 -bottom-5 text-8xl opacity-20">🎧</span>
+        </button>
+
+        <button data-filtro-categoria="2" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-400 text-white p-6 text-left min-h-[140px] hover:shadow-xl hover:-translate-y-0.5 transition">
+          <p class="text-xs font-bold uppercase tracking-widest text-white/80">Hogar</p>
+          <p class="text-2xl font-extrabold mt-1 leading-tight">Tu casa,<br />más inteligente</p>
+          <span class="inline-block mt-3 text-xs font-semibold bg-white/20 rounded-full px-3 py-1 group-hover:bg-white group-hover:text-emerald-600 transition">Desde $189 →</span>
+          <span class="absolute -right-4 -bottom-5 text-8xl opacity-20">🏠</span>
+        </button>
+
+        <button data-filtro-stock="bajo" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-400 text-white p-6 text-left min-h-[140px] hover:shadow-xl hover:-translate-y-0.5 transition">
+          <p class="text-xs font-bold uppercase tracking-widest text-white/80">Últimas piezas</p>
+          <p class="text-2xl font-extrabold mt-1 leading-tight">Stock bajo:<br />¡vuela o vuela!</p>
+          <span class="inline-block mt-3 text-xs font-semibold bg-white/20 rounded-full px-3 py-1 group-hover:bg-white group-hover:text-amber-600 transition">Ver antes de que se agote →</span>
+          <span class="absolute -right-4 -bottom-5 text-8xl opacity-20">⏰</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ================= CATEGORÍAS ================= -->
+    <section id="categorias" class="max-w-7xl mx-auto px-4 pt-12 scroll-mt-20">
+      <h2 class="text-2xl font-extrabold text-slate-800 mb-5">Explora por categoría</h2>
+      <div id="grid-categorias" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+    </section>
+
+    <!-- ================= CATÁLOGO ================= -->
+    <section id="catalogo" class="max-w-7xl mx-auto px-4 py-12 scroll-mt-20">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+        <div>
+          <h2 class="text-2xl font-extrabold text-slate-800">Todos los productos</h2>
+          <p id="contador-resultados" class="text-xs text-slate-400 mt-0.5"></p>
+        </div>
+        <select id="ordenar" class="text-sm border-slate-300 rounded-full border px-4 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+          <option value="destacados">Destacados</option>
+          <option value="precioAsc">Precio: menor a mayor</option>
+          <option value="precioDesc">Precio: mayor a menor</option>
+          <option value="nombreAZ">Nombre A–Z</option>
+        </select>
+      </div>
+
+      <!-- Chips de filtro por categoría -->
+      <div id="chips-categorias" class="flex flex-wrap gap-2 mb-7"></div>
+
+      <section id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></section>
+
+      <p id="mensaje-vacio" class="hidden text-center text-slate-400 py-16">
+        <span class="text-4xl block mb-2">🔍</span>Sin resultados para tu búsqueda.<br />
+        <span class="text-sm">Prueba con otros términos o revisa otra categoría.</span>
+      </p>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 text-sm">
+    <div class="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-4 gap-10">
+      <div>
+        <p class="text-xl font-extrabold text-white">Tienda<span class="text-emerald-400">Menos</span><span class="text-rose-400">.</span></p>
+        <p class="mt-3 text-xs leading-relaxed">Tu tienda online de confianza. Calidad garantizada, precios justos y atención humana de verdad.</p>
+        <div class="flex gap-2 mt-4">
+          <span class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center cursor-pointer hover:bg-indigo-600 transition">f</span>
+          <span class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center cursor-pointer hover:bg-indigo-600 transition">@</span>
+          <span class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center cursor-pointer hover:bg-indigo-600 transition">▶</span>
+        </div>
+      </div>
+      <div>
+        <p class="text-white font-semibold mb-3">Compras</p>
+        <ul class="space-y-2 text-xs">
+          <li><a href="#catalogo" class="hover:text-white">Todos los productos</a></li>
+          <li><a href="#ofertas" class="hover:text-white">Ofertas</a></li>
+          <li><a href="#categorias" class="hover:text-white">Categorías</a></li>
+          <li><a href="#" onclick="mostrarToast('Disponible próximamente','info');return false" class="hover:text-white">Tarjetas de regalo</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-semibold mb-3">Ayuda</p>
+        <ul class="space-y-2 text-xs">
+          <li><a href="#" onclick="mostrarToast('Disponible próximamente','info');return false" class="hover:text-white">Estado de mi pedido</a></li>
+          <li><a href="#" onclick="mostrarToast('Disponible próximamente','info');return false" class="hover:text-white">Envíos y devoluciones</a></li>
+          <li><a href="#" onclick="mostrarToast('Disponible próximamente','info');return false" class="hover:text-white">Preguntas frecuentes</a></li>
+          <li><a href="#" onclick="mostrarToast('Disponible próximamente','info');return false" class="hover:text-white">Facturación</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white font-semibold mb-3">Contacto</p>
+        <ul class="space-y-2 text-xs">
+          <li>📍 Av. Reforma 123, CDMX</li>
+          <li>📞 55 1234 5678</li>
+          <li>✉️ hola@tiendamenos.mx</li>
+          <li>🕐 Lun–Sáb · 9:00 a 20:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-slate-800 py-4 text-center text-[11px]">
+      © 2026 TiendaMenos · Proyecto educativo · Entregable 1 · Todos los derechos reservados
+    </div>
+  </footer>
+
+  <!-- Contenedor global de notificaciones toast -->
+  <div id="toast-container" class="fixed bottom-6 right-6 space-y-2 z-50"></div>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/catalogo.js"></script>
+</body>
+</html>

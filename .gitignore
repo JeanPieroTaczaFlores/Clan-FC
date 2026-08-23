@@ -1,0 +1,28 @@
+# ===== Java / Maven =====
+backend/target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+!.mvn/wrapper/maven-wrapper.properties
+
+# ===== Logs y temporales =====
+*.log
+hs_err_pid*
+replay_pid*
+
+# ===== IDEs =====
+.vscode/
+.idea/
+*.iml
+.settings/
+.classpath
+.project
+.factorypath
+
+# ===== Sistema operativo =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Frontend =====
+frontend/.cache/

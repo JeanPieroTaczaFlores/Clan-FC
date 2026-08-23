@@ -1,0 +1,26 @@
+{
+  "categorias": [
+    { "idCategoria": 1, "nombre": "Electrónica", "descripcion": "Dispositivos y accesorios electrónicos", "activa": true },
+    { "idCategoria": 2, "nombre": "Hogar", "descripcion": "Artículos para el hogar y cocina", "activa": true },
+    { "idCategoria": 3, "nombre": "Oficina", "descripcion": "Papelería y equipo de trabajo", "activa": true },
+    { "idCategoria": 4, "nombre": "Deportes", "descripcion": "Equipamiento y ropa deportiva", "activa": true }
+  ],
+  "productos": [
+    { "idProducto": 1, "sku": "ELEC-001", "nombre": "Audífonos Bluetooth Pro", "descripcion": "Cancelación de ruido activa, 30h batería", "precioBase": 899.00, "stock": 25, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Electrónica", "imagenUrl": "", "activo": true },
+    { "idProducto": 2, "sku": "ELEC-002", "nombre": "Mouse Inalámbrico Ergo", "descripcion": "Sensor 4000 DPI, silencioso", "precioBase": 249.50, "stock": 3, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Electrónica", "imagenUrl": "", "activo": true },
+    { "idProducto": 3, "sku": "ELEC-003", "nombre": "Teclado Mecánico RGB", "descripcion": "Switches rojos, layout ES", "precioBase": 1150.00, "stock": 0, "stockMinimo": 4, "categoriaId": 1, "categoriaNombre": "Electrónica", "imagenUrl": "", "activo": true },
+    { "idProducto": 4, "sku": "HOG-001", "nombre": "Cafetera Espresso 15 Bar", "descripcion": "Vaporizador de leche incluido", "precioBase": 2399.00, "stock": 12, "stockMinimo": 3, "categoriaId": 2, "categoriaNombre": "Hogar", "imagenUrl": "", "activo": true },
+    { "idProducto": 5, "sku": "HOG-002", "nombre": "Juego de Sábanas Queen", "descripcion": "Algodón egipcio 400 hilos", "precioBase": 649.90, "stock": 4, "stockMinimo": 5, "categoriaId": 2, "categoriaNombre": "Hogar", "imagenUrl": "", "activo": true },
+    { "idProducto": 6, "sku": "HOG-003", "nombre": "Set de 6 Vasos Termoresistentes", "descripcion": "Aptos para microondas", "precioBase": 189.00, "stock": 40, "stockMinimo": 10, "categoriaId": 2, "categoriaNombre": "Hogar", "imagenUrl": "", "activo": true },
+    { "idProducto": 7, "sku": "OFI-001", "nombre": "Silla de Oficina Lumbar+", "descripcion": "Soporte lumbar ajustable, ruedas silenciosas", "precioBase": 3150.00, "stock": 7, "stockMinimo": 2, "categoriaId": 3, "categoriaNombre": "Oficina", "imagenUrl": "", "activo": true },
+    { "idProducto": 8, "sku": "OFI-002", "nombre": "Cuaderno Profesional x5", "descripcion": "100 hojas cada uno, cuadro chico", "precioBase": 95.00, "stock": 120, "stockMinimo": 20, "categoriaId": 3, "categoriaNombre": "Oficina", "imagenUrl": "", "activo": true },
+    { "idProducto": 9, "sku": "DEP-001", "nombre": "Mancuernas Ajustables 20kg", "descripcion": "Par con sistema de disco rápido", "precioBase": 1899.00, "stock": 6, "stockMinimo": 3, "categoriaId": 4, "categoriaNombre": "Deportes", "imagenUrl": "", "activo": true },
+    { "idProducto": 10, "sku": "DEP-002", "nombre": "Tapete de Yoga Antideslizante", "descripcion": "6mm, incluye correa de transporte", "precioBase": 320.00, "stock": 18, "stockMinimo": 6, "categoriaId": 4, "categoriaNombre": "Deportes", "imagenUrl": "", "activo": true },
+    { "idProducto": 11, "sku": "ELEC-004", "nombre": "Monitor LED 27\" 144Hz", "descripcion": "Full HD, FreeSync Premium (producto inactivo)", "precioBase": 3899.00, "stock": 10, "stockMinimo": 3, "categoriaId": 1, "categoriaNombre": "Electrónica", "imagenUrl": "", "activo": false }
+  ],
+  "perfiles": [
+    { "username": "admin", "password": "admin123", "rol": "ADMIN", "nombreCompleto": "Laura Directora" },
+    { "username": "cajero", "password": "cajero123", "rol": "CAJERO", "nombreCompleto": "Carlos Punto Venta" },
+    { "username": "cliente", "password": "cliente123", "rol": "CLIENTE", "nombreCompleto": "María Compradora" }
+  ]
+}

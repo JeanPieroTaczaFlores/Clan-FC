@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TiendaMenos — Iniciar sesión</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-slate-100 min-h-screen flex">
+
+  <!-- ================= PANEL DE MARCA (izquierda) ================= -->
+  <aside class="hidden lg:flex lg:w-[45%] bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 text-white relative overflow-hidden flex-col justify-between p-12">
+    <div class="absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 22px 22px;"></div>
+
+    <a href="index.html" class="relative text-3xl font-extrabold tracking-tight">
+      Tienda<span class="text-emerald-300">Menos</span><span class="text-rose-300">.</span>
+    </a>
+
+    <div class="relative">
+      <h2 class="text-4xl font-extrabold leading-tight">Bienvenido<br />de nuevo 👋</h2>
+      <p class="mt-4 text-indigo-100/90 max-w-sm text-sm">
+        Accede para completar tus compras, revisar tus pedidos y descargar
+        tus comprobantes fiscales.
+      </p>
+      <ul class="mt-8 space-y-3 text-sm">
+        <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">🛍️</span> Checkout rápido y seguro</li>
+        <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">📄</span> Facturación por régimen fiscal</li>
+        <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">📦</span> Seguimiento de pedidos</li>
+      </ul>
+    </div>
+
+    <p class="relative text-xs text-indigo-200">© 2026 TiendaMenos · Proyecto educativo</p>
+  </aside>
+
+  <!-- ================= FORMULARIO (derecha) ================= -->
+  <main class="flex-1 flex items-center justify-center p-6 md:p-12">
+    <section class="w-full max-w-md">
+      <!-- Logo móvil -->
+      <a href="index.html" class="lg:hidden block text-2xl font-extrabold text-indigo-600 mb-8 text-center">
+        Tienda<span class="text-emerald-500">Menos</span><span class="text-rose-500">.</span>
+      </a>
+
+      <div class="bg-white rounded-3xl shadow-xl p-8 md:p-10 fade-in">
+        <h1 class="text-2xl font-extrabold text-slate-800">Inicia sesión</h1>
+        <p id="subtitulo" class="text-sm text-slate-500 mt-1 mb-7">Ingresa tus credenciales para continuar</p>
+
+        <form id="form-login" class="space-y-4" novalidate>
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Usuario</span>
+            <input name="username" required autocomplete="username" placeholder="ej. admin"
+                   class="mt-1.5 w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm
+                          focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 outline-none transition" />
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Contraseña</span>
+            <input name="password" type="password" required autocomplete="current-password" placeholder="••••••••"
+                   class="mt-1.5 w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm
+                          focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 outline-none transition" />
+          </label>
+
+          <div class="flex items-center justify-between text-xs">
+            <label class="flex items-center gap-1.5 text-slate-500 cursor-pointer">
+              <input type="checkbox" checked class="rounded accent-indigo-600" /> Recordarme
+            </label>
+            <a href="#" onclick="mostrarToast('Función disponible próximamente','info');return false"
+               class="text-indigo-600 hover:underline font-medium">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <p id="mensaje" class="hidden text-sm text-center"></p>
+
+          <button type="submit"
+                  class="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition">
+            Ingresar
+          </button>
+        </form>
+
+        <!-- Cuentas demo -->
+        <footer class="mt-7 pt-6 border-t border-slate-100">
+          <p class="text-[11px] text-slate-400 text-center mb-3">Cuentas de demostración (clic para autocompletar):</p>
+          <div class="grid grid-cols-3 gap-2">
+            <button data-demo="admin" class="group flex flex-col items-center gap-1 border border-slate-200 rounded-xl py-2.5 hover:border-slate-800 hover:bg-slate-50 transition">
+              <span class="text-xl">👑</span><span class="text-[10px] font-bold text-slate-600 group-hover:text-slate-900">ADMIN</span>
+            </button>
+            <button data-demo="cajero" class="group flex flex-col items-center gap-1 border border-slate-200 rounded-xl py-2.5 hover:border-slate-800 hover:bg-slate-50 transition">
+              <span class="text-xl">💳</span><span class="text-[10px] font-bold text-slate-600 group-hover:text-slate-900">CAJERO</span>
+            </button>
+            <button data-demo="cliente" class="group flex flex-col items-center gap-1 border border-slate-200 rounded-xl py-2.5 hover:border-slate-800 hover:bg-slate-50 transition">
+              <span class="text-xl">🛍️</span><span class="text-[10px] font-bold text-slate-600 group-hover:text-slate-900">CLIENTE</span>
+            </button>
+          </div>
+        </footer>
+      </div>
+
+      <p class="text-center text-xs text-slate-400 mt-6">
+        ¿Solo quieres mirar? <a href="index.html" class="text-indigo-600 font-semibold hover:underline">Volver a la tienda →</a>
+      </p>
+    </section>
+  </main>
+
+  <div id="toast-container" class="fixed bottom-6 right-6 space-y-2 z-50"></div>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

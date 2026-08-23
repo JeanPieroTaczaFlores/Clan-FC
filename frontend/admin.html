@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TiendaMenos — Panel Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-slate-100 min-h-screen">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="bg-slate-800 text-white shadow-md">
+    <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+      <a href="admin.html" class="text-xl font-bold">⚙️ TiendaMenos · Admin</a>
+      <!-- Zona de sesión (render por admin.js) -->
+      <div id="zona-sesion" class="ml-auto flex items-center gap-3"></div>
+    </nav>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+
+    <!-- ================= TARJETAS DE MÉTRICAS ================= -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Productos</p>
+          <span class="text-xl">📦</span>
+        </div>
+        <p id="stat-total" class="text-2xl font-extrabold text-slate-800 mt-1">—</p>
+        <p class="text-[11px] text-slate-400">en inventario</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Valor inventario</p>
+          <span class="text-xl">💰</span>
+        </div>
+        <p id="stat-valor" class="text-2xl font-extrabold text-emerald-600 mt-1">—</p>
+        <p class="text-[11px] text-slate-400">precio base · sin IVA</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Stock bajo</p>
+          <span class="text-xl">⚠️</span>
+        </div>
+        <p id="stat-bajo" class="text-2xl font-extrabold text-amber-500 mt-1">—</p>
+        <p class="text-[11px] text-slate-400">requieren reposición</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+        <div class="flex items-center justify-between">
+          <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Categorías</p>
+          <span class="text-xl">🏷️</span>
+        </div>
+        <p id="stat-categorias" class="text-2xl font-extrabold text-indigo-600 mt-1">—</p>
+        <p class="text-[11px] text-slate-400">activas en catálogo</p>
+      </div>
+    </div>
+
+    <!-- ================= FORMULARIO + TABLA ================= -->
+    <div class="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-8">
+
+    <!-- ================= FORMULARIO PRODUCTO ================= -->
+    <aside class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 h-fit lg:sticky lg:top-24">
+      <h2 id="form-titulo" class="text-lg font-bold text-slate-800 mb-4">➕ Agregar producto</h2>
+
+      <!-- Nota: name= en cada input para leerlos con new FormData() -->
+      <form id="form-producto" class="space-y-3 text-sm">
+
+        <input name="sku" required placeholder="SKU (ej. ELEC-005)" 
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+
+        <input name="nombre" required placeholder="Nombre del producto"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+
+        <textarea name="descripcion" rows="2" placeholder="Descripción"
+                  class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none"></textarea>
+
+        <select name="categoriaId" required
+                class="w-full border rounded-lg px-3 py-2 bg-white outline-none">
+          <option value="">— Seleccione categoría —</option>
+        </select>
+
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block">
+            <span class="text-xs text-slate-500">Precio base (MXN)</span>
+            <input name="precioBase" type="number" step="0.01" min="0" required
+                   class="w-full border rounded-lg px-3 py-2" />
+          </label>
+          <label class="block">
+            <span class="text-xs text-slate-500">Stock</span>
+            <input name="stock" type="number" min="0" required value="0"
+                   class="w-full border rounded-lg px-3 py-2" />
+          </label>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block">
+            <span class="text-xs text-slate-500">Stock mínimo</span>
+            <input name="stockMinimo" type="number" min="0" required value="5"
+                   class="w-full border rounded-lg px-3 py-2" />
+          </label>
+          <label class="flex items-end gap-2 pb-2">
+            <input name="activo" type="checkbox" checked class="w-4 h-4" />
+            <span class="text-xs text-slate-500">Producto activo</span>
+          </label>
+        </div>
+
+        <input name="imagenUrl" type="url" placeholder="URL de imagen (opcional)"
+               class="w-full border rounded-lg px-3 py-2" />
+
+        <div class="flex gap-2 pt-2">
+          <button type="submit" id="btn-guardar"
+                  class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition">
+            Guardar
+          </button>
+          <button type="button" id="btn-cancelar"
+                  class="hidden flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2 rounded-lg transition">
+            Cancelar
+          </button>
+        </div>
+
+        <p id="form-mensaje" class="text-center text-sm"></p>
+      </form>
+    </aside>
+
+    <!-- ================= TABLA INVENTARIO ================= -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between flex-wrap gap-2">
+        <h2 class="text-lg font-bold text-slate-800">📦 Gestión de inventario</h2>
+        <div class="flex items-center gap-3">
+          <input id="buscador-admin" type="search" placeholder="Filtrar por nombre o SKU…"
+                 class="border border-slate-300 rounded-full px-4 py-1.5 text-sm focus:ring-2 focus:ring-indigo-400 outline-none" />
+          <button id="btn-reset-mock" title="Restaura mock_data.json (solo modo mock)"
+                  class="text-xs bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full hover:bg-amber-200 transition">
+            ↺ Reset datos mock
+          </button>
+        </div>
+      </header>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
+            <tr>
+              <th class="px-5 py-3">Producto</th>
+              <th class="px-4 py-3">Categoría</th>
+              <th class="px-4 py-3 text-right">Precio base</th>
+              <th class="px-4 py-3 text-center">Stock</th>
+              <th class="px-4 py-3 text-center">Estado</th>
+              <th class="px-5 py-3 text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-productos" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+    </section>
+    </div><!-- /grid -->
+  </main>
+
+  <footer class="text-center text-xs text-slate-400 py-6">
+    TiendaMenos · Panel de administración · Entregable 1
+  </footer>
+
+  <div id="toast-container" class="fixed bottom-6 right-6 space-y-2 z-50"></div>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/admin.js"></script>
+</body>
+</html>
