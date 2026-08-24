@@ -1,26 +1,628 @@
 {
   "categorias": [
-    { "idCategoria": 1, "nombre": "Electrónica", "descripcion": "Dispositivos y accesorios electrónicos", "activa": true },
-    { "idCategoria": 2, "nombre": "Hogar", "descripcion": "Artículos para el hogar y cocina", "activa": true },
-    { "idCategoria": 3, "nombre": "Oficina", "descripcion": "Papelería y equipo de trabajo", "activa": true },
-    { "idCategoria": 4, "nombre": "Deportes", "descripcion": "Equipamiento y ropa deportiva", "activa": true }
+    {
+      "idCategoria": 1,
+      "nombre": "Audio",
+      "descripcion": "Audifonos, bocinas y microfonos",
+      "activa": true
+    },
+    {
+      "idCategoria": 2,
+      "nombre": "Computacion",
+      "descripcion": "Laptops, monitores, teclados y mouses",
+      "activa": true
+    },
+    {
+      "idCategoria": 3,
+      "nombre": "Smartphones",
+      "descripcion": "Celulares y accesorios moviles",
+      "activa": true
+    },
+    {
+      "idCategoria": 4,
+      "nombre": "Gaming",
+      "descripcion": "Controles, diademas y perifericos gamer",
+      "activa": true
+    },
+    {
+      "idCategoria": 5,
+      "nombre": "Accesorios",
+      "descripcion": "Cables, cargadores, hubs y soportes",
+      "activa": true
+    }
   ],
   "productos": [
-    { "idProducto": 1, "sku": "ELEC-001", "nombre": "Audífonos Bluetooth Pro", "descripcion": "Cancelación de ruido activa, 30h batería", "precioBase": 899.00, "stock": 25, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Electrónica", "imagenUrl": "", "activo": true },
-    { "idProducto": 2, "sku": "ELEC-002", "nombre": "Mouse Inalámbrico Ergo", "descripcion": "Sensor 4000 DPI, silencioso", "precioBase": 249.50, "stock": 3, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Electrónica", "imagenUrl": "", "activo": true },
-    { "idProducto": 3, "sku": "ELEC-003", "nombre": "Teclado Mecánico RGB", "descripcion": "Switches rojos, layout ES", "precioBase": 1150.00, "stock": 0, "stockMinimo": 4, "categoriaId": 1, "categoriaNombre": "Electrónica", "imagenUrl": "", "activo": true },
-    { "idProducto": 4, "sku": "HOG-001", "nombre": "Cafetera Espresso 15 Bar", "descripcion": "Vaporizador de leche incluido", "precioBase": 2399.00, "stock": 12, "stockMinimo": 3, "categoriaId": 2, "categoriaNombre": "Hogar", "imagenUrl": "", "activo": true },
-    { "idProducto": 5, "sku": "HOG-002", "nombre": "Juego de Sábanas Queen", "descripcion": "Algodón egipcio 400 hilos", "precioBase": 649.90, "stock": 4, "stockMinimo": 5, "categoriaId": 2, "categoriaNombre": "Hogar", "imagenUrl": "", "activo": true },
-    { "idProducto": 6, "sku": "HOG-003", "nombre": "Set de 6 Vasos Termoresistentes", "descripcion": "Aptos para microondas", "precioBase": 189.00, "stock": 40, "stockMinimo": 10, "categoriaId": 2, "categoriaNombre": "Hogar", "imagenUrl": "", "activo": true },
-    { "idProducto": 7, "sku": "OFI-001", "nombre": "Silla de Oficina Lumbar+", "descripcion": "Soporte lumbar ajustable, ruedas silenciosas", "precioBase": 3150.00, "stock": 7, "stockMinimo": 2, "categoriaId": 3, "categoriaNombre": "Oficina", "imagenUrl": "", "activo": true },
-    { "idProducto": 8, "sku": "OFI-002", "nombre": "Cuaderno Profesional x5", "descripcion": "100 hojas cada uno, cuadro chico", "precioBase": 95.00, "stock": 120, "stockMinimo": 20, "categoriaId": 3, "categoriaNombre": "Oficina", "imagenUrl": "", "activo": true },
-    { "idProducto": 9, "sku": "DEP-001", "nombre": "Mancuernas Ajustables 20kg", "descripcion": "Par con sistema de disco rápido", "precioBase": 1899.00, "stock": 6, "stockMinimo": 3, "categoriaId": 4, "categoriaNombre": "Deportes", "imagenUrl": "", "activo": true },
-    { "idProducto": 10, "sku": "DEP-002", "nombre": "Tapete de Yoga Antideslizante", "descripcion": "6mm, incluye correa de transporte", "precioBase": 320.00, "stock": 18, "stockMinimo": 6, "categoriaId": 4, "categoriaNombre": "Deportes", "imagenUrl": "", "activo": true },
-    { "idProducto": 11, "sku": "ELEC-004", "nombre": "Monitor LED 27\" 144Hz", "descripcion": "Full HD, FreeSync Premium (producto inactivo)", "precioBase": 3899.00, "stock": 10, "stockMinimo": 3, "categoriaId": 1, "categoriaNombre": "Electrónica", "imagenUrl": "", "activo": false }
+    {
+      "idProducto": 1,
+      "sku": "AUD-001",
+      "nombre": "Diadema OneOdio Pro-10 con Cable",
+      "descripcion": "Diadema cerrada para DJ y estudio, cable desmontable compartido",
+      "precioBase": 549,
+      "stock": 18,
+      "stockMinimo": 5,
+      "categoriaId": 1,
+      "categoriaNombre": "Audio",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 1,
+      "proveedorNombre": "AudioMax Distribucion"
+    },
+    {
+      "idProducto": 2,
+      "sku": "AUD-002",
+      "nombre": "Audifonos TWS Inalambricos Pro",
+      "descripcion": "Bluetooth 5.3, cancelacion de ruido ENC, estuche de carga",
+      "precioBase": 699,
+      "stock": 14,
+      "stockMinimo": 5,
+      "categoriaId": 1,
+      "categoriaNombre": "Audio",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 6,
+      "proveedorId": 1,
+      "proveedorNombre": "AudioMax Distribucion"
+    },
+    {
+      "idProducto": 3,
+      "sku": "BOC-001",
+      "nombre": "Bocina Bluetooth Portatil 20W",
+      "descripcion": "Resistente al agua IPX7, 24 h de bateria, TWS pareable",
+      "precioBase": 459,
+      "stock": 22,
+      "stockMinimo": 6,
+      "categoriaId": 1,
+      "categoriaNombre": "Audio",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 1,
+      "proveedorNombre": "AudioMax Distribucion"
+    },
+    {
+      "idProducto": 4,
+      "sku": "MIC-001",
+      "nombre": "Microfono Condensador USB",
+      "descripcion": "Grabacion estudio 192kHz/24-bit, brazo articulado incluido",
+      "precioBase": 1299,
+      "stock": 8,
+      "stockMinimo": 3,
+      "categoriaId": 1,
+      "categoriaNombre": "Audio",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 2,
+      "proveedorNombre": "TechSupply Global"
+    },
+    {
+      "idProducto": 5,
+      "sku": "TEC-001",
+      "nombre": "Teclado Mecanico RGB 87 Teclas",
+      "descripcion": "Switches red, keycaps doble inyeccion, cable USB-C desmontable",
+      "precioBase": 1150,
+      "stock": 9,
+      "stockMinimo": 4,
+      "categoriaId": 2,
+      "categoriaNombre": "Computacion",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 24,
+      "proveedorId": 2,
+      "proveedorNombre": "TechSupply Global"
+    },
+    {
+      "idProducto": 6,
+      "sku": "RAT-001",
+      "nombre": "Mouse Inalambrico Ergonomico",
+      "descripcion": "Sensor 4000 DPI, silencioso, recargable USB-C",
+      "precioBase": 349,
+      "stock": 4,
+      "stockMinimo": 8,
+      "categoriaId": 2,
+      "categoriaNombre": "Computacion",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 2,
+      "proveedorNombre": "TechSupply Global"
+    },
+    {
+      "idProducto": 7,
+      "sku": "MON-001",
+      "nombre": "Monitor LED 27\" 144Hz QHD",
+      "descripcion": "2560x1440, FreeSync, 1ms, HDMI 2.0 + DisplayPort",
+      "precioBase": 3899,
+      "stock": 6,
+      "stockMinimo": 3,
+      "categoriaId": 2,
+      "categoriaNombre": "Computacion",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 24,
+      "proveedorId": 3,
+      "proveedorNombre": "Importadora ElectroNorte"
+    },
+    {
+      "idProducto": 8,
+      "sku": "LAP-001",
+      "nombre": "Laptop 14\" Core i5 16GB 512GB",
+      "descripcion": "FHD IPS, Windows 11, lector huella, 1.4 kg",
+      "precioBase": 12499,
+      "stock": 3,
+      "stockMinimo": 2,
+      "categoriaId": 2,
+      "categoriaNombre": "Computacion",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 24,
+      "proveedorId": 3,
+      "proveedorNombre": "Importadora ElectroNorte"
+    },
+    {
+      "idProducto": 9,
+      "sku": "CEL-001",
+      "nombre": "Smartphone 6.7\" 128GB Dual SIM",
+      "descripcion": "AMOLED 120Hz, camara triple 50MP, carga rapida 33W",
+      "precioBase": 8999,
+      "stock": 5,
+      "stockMinimo": 3,
+      "categoriaId": 3,
+      "categoriaNombre": "Smartphones",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 3,
+      "proveedorNombre": "Importadora ElectroNorte"
+    },
+    {
+      "idProducto": 10,
+      "sku": "CAR-001",
+      "nombre": "Power Bank 20000mAh PD 22.5W",
+      "descripcion": "Carga rapida USB-C Power Delivery y QC 3.0, doble salida",
+      "precioBase": 429,
+      "stock": 26,
+      "stockMinimo": 10,
+      "categoriaId": 5,
+      "categoriaNombre": "Accesorios",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 6,
+      "proveedorId": 1,
+      "proveedorNombre": "AudioMax Distribucion"
+    },
+    {
+      "idProducto": 11,
+      "sku": "CAR-002",
+      "nombre": "Cargador GaN 65W 3 Puertos",
+      "descripcion": "GaN II compacto: 2 USB-C + USB-A, compatible laptops",
+      "precioBase": 389,
+      "stock": 30,
+      "stockMinimo": 10,
+      "categoriaId": 5,
+      "categoriaNombre": "Accesorios",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 2,
+      "proveedorNombre": "TechSupply Global"
+    },
+    {
+      "idProducto": 12,
+      "sku": "GAM-001",
+      "nombre": "Control Inalambrico Pro PC/Switch",
+      "descripcion": "Joysticks Hall Effect, gatillos analogicos, vibracion HD",
+      "precioBase": 1499,
+      "stock": 7,
+      "stockMinimo": 3,
+      "categoriaId": 4,
+      "categoriaNombre": "Gaming",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 2,
+      "proveedorNombre": "TechSupply Global"
+    },
+    {
+      "idProducto": 13,
+      "sku": "GAM-002",
+      "nombre": "Diadema Gaming 7.1 RGB",
+      "descripcion": "Sonido envolvente virtual, microfono abatible con cancelacion",
+      "precioBase": 799,
+      "stock": 11,
+      "stockMinimo": 4,
+      "categoriaId": 4,
+      "categoriaNombre": "Gaming",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 1,
+      "proveedorNombre": "AudioMax Distribucion"
+    },
+    {
+      "idProducto": 14,
+      "sku": "ACC-001",
+      "nombre": "Hub USB-C 7-en-1",
+      "descripcion": "HDMI 4K@60, 2x USB 3.0, SD/microSD, PD 100W, Ethernet",
+      "precioBase": 549,
+      "stock": 16,
+      "stockMinimo": 6,
+      "categoriaId": 5,
+      "categoriaNombre": "Accesorios",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 2,
+      "proveedorNombre": "TechSupply Global"
+    },
+    {
+      "idProducto": 15,
+      "sku": "ACC-002",
+      "nombre": "Cable HDMI 2.1 2m 8K",
+      "descripcion": "8K@60 / 4K@120, eARC, certificado, conectores reforzados",
+      "precioBase": 189,
+      "stock": 48,
+      "stockMinimo": 15,
+      "categoriaId": 5,
+      "categoriaNombre": "Accesorios",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 6,
+      "proveedorId": 1,
+      "proveedorNombre": "AudioMax Distribucion"
+    },
+    {
+      "idProducto": 16,
+      "sku": "ACC-003",
+      "nombre": "Soporte Laptop Aluminio Ajustable",
+      "descripcion": "6 niveles, ventilacion, antideslizante, hasta 17 pulgadas",
+      "precioBase": 299,
+      "stock": 19,
+      "stockMinimo": 8,
+      "categoriaId": 5,
+      "categoriaNombre": "Accesorios",
+      "imagenUrl": "",
+      "activo": true,
+      "garantiaMeses": 12,
+      "proveedorId": 3,
+      "proveedorNombre": "Importadora ElectroNorte"
+    }
+  ],
+  "paises": [
+    {
+      "idPais": 1,
+      "codigoIso2": "MX",
+      "nombre": "México",
+      "tasaIvaGeneral": 16,
+      "tasaIvaReducido": 8
+    },
+    {
+      "idPais": 2,
+      "codigoIso2": "CO",
+      "nombre": "Colombia",
+      "tasaIvaGeneral": 19,
+      "tasaIvaReducido": 5
+    },
+    {
+      "idPais": 3,
+      "codigoIso2": "PE",
+      "nombre": "Perú",
+      "tasaIvaGeneral": 18,
+      "tasaIvaReducido": 18
+    },
+    {
+      "idPais": 4,
+      "codigoIso2": "AR",
+      "nombre": "Argentina",
+      "tasaIvaGeneral": 21,
+      "tasaIvaReducido": 10.5
+    },
+    {
+      "idPais": 5,
+      "codigoIso2": "CL",
+      "nombre": "Chile",
+      "tasaIvaGeneral": 19,
+      "tasaIvaReducido": 19
+    },
+    {
+      "idPais": 6,
+      "codigoIso2": "EC",
+      "nombre": "Ecuador",
+      "tasaIvaGeneral": 15,
+      "tasaIvaReducido": 15
+    },
+    {
+      "idPais": 7,
+      "codigoIso2": "ES",
+      "nombre": "España",
+      "tasaIvaGeneral": 21,
+      "tasaIvaReducido": 10
+    },
+    {
+      "idPais": 8,
+      "codigoIso2": "US",
+      "nombre": "Estados Unidos",
+      "tasaIvaGeneral": 0,
+      "tasaIvaReducido": 0
+    }
+  ],
+  "empresas": [
+    {
+      "idEmpresa": 1,
+      "razonSocial": "Comercializadora del Norte SA de CV",
+      "rfc": "CON850101AB1",
+      "idPais": 1,
+      "regimenFiscal": "GENERAL",
+      "contactoEmail": "compras@comer-norte.mx"
+    },
+    {
+      "idEmpresa": 2,
+      "razonSocial": "Fundación Educativa Alianza AC",
+      "rfc": "FEA120314QP9",
+      "idPais": 1,
+      "regimenFiscal": "EXENTO",
+      "contactoEmail": "admin@fundalianza.org"
+    },
+    {
+      "idEmpresa": 3,
+      "razonSocial": "Talleres Mecánicos Ríos SRL",
+      "rfc": "TMR180622R4A",
+      "idPais": 1,
+      "regimenFiscal": "REDUCIDO",
+      "contactoEmail": "pagos@talleresrios.mx"
+    },
+    {
+      "idEmpresa": 4,
+      "razonSocial": "Cafés de Bogotá SAS",
+      "rfc": "CB901234567",
+      "idPais": 2,
+      "regimenFiscal": "GENERAL",
+      "contactoEmail": "finanzas@cafesbogota.co"
+    }
   ],
   "perfiles": [
-    { "username": "admin", "password": "admin123", "rol": "ADMIN", "nombreCompleto": "Laura Directora" },
-    { "username": "cajero", "password": "cajero123", "rol": "CAJERO", "nombreCompleto": "Carlos Punto Venta" },
-    { "username": "cliente", "password": "cliente123", "rol": "CLIENTE", "nombreCompleto": "María Compradora" }
-  ]
+    {
+      "username": "admin",
+      "password": "admin123",
+      "rol": "ADMIN",
+      "nombreCompleto": "Laura Directora",
+      "idPais": 1
+    },
+    {
+      "username": "cajero",
+      "password": "cajero123",
+      "rol": "CAJERO",
+      "nombreCompleto": "Carlos Punto Venta",
+      "idPais": 1
+    },
+    {
+      "username": "cliente",
+      "password": "cliente123",
+      "rol": "CLIENTE",
+      "nombreCompleto": "María Compradora",
+      "idPais": 1
+    }
+  ],
+  "proveedores": [
+    {
+      "idProveedor": 1,
+      "nombre": "AudioMax Distribucion",
+      "contactoNombre": "Rosa Medina",
+      "telefono": "55-1234-7788",
+      "email": "ventas@audiomax.demo",
+      "activo": true
+    },
+    {
+      "idProveedor": 2,
+      "nombre": "TechSupply Global",
+      "contactoNombre": "Jorge Castaneda",
+      "telefono": "81-4455-9010",
+      "email": "pedidos@techsupply.demo",
+      "activo": true
+    },
+    {
+      "idProveedor": 3,
+      "nombre": "Importadora ElectroNorte",
+      "contactoNombre": "Ana Villalobos",
+      "telefono": "664-233-5588",
+      "email": "contacto@electronorte.demo",
+      "activo": true
+    }
+  ],
+  "movimientos": [
+    {
+      "idMovimiento": 1,
+      "tipo": "ENTRADA",
+      "productoId": 1,
+      "cantidad": 18,
+      "stockResultante": 18,
+      "referencia": "OC-INICIAL-001",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 1,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 2,
+      "tipo": "ENTRADA",
+      "productoId": 2,
+      "cantidad": 14,
+      "stockResultante": 14,
+      "referencia": "OC-INICIAL-002",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 1,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 3,
+      "tipo": "ENTRADA",
+      "productoId": 3,
+      "cantidad": 22,
+      "stockResultante": 22,
+      "referencia": "OC-INICIAL-003",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 1,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 4,
+      "tipo": "ENTRADA",
+      "productoId": 4,
+      "cantidad": 8,
+      "stockResultante": 8,
+      "referencia": "OC-INICIAL-004",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 2,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 5,
+      "tipo": "ENTRADA",
+      "productoId": 5,
+      "cantidad": 9,
+      "stockResultante": 9,
+      "referencia": "OC-INICIAL-005",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 2,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 6,
+      "tipo": "ENTRADA",
+      "productoId": 6,
+      "cantidad": 4,
+      "stockResultante": 4,
+      "referencia": "OC-INICIAL-006",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 2,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 7,
+      "tipo": "ENTRADA",
+      "productoId": 7,
+      "cantidad": 6,
+      "stockResultante": 6,
+      "referencia": "OC-INICIAL-007",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 3,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 8,
+      "tipo": "ENTRADA",
+      "productoId": 8,
+      "cantidad": 3,
+      "stockResultante": 3,
+      "referencia": "OC-INICIAL-008",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 3,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 9,
+      "tipo": "ENTRADA",
+      "productoId": 9,
+      "cantidad": 5,
+      "stockResultante": 5,
+      "referencia": "OC-INICIAL-009",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 3,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 10,
+      "tipo": "ENTRADA",
+      "productoId": 10,
+      "cantidad": 26,
+      "stockResultante": 26,
+      "referencia": "OC-INICIAL-010",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 1,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 11,
+      "tipo": "ENTRADA",
+      "productoId": 11,
+      "cantidad": 30,
+      "stockResultante": 30,
+      "referencia": "OC-INICIAL-011",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 2,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 12,
+      "tipo": "ENTRADA",
+      "productoId": 12,
+      "cantidad": 7,
+      "stockResultante": 7,
+      "referencia": "OC-INICIAL-012",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 2,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 13,
+      "tipo": "ENTRADA",
+      "productoId": 13,
+      "cantidad": 11,
+      "stockResultante": 11,
+      "referencia": "OC-INICIAL-013",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 1,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 14,
+      "tipo": "ENTRADA",
+      "productoId": 14,
+      "cantidad": 16,
+      "stockResultante": 16,
+      "referencia": "OC-INICIAL-014",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 2,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 15,
+      "tipo": "ENTRADA",
+      "productoId": 15,
+      "cantidad": 48,
+      "stockResultante": 48,
+      "referencia": "OC-INICIAL-015",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 1,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    },
+    {
+      "idMovimiento": 16,
+      "tipo": "ENTRADA",
+      "productoId": 16,
+      "cantidad": 19,
+      "stockResultante": 19,
+      "referencia": "OC-INICIAL-016",
+      "nota": "Carga inicial de inventario",
+      "proveedorId": 3,
+      "usuarioNombre": "admin",
+      "fecha": "2026-08-21T12:53:02.728Z"
+    }
+  ],
+  "incidencias": []
 }

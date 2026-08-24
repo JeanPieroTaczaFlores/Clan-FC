@@ -5,8 +5,10 @@ import com.tienda.dto.ProductoResponse;
 import com.tienda.exception.RecursoNoEncontradoException;
 import com.tienda.model.Categoria;
 import com.tienda.model.Producto;
+import com.tienda.model.Proveedor;
 import com.tienda.repository.CategoriaRepository;
 import com.tienda.repository.ProductoRepository;
+import com.tienda.repository.ProveedorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,7 @@ public class ProductoService {
 
     private final ProductoRepository productoRepository;
     private final CategoriaRepository categoriaRepository;
+    private final ProveedorRepository proveedorRepository;
 
     /* ----------------------------- Catálogo ------------------------------- */
 
@@ -62,6 +65,8 @@ public class ProductoService {
                 .precioBase(request.precioBase())
                 .stock(request.stock())
                 .stockMinimo(request.stockMinimo())
+                .garantiaMeses(request.garantiaMeses() == null ? 12 : request.garantiaMeses())
+                .proveedor(buscarProveedor(request.proveedorId()))
                 .imagenUrl(request.imagenUrl())
                 .categoria(categoria)
                 .activo(request.activo() == null || request.activo())
@@ -82,6 +87,8 @@ public class ProductoService {
         producto.setPrecioBase(request.precioBase());
         producto.setStock(request.stock());
         producto.setStockMinimo(request.stockMinimo());
+        if (request.garantiaMeses() != null) producto.setGarantiaMeses(request.garantiaMeses());
+        producto.setProveedor(buscarProveedor(request.proveedorId()));
         producto.setImagenUrl(request.imagenUrl());
         producto.setCategoria(categoria);
         if (request.activo() != null) producto.setActivo(request.activo());
@@ -122,6 +129,13 @@ public class ProductoService {
     private Categoria buscarCategoria(Long id) {
         return categoriaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Categoría " + id + " no encontrada"));
+    }
+
+    /** null = sin proveedor asignado. */
+    private Proveedor buscarProveedor(Long id) {
+        if (id == null) return null;
+        return proveedorRepository.findById(id)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Proveedor " + id + " no encontrado"));
     }
 
     private Producto buscarProducto(Long id) {

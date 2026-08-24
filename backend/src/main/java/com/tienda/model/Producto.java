@@ -30,6 +30,11 @@ public class Producto {
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
+    /** Proveedor que surte este producto (opcional pero recomendado). */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_proveedor")
+    private Proveedor proveedor;
+
     /** Código único de inventario (ej. ELEC-001). */
     @NotBlank
     @Column(nullable = false, unique = true, length = 40)
@@ -59,6 +64,11 @@ public class Producto {
     @PositiveOrZero
     @Column(name = "stock_minimo", nullable = false)
     private Integer stockMinimo = 5;
+
+    /** Garantía del fabricante en meses (0 = sin garantía). */
+    @NotNull
+    @Column(name = "garantia_meses", nullable = false)
+    private Integer garantiaMeses = 12;
 
     @Column(name = "imagen_url", length = 300)
     private String imagenUrl;

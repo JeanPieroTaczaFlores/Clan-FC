@@ -47,14 +47,26 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // --- Registro público de clientes (autoregistro) ---
+                        .requestMatchers(HttpMethod.POST, "/api/auth/registro").permitAll()
                         // --- Catálogo público (vista CLIENTE) ---
                         .requestMatchers(HttpMethod.GET, "/api/productos/**", "/api/categorias/**").permitAll()
                         // --- Gestión de inventario (vista ADMIN) ---
                         .requestMatchers("/api/productos/**", "/api/categorias/**").hasRole("ADMIN")
+                        // --- Alta/listado de usuarios (cajeros y admins): solo ADMIN ---
+                        .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                        // --- Checkout web del cliente ---
+                        .requestMatchers(HttpMethod.POST, "/api/checkout").hasAnyRole("CLIENTE", "ADMIN")
+                        // --- Punto de venta, almacén, incidencias y reportes (cajero) ---
+                        .requestMatchers("/api/pos/**", "/api/almacen/**", "/api/incidencias/**", "/api/reportes/**")
+                            .hasAnyRole("CAJERO", "ADMIN")
+                        // --- Empresas/régimen fiscal y calculadora de impuestos ---
+                        .requestMatchers(HttpMethod.GET, "/api/paises").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/empresas").hasRole("ADMIN") // registro B2B
+                        .requestMatchers("/api/empresas/**", "/api/impuestos/**").authenticated()
                         // --- Endpoints de entregables siguientes ---
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/pos/**").hasAnyRole("CAJERO", "ADMIN")
-                        // --- Todo lo demás requiere sesión ---
+                        // --- Órdenes y todo lo demás requieren sesión ---
                         .anyRequest().authenticated())
                 // Basic Auth temporal; valida contra la tabla usuarios vía UsuarioDetailsService.
                 .httpBasic(Customizer.withDefaults());

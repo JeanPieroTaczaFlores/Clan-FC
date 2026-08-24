@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo — TiendaMenos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-5">
+      <a href="index.html" class="text-2xl font-extrabold tracking-tight text-indigo-600 shrink-0">
+        Tienda<span class="text-emerald-500">Menos</span><span class="text-rose-500">.</span>
+      </a>
+      <a href="index.html" class="hidden sm:inline text-sm font-medium text-slate-600 hover:text-indigo-600">← Inicio</a>
+      <div id="zona-sesion" class="ml-auto flex items-center gap-2"></div>
+      <a id="btn-carrito" href="carrito.html" title="Ver mi carrito"
+         class="relative p-2 rounded-full hover:bg-slate-100 transition text-xl">
+        🛒
+        <span id="carrito-badge" class="hidden absolute -top-0.5 -right-0.5 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full items-center justify-center">0</span>
+      </a>
+    </nav>
+  </header>
+
+  <main class="flex-1">
+    <!-- ================= BUSCADOR + FILTROS (hero) ================= -->
+    <section class="bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 text-white">
+      <div class="max-w-7xl mx-auto px-4 py-10">
+        <h1 class="text-3xl md:text-4xl font-extrabold">Catálogo completo</h1>
+        <p class="text-indigo-100/90 mt-1 text-sm">Electrónica seleccionada: audio, computación, smartphones, gaming y accesorios.</p>
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <div class="relative flex-1">
+            <input id="buscador-catalogo" type="search"
+                   placeholder="🔍 Busca por nombre o SKU (ej. audífonos, MON-001…)"
+                   class="w-full rounded-full bg-white text-slate-800 pl-11 pr-4 py-3.5 text-sm shadow-lg
+                          placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition" />
+          </div>
+          <select id="ordenar-catalogo"
+                  class="rounded-full bg-white text-slate-800 px-5 py-3.5 text-sm font-semibold shadow-lg focus:outline-none focus:ring-4 focus:ring-indigo-300">
+            <option value="populares">Más populares</option>
+            <option value="precioAsc">Precio: menor a mayor</option>
+            <option value="precioDesc">Precio: mayor a menor</option>
+            <option value="nombreAZ">Nombre A–Z</option>
+          </select>
+        </div>
+
+        <!-- Chips de categoría -->
+        <div id="chips-categorias" class="flex flex-wrap gap-2 mt-5"></div>
+      </div>
+    </section>
+
+    <!-- ================= RESULTADOS ================= -->
+    <section class="max-w-7xl mx-auto px-4 py-8">
+      <p id="contador-resultados" class="text-xs text-slate-400 mb-4"></p>
+
+      <section id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"></section>
+
+      <p id="mensaje-vacio" class="hidden text-center text-slate-400 py-16">
+        <span class="text-4xl block mb-2">🔍</span>Sin resultados para tu búsqueda.<br />
+        <span class="text-sm">Prueba con otros términos o revisa otra categoría.</span>
+      </p>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-slate-400 text-sm">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex flex-wrap items-center justify-between gap-3">
+      <p>© 2026 TiendaMenos · Proyecto educativo</p>
+      <a href="index.html" class="hover:text-white underline decoration-dotted">Volver al inicio</a>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="fixed bottom-6 right-6 space-y-2 z-50"></div>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/tienda-catalogo.js"></script>
+</body>
+</html>

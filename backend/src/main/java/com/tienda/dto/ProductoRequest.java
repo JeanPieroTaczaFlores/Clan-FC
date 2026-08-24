@@ -32,6 +32,13 @@ public record ProductoRequest(
         @NotNull(message = "La categoría es obligatoria")
         Long categoriaId,
 
+        /** Garantía del fabricante en meses (0-60). */
+        @Min(0) @Max(60)
+        Integer garantiaMeses,
+
+        /** Proveedor que surte el producto (opcional). */
+        Long proveedorId,
+
         @Size(max = 300)
         String imagenUrl,
 

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TiendaMenos — Crear cuenta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-slate-100 min-h-screen flex">
+
+  <!-- ================= PANEL DE MARCA (izquierda) ================= -->
+  <aside class="hidden lg:flex lg:w-[45%] bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-600 text-white relative overflow-hidden flex-col justify-between p-12">
+    <div class="absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 22px 22px;"></div>
+
+    <a href="index.html" class="relative text-3xl font-extrabold tracking-tight">
+      Tienda<span class="text-emerald-200">Menos</span><span class="text-rose-300">.</span>
+    </a>
+
+    <div class="relative">
+      <h2 class="text-4xl font-extrabold leading-tight">Crea tu<br />cuenta 🌎</h2>
+      <p class="mt-4 text-emerald-50/90 max-w-sm text-sm">
+        Elige tu país y compra con el IVA correcto de tu región desde el
+        primer día. Es gratis y toma menos de un minuto.
+      </p>
+      <ul class="mt-8 space-y-3 text-sm">
+        <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">🛒</span> Carrito persistente entre visitas</li>
+        <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">🌎</span> IVA automático según tu país</li>
+        <li class="flex items-center gap-3"><span class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center">🧾</span> Historial de pedidos con folio</li>
+      </ul>
+    </div>
+
+    <p class="relative text-xs text-emerald-100">© 2026 TiendaMenos · Proyecto educativo</p>
+  </aside>
+
+  <!-- ================= FORMULARIO (derecha) ================= -->
+  <main class="flex-1 flex items-center justify-center p-6 md:p-12">
+    <section class="w-full max-w-md">
+      <a href="index.html" class="lg:hidden block text-2xl font-extrabold text-emerald-600 mb-8 text-center">
+        Tienda<span class="text-emerald-500">Menos</span><span class="text-rose-500">.</span>
+      </a>
+
+      <div class="bg-white rounded-3xl shadow-xl p-8 md:p-10 fade-in">
+        <h1 class="text-2xl font-extrabold text-slate-800">Regístrate</h1>
+        <p id="subtitulo-registro" class="text-sm text-slate-500 mt-1 mb-7">
+          Tu cuenta será de tipo CLIENTE · <span id="modo-etiqueta">modo mock</span>
+        </p>
+
+        <form id="form-registro" class="space-y-4" novalidate>
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Nombre completo</span>
+            <input name="nombreCompleto" required minlength="3" placeholder="ej. Ana Torres"
+                   class="mt-1.5 w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-400 outline-none transition" />
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Usuario</span>
+            <input name="username" required minlength="3" autocomplete="username" placeholder="ej. ana.torres"
+                   class="mt-1.5 w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-400 outline-none transition" />
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Correo electrónico</span>
+            <input name="email" type="email" required autocomplete="email" placeholder="ana@correo.com"
+                   class="mt-1.5 w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-400 outline-none transition" />
+          </label>
+
+          <!-- País fiscal: define el IVA que verás en tus compras -->
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">País fiscal 🌎</span>
+            <select name="idPais" required
+                    class="mt-1.5 w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm bg-white focus:ring-2 focus:ring-emerald-400 outline-none transition">
+              <option value="">Cargando países…</option>
+            </select>
+            <span class="block text-[11px] text-slate-400 mt-1">El IVA de consumidor final se calcula según tu país.</span>
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Contraseña</span>
+            <input name="password" type="password" required minlength="6" autocomplete="new-password" placeholder="mínimo 6 caracteres"
+                   class="mt-1.5 w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-400 outline-none transition" />
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Confirmar contraseña</span>
+            <input name="password2" type="password" required minlength="6" placeholder="repite la contraseña"
+                   class="mt-1.5 w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-emerald-400 outline-none transition" />
+          </label>
+
+          <p id="mensaje" class="hidden text-sm text-center"></p>
+
+          <button type="submit"
+                  class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-bold py-3 rounded-xl shadow-md hover:shadow-lg transition">
+            Crear mi cuenta
+          </button>
+        </form>
+
+        <footer class="mt-7 pt-6 border-t border-slate-100 text-center text-sm">
+          ¿Ya tienes cuenta?
+          <a href="login.html" class="text-indigo-600 font-bold hover:underline">Inicia sesión →</a>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast-container" class="fixed bottom-6 right-6 space-y-2 z-50"></div>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/registro.js"></script>
+</body>
+</html>

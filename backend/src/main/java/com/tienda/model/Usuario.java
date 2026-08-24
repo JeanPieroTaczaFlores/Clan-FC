@@ -43,6 +43,14 @@ public class Usuario {
     @Column(name = "nombre_completo", nullable = false, length = 120)
     private String nombreCompleto;
 
+    /**
+     * País fiscal del usuario (elegido al registrarse). Para CLIENTE define
+     * la tasa de IVA de consumidor final; para personal interno es informativo.
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_pais")
+    private Pais pais;
+
     @Column(nullable = false)
     private Boolean activo = Boolean.TRUE;
 

@@ -1,5 +1,6 @@
 package com.tienda.exception;
 
+import com.tienda.exception.StockInsuficienteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,6 +29,12 @@ public class GlobalExceptionHandler {
     /** 409 — violaciones de integridad (SKU duplicado, FK inválida, etc.). */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> manejarArgumentoInvalido(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(cuerpo(HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    /** 409 — inventario insuficiente en el checkout/POS. */
+    @ExceptionHandler(StockInsuficienteException.class)
+    public ResponseEntity<Map<String, Object>> manejarStockInsuficiente(StockInsuficienteException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(cuerpo(HttpStatus.CONFLICT, ex.getMessage()));
     }
 

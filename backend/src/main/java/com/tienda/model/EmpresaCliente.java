@@ -12,8 +12,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 /**
- * Empresa cliente (B2B). Define el régimen fiscal que determina el IVA
- * aplicable en sus compras — base del TaxCalculationService (Entregable 2).
+ * Empresa cliente (B2B). Su país + régimen fiscal determinan el IVA aplicable
+ * en sus compras — base del TaxCalculationService (Entregable 2).
  */
 @Entity
 @Table(name = "empresas_clientes")
@@ -29,10 +29,21 @@ public class EmpresaCliente {
     @Column(name = "razon_social", nullable = false, length = 150)
     private String razonSocial;
 
-    /** RFC fiscal único (México): persona física (13) o moral (12). */
+    /** Identificador fiscal único: RFC (MX), NIT (CO), RUC (PE)... */
     @NotBlank
     @Column(nullable = false, unique = true, length = 13)
     private String rfc;
+
+    /**
+     * País fiscal: sus tasas definen el IVA según el régimen.
+     * Precedencia de resolución en TaxCalculationService:
+     *   1) pais.tasaIvaGeneral/Reducido (dinámico)
+     *   2) tasaIva (override manual / snapshot)
+     *   3) defaults application.properties
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_pais")
+    private Pais pais;
 
     /** Régimen fiscal: EXENTO | GENERAL | REDUCIDO. */
     @NotNull
@@ -41,10 +52,8 @@ public class EmpresaCliente {
     private RegimenFiscal regimenFiscal;
 
     /**
-     * Tasa de IVA (%) parametrizable por empresa.
-     * Convención sugerida: EXENTO=0.00 | REDUCIDO=8.00 | GENERAL=16.00.
-     * El servicio de cálculo usa ESTA tasa (no valores fijos) para permitir
-     * cambios de política sin recompilar.
+     * Tasa de IVA (%) snapshot/override. Se recalcula desde el país al
+     * registrar la empresa; sirve de respaldo si el país no está vinculado.
      */
     @NotNull
     @DecimalMin("0.00")

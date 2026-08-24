@@ -25,6 +25,8 @@ function setCargando(cargando) {
 
 /* ------------------------------ Envío del form ---------------------------- */
 
+const DESTINO_POR_ROL = { ADMIN: "admin.html", CAJERO: "pos.html", CLIENTE: "index.html" };
+
 $form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -39,28 +41,15 @@ $form.addEventListener("submit", async (e) => {
 
     mostrarMensaje(`✔ Bienvenido ${sesion.username} (${sesion.rol})`, false);
 
-    // Destino según rol: el admin aterriza directo en su panel.
+    // Cada rol aterriza en su vista: admin->panel, cajero->POS, cliente->tienda.
     setTimeout(() => {
-      window.location.href = sesion.rol === "ADMIN" ? "admin.html" : "index.html";
+      window.location.href = DESTINO_POR_ROL[sesion.rol] ?? "index.html";
     }, 400);
   } catch (err) {
     console.error(err);
     mostrarMensaje(err.message || "Error de autenticación", true);
     setCargando(false);
   }
-});
-
-/* --------------------- Botones demo (rellenan campos) --------------------- */
-
-const DEMO_PASSWORDS = { admin: "admin123", cajero: "cajero123", cliente: "cliente123" };
-
-document.querySelectorAll("[data-demo]").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const usuario = btn.dataset.demo;
-    $form.username.value = usuario;
-    $form.password.value = DEMO_PASSWORDS[usuario];
-    $form.requestSubmit(); // dispara el submit automáticamente
-  });
 });
 
 /* ------------------------------ Inicialización ---------------------------- */
@@ -71,7 +60,7 @@ document.querySelectorAll("[data-demo]").forEach((btn) => {
   if (activa) {
     $subtitulo.textContent = `Ya tienes sesión activa como ${activa.username} (${activa.rol})`;
     setTimeout(() => {
-      window.location.href = activa.rol === "ADMIN" ? "admin.html" : "index.html";
+      window.location.href = DESTINO_POR_ROL[activa.rol] ?? "index.html";
     }, 600);
   }
 

@@ -99,11 +99,23 @@
             <input name="stockMinimo" type="number" min="0" required value="5"
                    class="w-full border rounded-lg px-3 py-2" />
           </label>
-          <label class="flex items-end gap-2 pb-2">
-            <input name="activo" type="checkbox" checked class="w-4 h-4" />
-            <span class="text-xs text-slate-500">Producto activo</span>
+          <label class="block">
+            <span class="text-xs text-slate-500">Garantía (meses)</span>
+            <input name="garantiaMeses" type="number" min="0" max="60" required value="12"
+                   class="w-full border rounded-lg px-3 py-2" />
           </label>
         </div>
+
+        <!-- Proveedor: quién surte este producto (se llena desde api.getProveedores) -->
+        <select name="proveedorId"
+                class="w-full border rounded-lg px-3 py-2 bg-white outline-none">
+          <option value="">— Sin proveedor asignado —</option>
+        </select>
+
+        <label class="flex items-center gap-2">
+          <input name="activo" type="checkbox" checked class="w-4 h-4" />
+          <span class="text-xs text-slate-500">Producto activo</span>
+        </label>
 
         <input name="imagenUrl" type="url" placeholder="URL de imagen (opcional)"
                class="w-full border rounded-lg px-3 py-2" />
@@ -154,10 +166,202 @@
       </div>
     </section>
     </div><!-- /grid -->
+
+    <!-- ================= PROVEEDORES (CADENA DE SUMINISTRO) ================= -->
+    <section class="mt-8 grid lg:grid-cols-[380px_1fr] gap-6 items-start">
+
+      <!-- Alta de proveedor -->
+      <aside class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+        <h2 class="text-lg font-bold text-slate-800 mb-1">🚚 Nuevo proveedor</h2>
+        <p class="text-xs text-slate-400 mb-5">
+          Quiénes surten el inventario; las entradas de almacén quedan ligadas a ellos.
+        </p>
+
+        <form id="form-proveedor" class="space-y-3 text-sm">
+          <input name="nombre" required maxlength="120" placeholder="Nombre comercial *"
+                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+          <input name="contactoNombre" maxlength="120" placeholder="Persona de contacto"
+                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+          <div class="grid grid-cols-2 gap-3">
+            <input name="telefono" maxlength="30" placeholder="Teléfono"
+                   class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+            <input name="email" type="email" maxlength="100" placeholder="Email"
+                   class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+          </div>
+          <button type="submit"
+                  class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition">
+            + Registrar proveedor
+          </button>
+          <p id="form-proveedor-mensaje" class="text-center text-xs"></p>
+        </form>
+      </aside>
+
+      <!-- Listado -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 class="text-lg font-bold text-slate-800">🚚 Proveedores activos</h2>
+          <span id="proveedores-contador" class="text-xs text-slate-400"></span>
+        </header>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
+              <tr>
+                <th class="px-5 py-3">Proveedor</th>
+                <th class="px-4 py-3">Contacto</th>
+                <th class="px-4 py-3">Teléfono</th>
+                <th class="px-4 py-3">Email</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-proveedores" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EMPRESAS CLIENTES B2B (IVA POR PAÍS) ================= -->
+    <section class="mt-8 grid lg:grid-cols-[380px_1fr] gap-6 items-start">
+
+      <!-- Formulario de registro: el país define las tasas de IVA -->
+      <aside class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+        <h2 class="text-lg font-bold text-slate-800 mb-1">🏢 Registrar empresa cliente</h2>
+        <p class="text-xs text-slate-400 mb-5">
+          El IVA depende del país elegido; la tasa se calcula sola según su régimen.
+        </p>
+
+        <form id="form-empresa" class="space-y-3 text-sm">
+          <input name="razonSocial" required maxlength="150" placeholder="Razón social *"
+                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+
+          <input name="rfc" required minlength="10" maxlength="13"
+                 placeholder="RFC / NIT / RUC (10–13 caracteres) *"
+                 class="w-full border rounded-lg px-3 py-2 font-mono focus:ring-2 focus:ring-indigo-400 outline-none" />
+
+          <!-- Selector de país con banderas (se llena desde api.getPaises) -->
+          <label class="block">
+            <span class="text-xs font-semibold text-slate-500">País fiscal *</span>
+            <select name="idPais" required
+                    class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+              <option value="">Cargando países…</option>
+            </select>
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-semibold text-slate-500">Régimen fiscal</span>
+            <select name="regimenFiscal"
+                    class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+              <option value="GENERAL">GENERAL — tasa general del país</option>
+              <option value="REDUCIDO">REDUCIDO — tasa reducida del país</option>
+              <option value="EXENTO">EXENTO — sin IVA (0%)</option>
+            </select>
+          </label>
+
+          <input name="contactoEmail" type="email" placeholder="Email de contacto (opcional)"
+                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+
+          <button type="submit"
+                  class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition">
+            + Registrar empresa
+          </button>
+          <p id="form-empresa-mensaje" class="text-center text-xs"></p>
+        </form>
+      </aside>
+
+      <!-- Listado de empresas con bandera, país y tasa aplicada -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 class="text-lg font-bold text-slate-800">🌎 Empresas clientes por país</h2>
+          <span id="empresas-contador" class="text-xs text-slate-400"></span>
+        </header>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
+              <tr>
+                <th class="px-5 py-3">Empresa</th>
+                <th class="px-4 py-3">País</th>
+                <th class="px-4 py-3">RFC/NIT</th>
+                <th class="px-4 py-3 text-center">Régimen</th>
+                <th class="px-5 py-3 text-right">IVA aplicado</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-empresas" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= USUARIOS DEL SISTEMA ================= -->
+    <section class="mt-8 grid lg:grid-cols-[380px_1fr] gap-6 items-start">
+
+      <!-- Alta de personal: cajeros y admins (clientes se autoregistran) -->
+      <aside class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+        <h2 class="text-lg font-bold text-slate-800 mb-1">👤 Dar de alta usuario</h2>
+        <p class="text-xs text-slate-400 mb-5">
+          Crea cuentas de CAJERO o ADMIN. Los clientes se registran solos en la tienda.
+        </p>
+
+        <form id="form-usuario" class="space-y-3 text-sm">
+          <input name="nombreCompleto" required minlength="3" placeholder="Nombre completo *"
+                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+          <input name="username" required minlength="3" placeholder="Usuario para iniciar sesión *"
+                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+          <input name="email" type="email" required placeholder="Correo electrónico *"
+                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+
+          <label class="block">
+            <span class="text-xs font-semibold text-slate-500">Rol *</span>
+            <select name="rol"
+                    class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+              <option value="CAJERO">CAJERO — punto de venta</option>
+              <option value="ADMIN">ADMIN — panel de administración</option>
+              <option value="CLIENTE">CLIENTE — compras web</option>
+            </select>
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-semibold text-slate-500">País fiscal *</span>
+            <select name="idPais" required
+                    class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+              <option value="">Selecciona país…</option>
+            </select>
+          </label>
+
+          <input name="password" type="password" required minlength="6" placeholder="Contraseña (mín. 6) *"
+                 autocomplete="new-password"
+                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+
+          <button type="submit"
+                  class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition">
+            + Crear usuario
+          </button>
+          <p id="form-usuario-mensaje" class="text-center text-xs"></p>
+        </form>
+      </aside>
+
+      <!-- Listado de usuarios con rol y país -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 class="text-lg font-bold text-slate-800">👥 Usuarios del sistema</h2>
+          <span id="usuarios-contador" class="text-xs text-slate-400"></span>
+        </header>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left">
+            <thead class="bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
+              <tr>
+                <th class="px-5 py-3">Usuario</th>
+                <th class="px-4 py-3">Rol</th>
+                <th class="px-4 py-3">Correo</th>
+                <th class="px-5 py-3 text-right">País</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-usuarios" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="text-center text-xs text-slate-400 py-6">
-    TiendaMenos · Panel de administración · Entregable 1
+    TiendaMenos · Panel de administración · Entregable 2
   </footer>
 
   <div id="toast-container" class="fixed bottom-6 right-6 space-y-2 z-50"></div>

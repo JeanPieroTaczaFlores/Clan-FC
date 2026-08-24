@@ -10,6 +10,11 @@ import {
   crearProducto,
   actualizarProducto,
   eliminarProducto,
+  getPaises,
+  getEmpresas,
+  crearEmpresa,
+  getUsuarios,
+  crearUsuario,
 } from "./api.js";
 
 const $form = document.getElementById("form-producto");
@@ -93,6 +98,8 @@ function leerFormulario() {
     precioBase: Number(data.precioBase),
     stock: Number(data.stock),
     stockMinimo: Number(data.stockMinimo),
+    garantiaMeses: Number(data.garantiaMeses || 12),
+    proveedorId: data.proveedorId ? Number(data.proveedorId) : null,
     imagenUrl: (data.imagenUrl || "").trim(),
     activo: $form.elements["activo"].checked,
   };
@@ -202,6 +209,8 @@ function entrarModoEdicion(producto) {
   $form.precioBase.value = producto.precioBase;
   $form.stock.value = producto.stock;
   $form.stockMinimo.value = producto.stockMinimo;
+  $form.garantiaMeses.value = producto.garantiaMeses ?? 12;
+  $form.proveedorId.value = producto.proveedorId ? String(producto.proveedorId) : "";
   $form.imagenUrl.value = producto.imagenUrl ?? "";
   $form.activo.checked = producto.activo !== false;
 
@@ -277,7 +286,7 @@ $buscadorAdmin.addEventListener("input", () => renderTabla());
 // Reset solo útil en modo mock: restaura los datos semilla originales.
 $btnResetMock.addEventListener("click", () => {
   if (CONFIG.USE_API) return mostrarMensaje("Solo aplica en modo mock", true);
-  localStorage.removeItem("tm_mock_db"); // clave usada por MockDB en api.js
+  localStorage.removeItem("tm_mock_db_v3"); // clave usada por MockDB en api.js
   location.reload();
 });
 
@@ -286,5 +295,242 @@ $btnResetMock.addEventListener("click", () => {
 (async function init() {
   renderSesionAdmin();
   await cargarCategoriasEnSelect();
+  await initProveedores(); // llena el select del formulario + tabla
   await renderTabla();
+  await initEmpresas(); // módulo B2B: registro con país + listado con banderas
+})();
+
+/* ============================================================================
+ * PROVEEDORES — cadena de suministro: alta y catálogo (solo ADMIN).
+ * ========================================================================== */
+
+const $formProveedor = document.getElementById("form-proveedor");
+const $tablaProveedores = document.getElementById("tabla-proveedores");
+const $proveedoresContador = document.getElementById("proveedores-contador");
+const $selectProvForm = document.querySelector('#form-producto select[name="proveedorId"]');
+
+/** Pinta la tabla de proveedores y llena el select del formulario producto. */
+async function initProveedores() {
+  try {
+    const proveedores = await getProveedores();
+
+    $proveedoresContador.textContent = `${proveedores.length} activo(s)`;
+    $tablaProveedores.innerHTML = proveedores.length
+      ? proveedores
+          .map(
+            (prov) => `
+        <tr class="hover:bg-indigo-50/40 transition">
+          <td class="px-5 py-3">
+            <p class="font-semibold text-slate-800">${prov.nombre}</p>
+            <p class="text-[11px] text-slate-400">ID #${prov.idProveedor}</p>
+          </td>
+          <td class="px-4 py-3 text-slate-600">${prov.contactoNombre || "—"}</td>
+          <td class="px-4 py-3 font-mono text-xs text-slate-600">${prov.telefono || "—"}</td>
+          <td class="px-4 py-3 text-slate-600 truncate max-w-[180px]">${prov.email || "—"}</td>
+        </tr>`
+          )
+          .join("")
+      : `<tr><td colspan="4" class="px-4 py-8 text-center text-slate-400">Sin proveedores registrados.</td></tr>`;
+
+    // Select del formulario de producto (sin duplicar opciones).
+    $selectProvForm.innerHTML = `<option value="">— Sin proveedor asignado —</option>`;
+    proveedores.forEach((prov) =>
+      $selectProvForm.insertAdjacentHTML(
+        "beforeend",
+        `<option value="${prov.idProveedor}">${prov.nombre}</option>`
+      )
+    );
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+$formProveedor.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData($formProveedor).entries());
+  const $msg = document.getElementById("form-proveedor-mensaje");
+
+  try {
+    await crearProveedor({
+      nombre: data.nombre.trim(),
+      contactoNombre: (data.contactoNombre || "").trim() || null,
+      telefono: (data.telefono || "").trim() || null,
+      email: (data.email || "").trim() || null,
+    });
+    mostrarToast(`Proveedor "${data.nombre}" registrado`, "exito");
+    $msg.textContent = "✔ Proveedor registrado";
+    setTimeout(() => ($msg.textContent = ""), 3000);
+    $formProveedor.reset();
+    await initProveedores();
+  } catch (err) {
+    console.error(err);
+    $msg.textContent = `✖ ${err.message}`;
+    $msg.className = "text-center text-xs text-red-500";
+    setTimeout(() => {
+      $msg.textContent = "";
+      $msg.className = "text-center text-xs";
+    }, 4000);
+  }
+});
+
+/* ============================================================================
+ * EMPRESAS CLIENTES B2B — registro por país (el IVA depende del país).
+ * ========================================================================== */
+
+const $formEmpresa = document.getElementById("form-empresa");
+const $selectPais = $formEmpresa.elements["idPais"];
+const $tablaEmpresas = document.getElementById("tabla-empresas");
+
+/** Llena los selectores de países (empresas y usuarios) con su bandera. */
+async function cargarPaises() {
+  const paises = await getPaises();
+  const opciones =
+    '<option value="">Selecciona país…</option>' +
+    paises
+      .map(
+        (p) => `<option value="${p.idPais}">
+                  ${banderaDe(p.codigoIso2)} ${p.nombre} · IVA ${Number(p.tasaIvaGeneral).toFixed(0)}%
+                </option>`
+      )
+      .join("");
+  $selectPais.innerHTML = opciones; // formulario de empresas
+  $selectPaisUsuario.innerHTML = opciones.replace(
+    "IVA", "· IVA"); // mismo catálogo para el alta de usuarios
+}
+
+function badgeRegimen(regimen) {
+  const estilos = {
+    GENERAL: "bg-indigo-100 text-indigo-700",
+    REDUCIDO: "bg-amber-100 text-amber-700",
+    EXENTO: "bg-emerald-100 text-emerald-700",
+  };
+  return `<span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${estilos[regimen] ?? "bg-slate-100 text-slate-600"}">${regimen}</span>`;
+}
+
+async function renderEmpresas() {
+  const empresas = await getEmpresas();
+  document.getElementById("empresas-contador").textContent = `${empresas.length} registrada(s)`;
+
+  if (!empresas.length) {
+    $tablaEmpresas.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-slate-400">
+      Aún no hay empresas clientes registradas.</td></tr>`;
+    return;
+  }
+
+  $tablaEmpresas.innerHTML = empresas
+    .map(
+      (e) => `
+      <tr class="hover:bg-emerald-50/40 transition">
+        <td class="px-5 py-3">
+          <p class="font-semibold text-slate-800">${e.banderaEmoji} ${e.razonSocial}</p>
+          ${e.contactoEmail ? `<p class="text-[11px] text-slate-400">${e.contactoEmail}</p>` : ""}
+        </td>
+        <td class="px-4 py-3 text-slate-600">${e.paisNombre ?? "🌐 s/país"}</td>
+        <td class="px-4 py-3 font-mono text-xs text-slate-500">${e.rfc}</td>
+        <td class="px-4 py-3 text-center">${badgeRegimen(e.regimenFiscal)}</td>
+        <td class="px-5 py-3 text-right">
+          <b class="text-slate-800">${Number(e.tasaIva).toFixed(2)}%</b>
+          <p class="text-[10px] text-slate-400">según su país</p>
+        </td>
+      </tr>`
+    )
+    .join("");
+}
+
+$formEmpresa.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // El frontend NO envía la tasa: el backend/mock la deriva del país elegido.
+  const datos = Object.fromEntries(new FormData($formEmpresa).entries());
+  try {
+    await crearEmpresa({
+      razonSocial: datos.razonSocial,
+      rfc: datos.rfc,
+      idPais: Number(datos.idPais),
+      regimenFiscal: datos.regimenFiscal,
+      contactoEmail: datos.contactoEmail || null,
+    });
+
+    mostrarToast(`✔ ${datos.razonSocial} registrada`, "exito");
+    $formEmpresa.reset();
+    await cargarPaises(); // repoblar select tras reset()
+    await renderEmpresas();
+  } catch (err) {
+    console.error(err);
+    mostrarToast(err.message || "No se pudo registrar la empresa", "error");
+  }
+});
+
+async function initEmpresas() {
+  await cargarPaises();
+  await renderEmpresas();
+}
+
+/* ============================================================================
+ * USUARIOS — alta de personal (CAJERO/ADMIN) y listado con rol + país.
+ * ========================================================================== */
+
+const $formUsuario = document.getElementById("form-usuario");
+const $tablaUsuarios = document.getElementById("tabla-usuarios");
+const $selectPaisUsuario = $formUsuario.elements["idPais"];
+
+function badgeRol(rol) {
+  const estilos = {
+    ADMIN: "bg-amber-100 text-amber-800",
+    CAJERO: "bg-sky-100 text-sky-700",
+    CLIENTE: "bg-emerald-100 text-emerald-700",
+  };
+  return `<span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${estilos[rol] ?? "bg-slate-100 text-slate-600"}">${rol}</span>`;
+}
+
+async function renderUsuarios() {
+  const usuarios = await getUsuarios();
+  document.getElementById("usuarios-contador").textContent = `${usuarios.length} cuenta(s)`;
+
+  $tablaUsuarios.innerHTML = usuarios
+    .map(
+      (u) => `
+      <tr class="hover:bg-indigo-50/40 transition">
+        <td class="px-5 py-3">
+          <p class="font-semibold text-slate-800">
+            ${u.banderaEmoji ?? ""} ${u.nombreCompleto ?? u.username}
+          </p>
+          <p class="text-[11px] font-mono text-slate-400">@${u.username}</p>
+        </td>
+        <td class="px-4 py-3 text-center">${badgeRol(u.rol)}</td>
+        <td class="px-4 py-3 text-xs text-slate-500">${u.email ?? "-"}</td>
+        <td class="px-5 py-3 text-right text-slate-600">${u.paisNombre ?? "🌐 s/país"}</td>
+      </tr>`
+    )
+    .join("");
+}
+
+$formUsuario.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const datos = Object.fromEntries(new FormData($formUsuario).entries());
+  try {
+    await crearUsuario(
+      {
+        username: datos.username.trim(),
+        email: datos.email.trim(),
+        password: datos.password,
+        nombreCompleto: datos.nombreCompleto.trim(),
+        idPais: Number(datos.idPais),
+      },
+      datos.rol
+    );
+
+    mostrarToast(`✔ Usuario @${datos.username} creado como ${datos.rol}`, "exito");
+    $formUsuario.reset();
+    await cargarPaises(); // repoblar selects tras reset()
+    await renderUsuarios();
+  } catch (err) {
+    console.error(err);
+    mostrarToast(err.message || "No se pudo crear el usuario", "error");
+  }
+});
+
+(async function initUsuarios() {
+  await renderUsuarios();
 })();

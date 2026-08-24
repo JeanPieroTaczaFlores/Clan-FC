@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TiendaMenos — Caja (POS)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-slate-900 min-h-screen text-slate-100">
+
+  <!-- ================= BARRA SUPERIOR ================= -->
+  <header class="bg-slate-800 border-b border-slate-700 shadow">
+    <nav class="max-w-[1400px] mx-auto px-4 py-2.5 flex items-center gap-4">
+      <a href="index.html" class="text-lg font-extrabold">Tienda<span class="text-emerald-400">Menos</span></a>
+      <span class="text-xs bg-emerald-600 px-2.5 py-1 rounded-full font-bold tracking-wide">🧾 CAJA / POS</span>
+      <span id="pos-cajero" class="text-xs text-slate-400"></span>
+      <div class="ml-auto flex items-center gap-3 text-sm">
+        <span class="hidden md:inline text-xs text-slate-500" id="pos-reloj"></span>
+        <a href="index.html" class="text-xs underline decoration-dotted hover:text-white">Tienda</a>
+        <button onclick="Sesion.cerrar()" class="text-xs underline decoration-dotted hover:text-rose-400">Cerrar sesión</button>
+      </div>
+    </nav>
+
+    <!-- Pestañas del POS -->
+    <div class="max-w-[1400px] mx-auto px-4 flex gap-1 overflow-x-auto">
+      <button data-tab="venta"
+              class="pos-tab px-4 py-2.5 text-sm font-bold border-b-2 border-emerald-400 text-white whitespace-nowrap">
+        💰 Venta
+      </button>
+      <button data-tab="almacen"
+              class="pos-tab px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">
+        📦 Almacén
+      </button>
+      <button data-tab="incidencias"
+              class="pos-tab px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap relative">
+        ⚠️ Incidencias
+        <span id="badge-incidencias" class="hidden absolute -top-0.5 -right-1 bg-rose-500 text-white text-[9px] font-bold rounded-full min-w-[16px] h-4 grid place-items-center px-1"></span>
+      </button>
+      <button data-tab="reporte"
+              class="pos-tab px-4 py-2.5 text-sm font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200 whitespace-nowrap">
+        📊 Reporte semanal
+      </button>
+    </div>
+  </header>
+
+  <!-- Guardia de acceso: se reemplaza el body si no es CAJERO/ADMIN -->
+  <main id="pos-main" class="max-w-[1400px] mx-auto p-4">
+
+    <!-- ============================================================= -->
+    <!-- ==================== PESTAÑA 1 · VENTA ======================= -->
+    <!-- ============================================================= -->
+    <section id="panel-venta" class="grid lg:grid-cols-[1fr_430px] gap-4 items-start">
+
+      <!-- Catálogo rápido -->
+      <div class="bg-slate-800/60 rounded-2xl border border-slate-700 overflow-hidden">
+        <div class="p-4 space-y-3">
+          <div class="flex flex-wrap gap-2">
+            <input id="pos-buscador" type="search" placeholder="🔍 Buscar por nombre o SKU…"
+                   class="flex-1 min-w-[200px] bg-slate-900 border border-slate-600 rounded-xl px-4 py-2.5 text-sm
+                          placeholder:text-slate-500 focus:ring-2 focus:ring-emerald-500 outline-none" />
+            <select id="pos-categoria"
+                    class="bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+              <option value="">Todas</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Grid compacto de productos: tap = agregar al ticket -->
+        <div id="pos-grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-2.5 p-4 pt-1 max-h-[62vh] overflow-y-auto"></div>
+      </div>
+
+      <!-- Ticket de cobro -->
+      <aside class="bg-white text-slate-800 rounded-2xl shadow-2xl overflow-hidden lg:sticky lg:top-4">
+        <header class="bg-emerald-600 text-white px-5 py-3 flex justify-between items-center">
+          <h2 class="font-extrabold tracking-wide">TICKET DE VENTA</h2>
+          <div class="flex items-center gap-2">
+            <span id="chip-caja" title="Efectivo disponible en caja"
+                  class="text-[10px] bg-black/20 hover:bg-black/30 cursor-pointer px-2 py-1 rounded-full font-bold transition">💵 $0.00</span>
+            <button id="pos-limpiar" title="Cancelar venta actual"
+                    class="text-xs bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-full transition">✕ Limpiar</button>
+          </div>
+        </header>
+
+        <!-- Cliente / régimen fiscal -->
+        <div class="p-4 space-y-3 border-b border-dashed border-slate-300">
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Cliente / País fiscal</span>
+            <select id="pos-cliente"
+                    class="mt-1 w-full border border-slate-300 rounded-xl px-3 py-2.5 text-sm bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+              <option value="">Consumidor final · GENERAL (16%)</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Método de pago</span>
+            <div id="pos-metodos" class="mt-1 grid grid-cols-2 gap-1.5 text-xs font-semibold">
+              <button data-metodo="EFECTIVO" class="metodo-btn py-2 rounded-xl border-2 transition">💵 Efectivo</button>
+              <button data-metodo="TARJETA" class="metodo-btn py-2 rounded-xl border-2 transition">💳 Tarjeta</button>
+              <button data-metodo="TRANSFERENCIA" class="metodo-btn py-2 rounded-xl border-2 transition">🏦 Transf.</button>
+              <button data-metodo="YAPE" class="metodo-btn py-2 rounded-xl border-2 transition">📱 Yape</button>
+            </div>
+          </label>
+
+          <!-- Comprobante Yape: el cliente muestra su QR y el cajero adjunta la captura -->
+          <div id="panel-yape" class="hidden bg-purple-50 border border-purple-200 rounded-xl p-3 space-y-2">
+            <p class="text-[11px] text-purple-800 leading-snug">
+              📱 Pide al cliente que escanee tu <b>QR de Yape</b> y pague. Luego toma/adjunta la
+              <b>captura del comprobante</b>.
+            </p>
+            <label class="block">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-purple-500">Captura del pago *</span>
+              <input id="yape-captura" type="file" accept="image/*"
+                     class="mt-1 w-full text-[11px] text-purple-900 file:mr-2 file:py-1.5 file:px-3 file:rounded-full
+                            file:border-0 file:bg-purple-600 file:text-white file:text-[11px] file:font-bold file:cursor-pointer" />
+            </label>
+            <img id="yape-preview" alt="" class="hidden max-h-36 rounded-lg mx-auto border border-purple-200" />
+            <input id="yape-operacion" type="text" maxlength="20" placeholder="N° de operación (opcional)"
+                   class="w-full border border-purple-200 rounded-lg px-2.5 py-1.5 text-xs focus:ring-2 focus:ring-purple-400 outline-none" />
+          </div>
+        </div>
+
+        <!-- Líneas del ticket -->
+        <ul id="pos-lineas" class="max-h-64 overflow-y-auto divide-y divide-slate-100 text-sm"></ul>
+        <p id="pos-vacio-ticket" class="text-center text-xs text-slate-400 py-8">
+          Toca un producto para agregarlo al ticket
+        </p>
+
+        <!-- Totales EN VIVO -->
+        <div class="p-4 space-y-1.5 text-sm border-t border-dashed border-slate-300">
+          <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><b id="pos-subtotal">$0.00</b></div>
+          <div class="flex justify-between"><span class="text-slate-500">IVA (<span id="pos-tasa">16.00</span>%)</span><b id="pos-iva">$0.00</b></div>
+          <p id="pos-regimen" class="text-[10px] text-slate-400"></p>
+          <div class="flex justify-between items-end pt-2">
+            <span class="font-extrabold text-slate-800 text-lg">TOTAL</span>
+            <b id="pos-total" class="text-3xl font-extrabold text-emerald-600 tracking-tight">$0.00</b>
+          </div>
+        </div>
+
+        <div class="p-4 pt-0">
+          <button id="btn-cobrar" disabled
+                  class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed
+                         text-white font-extrabold text-lg py-3.5 rounded-xl shadow-md transition tracking-wide">
+            COBRAR
+          </button>
+        </div>
+      </aside>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- =================== PESTAÑA 2 · ALMACÉN ====================== -->
+    <!-- ============================================================= -->
+    <section id="panel-almacen" class="hidden grid lg:grid-cols-[380px_1fr] gap-4 items-start">
+
+      <!-- Formulario de movimiento -->
+      <form id="form-movimiento" class="bg-slate-800/60 rounded-2xl border border-slate-700 p-4 space-y-3 lg:sticky lg:top-4">
+        <h3 class="font-extrabold text-sm uppercase tracking-widest text-emerald-400">Registrar movimiento</h3>
+        <p class="text-[11px] text-slate-400 -mt-2">
+          Entrada = mercadería que llega del proveedor · Merma/Ajuste = sale del inventario.
+        </p>
+
+        <label class="block">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Producto *</span>
+          <select name="productoId" required
+                  class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+            <option value="">Selecciona un producto…</option>
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tipo de movimiento *</span>
+          <select name="tipo" required
+                  class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+            <option value="ENTRADA">📥 ENTRADA · llegó mercadería (+)</option>
+            <option value="DEVOLUCION">↩️ DEVOLUCIÓN · el cliente devolvió (+)</option>
+            <option value="MERMA">🗑️ MERMA · producto dañado (−)</option>
+            <option value="AJUSTE">🔧 AJUSTE · corrección inventario (−)</option>
+          </select>
+        </label>
+
+        <div class="grid grid-cols-2 gap-2">
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Cantidad *</span>
+            <input name="cantidad" type="number" min="1" max="10000" required placeholder="10"
+                   class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Ref. / No. de orden</span>
+            <input name="referencia" type="text" maxlength="40" placeholder="OC-2026-001"
+                   class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+          </label>
+        </div>
+
+        <label class="block">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Proveedor (entradas)</span>
+          <select name="proveedorId"
+                  class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+            <option value="">— Sin proveedor —</option>
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Nota</span>
+          <textarea name="nota" rows="2" maxlength="200" placeholder="Ej. caja golpeada en transporte…"
+                    class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none resize-none"></textarea>
+        </label>
+
+        <button type="submit"
+                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl shadow transition">
+          REGISTRAR EN ALMACÉN
+        </button>
+      </form>
+
+      <!-- Kardex -->
+      <div class="bg-slate-800/60 rounded-2xl border border-slate-700 overflow-hidden">
+        <header class="px-4 py-3 border-b border-slate-700 flex items-center justify-between">
+          <h3 class="font-extrabold text-sm uppercase tracking-widest text-slate-300">Kardex — últimos movimientos</h3>
+          <button id="btn-refresh-kardex" class="text-xs text-slate-400 hover:text-white underline decoration-dotted">Actualizar ↻</button>
+        </header>
+        <div class="overflow-x-auto max-h-[70vh] overflow-y-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-slate-900/80 text-slate-400 sticky top-0">
+              <tr>
+                <th class="text-left px-3 py-2">Fecha</th>
+                <th class="text-left px-3 py-2">Tipo</th>
+                <th class="text-left px-3 py-2">Producto</th>
+                <th class="text-right px-3 py-2">Cant.</th>
+                <th class="text-right px-3 py-2">Stock final</th>
+                <th class="text-left px-3 py-2">Referencia</th>
+                <th class="text-left px-3 py-2">Proveedor</th>
+                <th class="text-left px-3 py-2">Usuario</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-kardex" class="divide-y divide-slate-700/50"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- ================== PESTAÑA 3 · INCIDENCIAS =================== -->
+    <!-- ============================================================= -->
+    <section id="panel-incidencias" class="hidden grid lg:grid-cols-[380px_1fr] gap-4 items-start">
+
+      <!-- Formulario de reporte -->
+      <form id="form-incidencia" class="bg-slate-800/60 rounded-2xl border border-slate-700 p-4 space-y-3 lg:sticky lg:top-4">
+        <h3 class="font-extrabold text-sm uppercase tracking-widest text-amber-400">Reportar producto con problema</h3>
+        <p class="text-[11px] text-slate-400 -mt-2">
+          Devolución = vuelve al stock · Defecto/Garantía = se retira al resolver (merma).
+        </p>
+
+        <label class="block">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Tipo *</span>
+          <select name="tipo" required
+                  class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+            <option value="DEVOLUCION">↩️ DEVOLUCIÓN · cliente devolvió el producto</option>
+            <option value="DEFECTO">🧯 DEFECTO · vino dañado o falló</option>
+            <option value="GARANTIA">🛡️ GARANTÍA · reclamo dentro del plazo</option>
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Producto *</span>
+          <select name="productoId" required
+                  class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+            <option value="">Selecciona un producto…</option>
+          </select>
+        </label>
+
+        <div class="grid grid-cols-2 gap-2">
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Cantidad *</span>
+            <input name="cantidad" type="number" min="1" required placeholder="1"
+                   class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+          </label>
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Orden (opcional)</span>
+            <input name="ordenId" type="number" min="1" placeholder="ID orden"
+                   class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+          </label>
+        </div>
+
+        <label class="block">
+          <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">¿Qué pasó? *</span>
+          <textarea name="descripcion" rows="3" required minlength="5" maxlength="300"
+                    placeholder="Ej. diadema izquierda sin audio, cliente trae ticket…"
+                    class="mt-1 w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none resize-none"></textarea>
+        </label>
+
+        <button type="submit"
+                class="w-full bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold py-3 rounded-xl shadow transition">
+          REPORTAR INCIDENCIA
+        </button>
+      </form>
+
+      <!-- Lista de incidencias -->
+      <div class="bg-slate-800/60 rounded-2xl border border-slate-700 overflow-hidden">
+        <header class="px-4 py-3 border-b border-slate-700 flex items-center justify-between">
+          <h3 class="font-extrabold text-sm uppercase tracking-widest text-slate-300">Incidencias reportadas</h3>
+          <button id="btn-refresh-incidencias" class="text-xs text-slate-400 hover:text-white underline decoration-dotted">Actualizar ↻</button>
+        </header>
+        <ul id="lista-incidencias" class="divide-y divide-slate-700/50 max-h-[70vh] overflow-y-auto"></ul>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- =================== PESTAÑA 4 · REPORTE ====================== -->
+    <!-- ============================================================= -->
+    <section id="panel-reporte" class="hidden space-y-4">
+
+      <!-- KPIs -->
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        <div class="bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl p-4 shadow-lg">
+          <p class="text-[11px] font-bold uppercase tracking-widest text-emerald-100">Ventas 7 días</p>
+          <p class="text-2xl font-extrabold mt-1" id="rep-total">$0.00</p>
+        </div>
+        <div class="bg-gradient-to-br from-sky-600 to-sky-700 rounded-2xl p-4 shadow-lg">
+          <p class="text-[11px] font-bold uppercase tracking-widest text-sky-100">Ventas de HOY</p>
+          <p class="text-2xl font-extrabold mt-1" id="rep-hoy">$0.00</p>
+          <p class="text-[11px] text-sky-200" id="rep-hoy-ordenes">0 cobros</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-4">
+          <p class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Órdenes 7 días</p>
+          <p class="text-2xl font-extrabold mt-1" id="rep-ordenes">0</p>
+        </div>
+        <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-4">
+          <p class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Ticket promedio</p>
+          <p class="text-2xl font-extrabold mt-1" id="rep-promedio">$0.00</p>
+        </div>
+        <div class="bg-amber-500/10 border border-amber-500/40 rounded-2xl p-4">
+          <p class="text-[11px] font-bold uppercase tracking-widest text-amber-400">Por surtir</p>
+          <p class="text-2xl font-extrabold mt-1 text-amber-400" id="rep-bajo">0</p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-4 items-start">
+        <!-- Ventas por día (barras CSS) -->
+        <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-4">
+          <h3 class="font-extrabold text-sm uppercase tracking-widest text-slate-300 mb-3">Ventas por día</h3>
+          <div id="rep-grafica" class="flex items-end justify-between gap-2 h-44"></div>
+          <div id="rep-grafica-labels" class="flex justify-between gap-2 mt-1.5 text-[10px] text-slate-500"></div>
+        </div>
+
+        <!-- Top productos -->
+        <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-4">
+          <h3 class="font-extrabold text-sm uppercase tracking-widest text-slate-300 mb-3">Top productos (7 días)</h3>
+          <ol id="rep-top" class="space-y-2 text-sm list-none"></ol>
+        </div>
+      </div>
+
+      <!-- CAJA FÍSICA (EFECTIVO) -->
+      <div class="grid lg:grid-cols-[1fr_1fr] gap-4 items-start">
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-2xl p-5">
+          <p class="text-[11px] font-bold uppercase tracking-widest text-slate-400">💵 Efectivo en caja ahora</p>
+          <p class="text-4xl font-extrabold mt-2 text-emerald-400" id="caja-efectivo">$0.00</p>
+
+          <div class="mt-5 space-y-2">
+            <label class="block">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Monto</span>
+              <input id="caja-monto" type="number" min="0.01" step="0.01" placeholder="0.00"
+                     class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+            </label>
+            <input id="caja-nota" type="text" maxlength="80" placeholder="Motivo (ej. fondo de cambio, depósito a bóveda…)"
+                   class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" />
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button id="btn-caja-fondo"
+                      class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl transition text-sm">
+                ➕ Agregar fondo
+              </button>
+              <button id="btn-caja-retiro"
+                      class="bg-rose-600/90 hover:bg-rose-600 text-white font-extrabold py-2.5 rounded-xl transition text-sm">
+                ➖ Retirar efectivo
+              </button>
+            </div>
+            <p class="text-[10px] text-slate-500 leading-snug">
+              Usa <b>fondo</b> cuando necesites más cambio para empezar el día o atender billetes grandes;
+              usa <b>retiro</b> para llevar el excedente a bóveda/depósito. Cada venta en efectivo suma aquí automáticamente.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-slate-800/60 border border-slate-700 rounded-2xl overflow-hidden">
+          <header class="px-4 py-3 border-b border-slate-700">
+            <h3 class="font-extrabold text-sm uppercase tracking-widest text-slate-300">Movimientos de caja</h3>
+          </header>
+          <ul id="lista-caja" class="divide-y divide-slate-700/50 max-h-[300px] overflow-y-auto text-xs"></ul>
+        </div>
+      </div>
+
+      <!-- HISTORIAL DE VENTAS -->
+      <div class="bg-slate-800/60 border border-slate-700 rounded-2xl overflow-hidden">
+        <header class="px-4 py-3 border-b border-slate-700 flex items-center justify-between flex-wrap gap-2">
+          <h3 class="font-extrabold text-sm uppercase tracking-widest text-slate-300">🧾 Historial de ventas</h3>
+          <label class="flex items-center gap-2 text-xs text-slate-400">
+            <input type="checkbox" id="chk-todas-fechas" checked class="w-3.5 h-3.5 accent-emerald-500" />
+            Solo hoy
+          </label>
+        </header>
+        <div class="overflow-x-auto max-h-[50vh] overflow-y-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-slate-900/80 text-slate-400 sticky top-0">
+              <tr>
+                <th class="text-left px-4 py-2">Folio</th>
+                <th class="text-left px-4 py-2">Fecha / hora</th>
+                <th class="text-left px-4 py-2">Cliente</th>
+                <th class="px-4 py-2 text-center">Artículos</th>
+                <th class="text-left px-4 py-2">Pago</th>
+                <th class="text-right px-4 py-2">Total</th>
+                <th class="text-center px-4 py-2"></th>
+              </tr>
+            </thead>
+            <tbody id="tbody-historial" class="divide-y divide-slate-700/50"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bajo stock -->
+      <div class="bg-slate-800/60 border border-slate-700 rounded-2xl overflow-hidden">
+        <header class="px-4 py-3 border-b border-slate-700 flex items-center justify-between">
+          <h3 class="font-extrabold text-sm uppercase tracking-widest text-amber-400">⚠️ Productos que hay que surtir</h3>
+          <button id="btn-refresh-reporte" class="text-xs text-slate-400 hover:text-white underline decoration-dotted">Actualizar ↻</button>
+        </header>
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-slate-900/80 text-slate-400">
+              <tr>
+                <th class="text-left px-4 py-2">SKU</th>
+                <th class="text-left px-4 py-2">Producto</th>
+                <th class="text-right px-4 py-2">Stock actual</th>
+                <th class="text-right px-4 py-2">Stock mínimo</th>
+                <th class="text-left px-4 py-2">Proveedor sugerido</th>
+                <th class="text-center px-4 py-2">Acción rápida</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-bajo-stock" class="divide-y divide-slate-700/50"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= MODAL DETALLE DE VENTA (HISTORIAL) ================= -->
+  <div id="modal-detalle" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white text-slate-800 rounded-3xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto">
+      <header class="bg-slate-100 px-6 py-4 flex justify-between items-center sticky top-0">
+        <div>
+          <h3 class="font-extrabold" id="detalle-folio"></h3>
+          <p class="text-xs text-slate-500" id="detalle-meta"></p>
+        </div>
+        <button id="btn-cerrar-detalle" class="text-slate-400 hover:text-slate-700 text-xl leading-none">✕</button>
+      </header>
+      <ul id="detalle-lineas" class="divide-y divide-slate-100 text-sm p-2"></ul>
+      <div id="detalle-yape" class="hidden mx-6 mt-2 bg-purple-50 border border-purple-200 rounded-xl p-3 flex items-center gap-3">
+        <img id="detalle-yape-img" alt="Comprobante Yape" class="h-20 rounded-lg border border-purple-200" />
+        <div class="text-xs text-purple-900">
+          <p class="font-bold">📱 Pago con Yape</p>
+          <p id="detalle-yape-op" class="text-purple-600"></p>
+          <a id="detalle-yape-link" href="#" target="_blank" class="underline decoration-dotted font-semibold">Ver captura completa →</a>
+        </div>
+      </div>
+      <div class="px-6 py-4 space-y-1 text-sm border-t border-dashed border-slate-300 mt-2">
+        <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><b id="detalle-subtotal"></b></div>
+        <div class="flex justify-between"><span class="text-slate-500">IVA</span><b id="detalle-iva"></b></div>
+        <div class="flex justify-between text-base pt-1"><span class="font-bold">Total</span><b id="detalle-total" class="text-emerald-600"></b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL DE COBRO EXITOSO ================= -->
+  <div id="pos-modal-exito" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white text-slate-800 rounded-3xl shadow-2xl max-w-md w-full p-8 text-center fade-in">
+      <p class="text-6xl mb-3">💰</p>
+      <h3 class="text-2xl font-extrabold">Cobro realizado</h3>
+      <p class="text-sm text-slate-500 mt-1 mb-6">La venta quedó registrada en caja.</p>
+      <div class="bg-slate-50 rounded-2xl border border-slate-100 p-4 text-left text-sm space-y-1.5 mb-6">
+        <div class="flex justify-between"><span class="text-slate-500">Folio</span><b id="exito-folio" class="font-mono"></b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Cliente</span><b id="exito-cliente" class="truncate max-w-[220px]"></b></div>
+        <div class="flex justify-between"><span class="text-slate-500">IVA</span><b id="exito-iva"></b></div>
+        <div class="flex justify-between text-base pt-2 border-t"><span class="font-bold">Total</span><b id="exito-total" class="text-emerald-600"></b></div>
+      </div>
+      <button id="btn-nueva-venta" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition">
+        Nueva venta →
+      </button>
+    </div>
+  </div>
+
+  <div id="toast-container" class="fixed bottom-6 right-6 space-y-2 z-[60]"></div>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/pos.js"></script>
+</body>
+</html>

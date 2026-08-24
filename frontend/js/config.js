@@ -70,3 +70,14 @@ function mostrarToast(mensaje, tipo = "info") {
     setTimeout(() => $toast.remove(), 300);
   }, 2800);
 }
+
+/* ============================================================================
+ * BANDERAS — emoji de bandera a partir del código ISO 3166-1 alpha-2.
+ * Cada letra del código se mapea a un "regional indicator symbol":
+ *   "MX" -> 🇲🇽   |   "CO" -> 🇨🇴   |   null/inválido -> 🌐
+ * ========================================================================== */
+function banderaDe(codigoIso2) {
+  if (!codigoIso2 || codigoIso2.length !== 2) return "🌐";
+  const puntos = [...codigoIso2.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65);
+  return String.fromCodePoint(...puntos);
+}

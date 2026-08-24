@@ -1,13 +1,14 @@
 package com.tienda.dto;
 
 import com.tienda.model.Producto;
+import com.tienda.model.Proveedor;
 
 import java.math.BigDecimal;
 
 /**
  * Respuesta de producto hacia el frontend.
- * Incluye categoriaNombre y el flag stockBajo para los badges de la vista
- * cliente y las alertas del panel admin, sin exponer entidades JPA.
+ * Incluye categoriaNombre, garantía en meses y proveedor para las vistas
+ * cliente/POS/admin, sin exponer entidades JPA.
  */
 public record ProductoResponse(
         Long idProducto,
@@ -20,10 +21,14 @@ public record ProductoResponse(
         Boolean stockBajo,
         Long categoriaId,
         String categoriaNombre,
+        Integer garantiaMeses,
+        Long proveedorId,
+        String proveedorNombre,
         String imagenUrl,
         Boolean activo
 ) {
     public static ProductoResponse from(Producto p) {
+        Proveedor proveedor = p.getProveedor();
         return new ProductoResponse(
                 p.getIdProducto(),
                 p.getSku(),
@@ -35,6 +40,9 @@ public record ProductoResponse(
                 p.getStock() <= p.getStockMinimo(),
                 p.getCategoria().getIdCategoria(),
                 p.getCategoria().getNombre(),
+                p.getGarantiaMeses(),
+                proveedor != null ? proveedor.getIdProveedor() : null,
+                proveedor != null ? proveedor.getNombre() : null,
                 p.getImagenUrl(),
                 p.getActivo()
         );

@@ -26,3 +26,6 @@ desktop.ini
 
 # ===== Frontend =====
 frontend/.cache/
+
+# ===== Trabajo manual del usuario (no subir) =====
+Paqueteimg/
