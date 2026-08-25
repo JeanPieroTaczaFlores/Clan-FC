@@ -1149,3 +1149,164 @@ export async function getProductosPopulares(limite = 8) {
 
   return structuredClone(populares);
 }
+
+/* ======================== DASHBOARD EJECUTIVO AVANZADO ===================== */
+
+/**
+ * Comparación consolidada de todas las sedes.
+ * Devuelve un array con métricas por sede: ventas totales, número de órdenes,
+ * ticket promedio, efectivo en caja, incidencias abiertas, y productos con stock bajo.
+ */
+export async function getComparacionSedes() {
+  const db = await MockDB.init();
+  const sedes = (db.sedes ?? []).filter((s) => s.activa !== false);
+  const ordenes = db.ordenes ?? [];
+  const incidencias = db.incidencias ?? [];
+  const productos = db.productos ?? [];
+  const cajas = db.cajas ?? {};
+
+  return sedes.map((sede) => {
+    const ordenesSede = ordenes.filter((o) => o.sedeId === sede.idSede);
+    const pagadas = ordenesSede.filter((o) => o.estado === "PAGADA");
+    const totalVentas = pagadas.reduce((sum, o) => sum + Number(o.total), 0);
+    const ticketPromedio = pagadas.length ? Math.round((totalVentas / pagadas.length) * 100) / 100 : 0;
+    const incidenciasAbiertas = incidencias.filter(
+      (i) => i.sedeId === sede.idSede && i.estado !== "RESUELTA"
+    );
+    const stockBajo = productos.filter((p) => {
+      const stock = p.sedeStock?.[String(sede.idSede)] ?? 0;
+      return stock > 0 && stock <= (p.stockMinimo ?? 0);
+    });
+    const agotados = productos.filter((p) => {
+      const stock = p.sedeStock?.[String(sede.idSede)] ?? 0;
+      return stock === 0;
+    });
+    const efectivo = Number(cajas[String(sede.idSede)]?.efectivo ?? 0);
+
+    // Métodos de pago
+    const pagos = {};
+    pagadas.forEach((o) => { pagos[o.metodoPago] = (pagos[o.metodoPago] ?? 0) + 1; });
+
+    return {
+      idSede: sede.idSede,
+      nombre: sede.nombre,
+      direccion: sede.direccion,
+      telefono: sede.telefono,
+      totalVentas: Math.round(totalVentas * 100) / 100,
+      numOrdenes: ordenesSede.length,
+      ordenesPagadas: pagadas.length,
+      ticketPromedio,
+      efectivo,
+      incidenciasAbiertas: incidenciasAbiertas.length,
+      incidenciasCriticas: incidenciasAbiertas.filter((i) => i.tipo === "DAÑO").length,
+      stockBajo: stockBajo.length,
+      agotados: agotados.length,
+      metodosPago: pagos,
+    };
+  });
+}
+
+/**
+ * Alertas de stock consolidadas de todas las sedes.
+ * Devuelve un array de objetos con severidad: CRITICA, ALERTA, INFO.
+ */
+export async function getAlertasStock() {
+  const db = await MockDB.init();
+  const productos = db.productos ?? [];
+  const sedes = (db.sedes ?? []).filter((s) => s.activa !== false);
+  const alertas = [];
+
+  for (const p of productos) {
+    if (p.activo === false) continue;
+    for (const sede of sedes) {
+      const stock = p.sedeStock?.[String(sede.idSede)] ?? 0;
+      if (stock === 0) {
+        alertas.push({
+          severidad: "CRITICA",
+          producto: p.nombre,
+          sku: p.sku,
+          sede: sede.nombre,
+          sedeId: sede.idSede,
+          stock,
+          stockMinimo: p.stockMinimo,
+          mensaje: `"${p.nombre}" agotado en ${sede.nombre}`,
+        });
+      } else if (stock <= p.stockMinimo) {
+        alertas.push({
+          severidad: "ALERTA",
+          producto: p.nombre,
+          sku: p.sku,
+          sede: sede.nombre,
+          sedeId: sede.idSede,
+          stock,
+          stockMinimo: p.stockMinimo,
+          mensaje: `"${p.nombre}" con stock bajo (${stock}/${p.stockMinimo}) en ${sede.nombre}`,
+        });
+      }
+    }
+  }
+
+  // Agregar incidencias abiertas como alertas
+  const incidencias = (db.incidencias ?? []).filter((i) => i.estado !== "RESUELTA");
+  for (const inc of incidencias) {
+    const sede = sedes.find((s) => s.idSede === inc.sedeId);
+    alertas.push({
+      severidad: inc.tipo === "DAÑO" ? "CRITICA" : "ALERTA",
+      producto: inc.productoNombre ?? inc.sku,
+      sku: inc.sku,
+      sede: sede?.nombre ?? `Sede #${inc.sedeId}`,
+      sedeId: inc.sedeId,
+      stock: 0,
+      stockMinimo: 0,
+      mensaje: `[${inc.tipo}] ${inc.descripcion?.slice(0, 80) ?? inc.productoNombre} (${sede?.nombre ?? "?"})`,
+    });
+  }
+
+  // Ordenar: CRITICA primero
+  const orden = { CRITICA: 0, ALERTA: 1, INFO: 2 };
+  return alertas.sort((a, b) => (orden[a.severidad] ?? 9) - (orden[b.severidad] ?? 9));
+}
+
+/**
+ * Resumen financiero consolidado de todas las sedes.
+ * Incluye ingresos por sede, movimientos de caja, y métricas derivadas.
+ */
+export async function getResumenFinanciero() {
+  const db = await MockDB.init();
+  const sedes = (db.sedes ?? []).filter((s) => s.activa !== false);
+  const ordenes = db.ordenes ?? [];
+  const movimientos = db.cajaMovimientos ?? [];
+  const cajas = db.cajas ?? {};
+
+  const porSede = sedes.map((sede) => {
+    const ordenesSede = ordenes.filter((o) => o.sedeId === sede.idSede && o.estado === "PAGADA");
+    const ingresos = ordenesSede.reduce((sum, o) => sum + Number(o.total), 0);
+    const ivaRecaudado = ordenesSede.reduce((sum, o) => sum + Number(o.iva), 0);
+    const movs = movimientos.filter((m) => m.sedeId === sede.idSede);
+    const fondos = movs.filter((m) => m.tipo === "FONDO").reduce((s, m) => s + m.monto, 0);
+    const retiros = movs.filter((m) => m.tipo === "RETIRO").reduce((s, m) => s + m.monto, 0);
+    const ventasEfectivo = movs.filter((m) => m.tipo === "VENTA").reduce((s, m) => s + m.monto, 0);
+
+    return {
+      idSede: sede.idSede,
+      nombre: sede.nombre,
+      ingresos,
+      ivaRecaudado,
+      efectivoActual: Number(cajas[String(sede.idSede)]?.efectivo ?? 0),
+      fondosRecibidos: fondos,
+      retirosRealizados: retiros,
+      ventasEfectivo,
+      movimientosTotales: movs.length,
+    };
+  });
+
+  return {
+    sedes: porSede,
+    consolidado: {
+      ingresosTotales: porSede.reduce((s, p) => s + p.ingresos, 0),
+      ivaTotal: porSede.reduce((s, p) => s + p.ivaRecaudado, 0),
+      efectivoTotal: porSede.reduce((s, p) => s + p.efectivoActual, 0),
+      retirosTotales: porSede.reduce((s, p) => s + p.retirosRealizados, 0),
+    },
+  };
+}

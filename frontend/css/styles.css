@@ -208,3 +208,62 @@ body.font-sans {
   background-clip: content-box;
 }
 ::-webkit-scrollbar-track { background: transparent; }
+
+/* ============================================================
+   SUITE EJECUTIVA v3 — notificaciones, alertas, financieros.
+   ============================================================ */
+
+/* ---------- Badge de notificaciones ---------- */
+#notif-badge {
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+@keyframes pulse-badge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* ---------- Tarjetas de sede comparativa ---------- */
+#sede-comparacion-grid > div {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#sede-comparacion-grid > div:hover {
+  transform: translateY(-4px);
+}
+
+/* ---------- Alertas con animación de entrada ---------- */
+#alertas-grid > div {
+  animation: slideIn 0.3s ease both;
+}
+#alertas-grid > div:nth-child(2) { animation-delay: 0.05s; }
+#alertas-grid > div:nth-child(3) { animation-delay: 0.10s; }
+#alertas-grid > div:nth-child(4) { animation-delay: 0.15s; }
+#alertas-grid > div:nth-child(5) { animation-delay: 0.20s; }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ---------- Tarjetas financieras ---------- */
+#finanzas-grid > div {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+#finanzas-grid > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- Impresión profesional ---------- */
+@media print {
+  body { background: white !important; }
+  #sidebar, #sidebar-backdrop, #toast-container, .btn-export,
+  #btn-rep-refresh, #btn-reset-mock, #form-producto,
+  #form-proveedor, #form-empresa, #form-usuario, #btn-menu,
+  #notif-badge, #btn-notificaciones { display: none !important; }
+  .lg\:pl-64 { padding-left: 0 !important; }
+  .card-exec { box-shadow: none !important; border: 1px solid #e5e7eb !important; }
+  header.sticky { position: static !important; }
+  main { padding-top: 0 !important; }
+  .kpi-card:hover { transform: none !important; box-shadow: none !important; }
+  .chart-box { break-inside: avoid; }
+  .fade-in { animation: none !important; }
+}

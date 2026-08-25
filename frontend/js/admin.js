@@ -18,6 +18,9 @@ import {
   getProveedores,
   crearProveedor,
   getSedes,
+  getComparacionSedes,
+  getAlertasStock,
+  getResumenFinanciero,
 } from "./api.js";
 import { initReportesAdmin } from "./reportes-admin.js";
 
@@ -304,6 +307,7 @@ $btnResetMock.addEventListener("click", () => {
   await initEmpresas();
   await initReportesAdmin();
   document.getElementById("rep-generado").textContent = sesionActual?.username ? `Generado por ${sesionActual.username}` : ``;
+  await refreshDashboard();
 })();
 
 /* ------------------- Escuchar cambio de sede para recargar datos ----------- */
@@ -311,6 +315,7 @@ window.addEventListener("sedeCambiada", async () => {
   await renderTabla();
   await initReportesAdmin();
   document.getElementById("rep-generado").textContent = sesionActual?.username ? `Generado por ${sesionActual.username}` : ``;
+  await refreshDashboard();
 });
 
 /* ============================================================================
@@ -561,3 +566,184 @@ $formUsuario.addEventListener("submit", async (e) => {
   } catch (err) { console.error(err); }
   await renderUsuarios();
 })();
+
+/* ============================================================================
+ * DASHBOARD EJECUTIVO — Comparación de sedes, alertas, finanzas.
+ * ========================================================================== */
+
+/** Renderiza tarjetas comparativas de cada sede. */
+async function renderComparacionSedes() {
+  try {
+    const sedes = await getComparacionSedes();
+    const grid = document.getElementById("sede-comparacion-grid");
+    if (!grid) return;
+
+    const colores = {
+      1: { gradient: "from-blue-500 to-indigo-600", ring: "ring-blue-200" },
+      2: { gradient: "from-emerald-500 to-teal-600", ring: "ring-emerald-200" },
+      3: { gradient: "from-amber-500 to-orange-600", ring: "ring-amber-200" },
+    };
+
+    grid.innerHTML = sedes.map((s) => {
+      const c = colores[s.idSede] || colores[1];
+      const isActive = Number(localStorage.getItem("tm_sede_actual")) === s.idSede;
+      return `
+        <div class="relative overflow-hidden rounded-2xl bg-white border ${isActive ? "ring-2 ring-indigo-400 shadow-lg shadow-indigo-200/40" : "border-slate-100"} p-5 transition-all hover:shadow-lg cursor-pointer"
+             onclick="window.cambiarSede('${s.idSede}')">
+          <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-gradient-to-br ${c.gradient} opacity-10 blur-xl"></div>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-8 h-8 rounded-lg bg-gradient-to-br ${c.gradient} flex items-center justify-center text-white text-xs font-black shadow">T${s.idSede}</span>
+            <div>
+              <h3 class="font-bold text-slate-800 text-sm">${s.nombre}</h3>
+              <p class="text-[10px] text-slate-400">${s.ordenesPagadas} órdenes pagadas</p>
+            </div>
+            ${isActive ? '<span class="ml-auto text-[9px] font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">ACTIVA</span>' : ""}
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-center">
+            <div class="bg-slate-50 rounded-xl p-2.5">
+              <p class="text-[10px] text-slate-400 font-semibold uppercase">Ventas</p>
+              <p class="text-base font-black text-emerald-600">S/ ${s.totalVentas.toLocaleString("es-PE", { maximumFractionDigits: 0 })}</p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-2.5">
+              <p class="text-[10px] text-slate-400 font-semibold uppercase">Caja</p>
+              <p class="text-base font-black text-indigo-600">S/ ${s.efectivo.toLocaleString("es-PE", { maximumFractionDigits: 0 })}</p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-2.5">
+              <p class="text-[10px] text-slate-400 font-semibold uppercase">Ticket</p>
+              <p class="text-sm font-bold text-slate-700">S/ ${s.ticketPromedio.toLocaleString("es-PE", { maximumFractionDigits: 0 })}</p>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-2.5">
+              <p class="text-[10px] text-slate-400 font-semibold uppercase">Alertas</p>
+              <p class="text-sm font-bold ${s.incidenciasAbiertas > 0 ? "text-red-500" : "text-emerald-500"}">${s.incidenciasAbiertas > 0 ? "⚠️ " + s.incidenciasAbiertas : "✅ 0"}</p>
+            </div>
+          </div>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            ${Object.entries(s.metodosPago).map(([met, cnt]) =>
+              `<span class="text-[9px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-semibold">${met}: ${cnt}</span>`
+            ).join("")}
+          </div>
+        </div>`;
+    }).join("");
+  } catch (err) {
+    console.error("Error renderizando comparación de sedes:", err);
+  }
+}
+
+/** Renderiza alertas de stock e incidencias. */
+async function renderAlertas() {
+  try {
+    const alertas = await getAlertasStock();
+    const grid = document.getElementById("alertas-grid");
+    const contador = document.getElementById("alertas-contador");
+    const badge = document.getElementById("notif-badge");
+    if (!grid) return;
+
+    const criticas = alertas.filter((a) => a.severidad === "CRITICA");
+    const alertasNorm = alertas.filter((a) => a.severidad === "ALERTA");
+    if (contador) contador.textContent = `${alertas.length} alerta${alertas.length !== 1 ? "s" : ""}`;
+    if (badge) {
+      if (criticas.length > 0) {
+        badge.textContent = criticas.length;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+    }
+
+    if (!alertas.length) {
+      grid.innerHTML = `<div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-6 text-center">
+        <p class="text-3xl mb-2">✅</p>
+        <p class="text-sm font-semibold text-emerald-700">Sin alertas activas</p>
+        <p class="text-xs text-emerald-500 mt-1">Todos los stocks están en niveles normales.</p>
+      </div>`;
+      return;
+    }
+
+    const severidadEstilo = {
+      CRITICA: { bg: "bg-red-50", border: "border-red-200", badge: "bg-red-100 text-red-700", icon: "🔴" },
+      ALERTA: { bg: "bg-amber-50", border: "border-amber-200", badge: "bg-amber-100 text-amber-700", icon: "🟡" },
+      INFO: { bg: "bg-sky-50", border: "border-sky-200", badge: "bg-sky-100 text-sky-700", icon: "🔵" },
+    };
+
+    grid.innerHTML = alertas.slice(0, 20).map((a) => {
+      const e = severidadEstilo[a.severidad] || severidadEstilo.INFO;
+      return `
+        <div class="flex items-start gap-3 ${e.bg} border ${e.border} rounded-xl p-3.5 transition hover:shadow-sm">
+          <span class="text-lg mt-0.5">${e.icon}</span>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-slate-800 truncate">${a.mensaje}</p>
+            <div class="flex items-center gap-2 mt-1 flex-wrap">
+              <span class="text-[10px] font-bold ${e.badge} px-2 py-0.5 rounded-full">${a.severidad}</span>
+              <span class="text-[10px] text-slate-400">SKU: ${a.sku}</span>
+              <span class="text-[10px] text-slate-400">Stock: ${a.stock}/${a.stockMinimo}</span>
+            </div>
+          </div>
+          <button onclick="window.cambiarSede('${a.sedeId}')" title="Ir a ${a.sede}"
+                  class="text-[10px] font-bold text-indigo-500 hover:text-indigo-700 whitespace-nowrap">
+            ${a.sede} →
+          </button>
+        </div>`;
+    }).join("");
+  } catch (err) {
+    console.error("Error renderizando alertas:", err);
+  }
+}
+
+/** Renderiza resumen financiero consolidado. */
+async function renderFinanzas() {
+  try {
+    const data = await getResumenFinanciero();
+    const grid = document.getElementById("finanzas-grid");
+    const sedesGrid = document.getElementById("finanzas-sedes");
+    if (!grid) return;
+
+    const c = data.consolidado;
+    grid.innerHTML = `
+      <div class="rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100/50 border border-emerald-200 p-5">
+        <p class="text-[10px] uppercase tracking-widest font-bold text-emerald-500">Ingresos totales</p>
+        <p class="text-2xl font-black text-emerald-700 mt-1">S/ ${c.ingresosTotales.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</p>
+        <p class="text-[10px] text-emerald-500 mt-1">Todas las sedes · solo PAGADAS</p>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100/50 border border-indigo-200 p-5">
+        <p class="text-[10px] uppercase tracking-widest font-bold text-indigo-500">IVA recaudado</p>
+        <p class="text-2xl font-black text-indigo-700 mt-1">S/ ${c.ivaTotal.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</p>
+        <p class="text-[10px] text-indigo-500 mt-1">18% IGV · Perú</p>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-br from-violet-50 to-violet-100/50 border border-violet-200 p-5">
+        <p class="text-[10px] uppercase tracking-widest font-bold text-violet-500">Efectivo en cajas</p>
+        <p class="text-2xl font-black text-violet-700 mt-1">S/ ${c.efectivoTotal.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</p>
+        <p class="text-[10px] text-violet-500 mt-1">Consolidado 3 sedes</p>
+      </div>
+      <div class="rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100/50 border border-amber-200 p-5">
+        <p class="text-[10px] uppercase tracking-widest font-bold text-amber-500">Retiros</p>
+        <p class="text-2xl font-black text-amber-700 mt-1">S/ ${c.retirosTotales.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</p>
+        <p class="text-[10px] text-amber-500 mt-1">Bóveda / depósitos</p>
+      </div>`;
+
+    if (sedesGrid) {
+      sedesGrid.innerHTML = data.sedes.map((s) => `
+        <div class="bg-white border border-slate-100 rounded-2xl p-5 hover:shadow-md transition">
+          <h4 class="font-bold text-slate-800 text-sm mb-3">${s.nombre}</h4>
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between"><span class="text-slate-500">Ingresos</span><b class="text-emerald-600">S/ ${s.ingresos.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</b></div>
+            <div class="flex justify-between"><span class="text-slate-500">IVA recaudado</span><b class="text-indigo-600">S/ ${s.ivaRecaudado.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</b></div>
+            <div class="flex justify-between"><span class="text-slate-500">Efectivo actual</span><b class="text-slate-800">S/ ${s.efectivoActual.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</b></div>
+            <div class="flex justify-between"><span class="text-slate-500">Fondos recibidos</span><span class="text-slate-600">S/ ${s.fondosRecibidos.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Retiros</span><span class="text-red-500">S/ ${s.retirosRealizados.toLocaleString("es-PE", { minimumFractionDigits: 2 })}</span></div>
+            <div class="border-t border-slate-100 pt-2 flex justify-between"><span class="text-slate-500">Movimientos</span><span class="font-semibold text-slate-700">${s.movimientosTotales}</span></div>
+          </div>
+        </div>`).join("");
+    }
+  } catch (err) {
+    console.error("Error renderizando finanzas:", err);
+  }
+}
+
+/** Actualiza las secciones del dashboard ejecutivo. */
+async function refreshDashboard() {
+  await Promise.all([
+    renderComparacionSedes(),
+    renderAlertas(),
+    renderFinanzas(),
+  ]);
+}

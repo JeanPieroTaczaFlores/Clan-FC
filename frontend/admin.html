@@ -33,19 +33,22 @@
     <!-- Navegación (scrollspy desde admin.js) -->
     <nav class="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
       <p class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">General</p>
-      <a href="#sec-resumen"    data-nav class="exec-link"><span>🏛️</span> Resumen ejecutivo</a>
+      <a href="#sec-resumen" data-nav class="exec-link"><span>🏛️</span> Resumen ejecutivo</a>
+      <a href="#sec-comparacion" data-nav class="exec-link"><span>🏢</span> Comparación sedes</a>
+      <a href="#sec-alertas" data-nav class="exec-link"><span>🚨</span> Alertas</a>
       <a href="#seccion-reportes" data-nav class="exec-link"><span>📊</span> Reportes y gráficas</a>
+      <a href="#sec-finanzas" data-nav class="exec-link"><span>💰</span> Finanzas</a>
       <p class="px-3 pt-4 pb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">Operación</p>
-      <a href="#sec-inventario"  data-nav class="exec-link"><span>📦</span> Inventario</a>
+      <a href="#sec-inventario" data-nav class="exec-link"><span>📦</span> Inventario</a>
       <a href="#sec-proveedores" data-nav class="exec-link"><span>🚚</span> Proveedores</a>
-      <a href="#sec-empresas"    data-nav class="exec-link"><span>🌎</span> Empresas B2B</a>
-      <a href="#sec-usuarios"    data-nav class="exec-link"><span>👥</span> Usuarios</a>
+      <a href="#sec-empresas" data-nav class="exec-link"><span>🌎</span> Empresas B2B</a>
+      <a href="#sec-usuarios" data-nav class="exec-link"><span>👥</span> Usuarios</a>
     </nav>
 
     <!-- Pie del sidebar -->
     <div class="px-6 py-4 border-t border-white/10 text-[11px] leading-relaxed text-slate-500">
-      <p class="font-semibold text-slate-400">TiendaMenos S.A. de C.V.</p>
-      <p>v2.0 · Documento de uso interno</p>
+      <p class="font-semibold text-slate-400">TiendaMenos S.A.C.</p>
+      <p>v3.0 · Suite Ejecutiva</p>
     </div>
   </aside>
   <div id="sidebar-backdrop" class="fixed inset-0 z-30 bg-slate-950/50 backdrop-blur-sm hidden lg:hidden"></div>
@@ -69,8 +72,14 @@
             <option value="3">Trujillo</option>
           </select>
         </div>
-        <!-- Zona de sesión (render por admin.js) -->
-        <div id="zona-sesion" class="ml-auto flex items-center gap-3"></div>
+        <!-- Notificaciones + sesión -->
+        <div class="ml-auto flex items-center gap-4">
+          <button id="btn-notificaciones" class="relative text-slate-400 hover:text-indigo-600 transition text-xl" title="Alertas del sistema">
+            🔔
+            <span id="notif-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+          </button>
+          <div id="zona-sesion" class="flex items-center gap-3"></div>
+        </div>
       </div>
     </header>
 
@@ -125,6 +134,34 @@
           <p id="stat-categorias" class="kpi-value text-indigo-600">—</p>
           <p class="kpi-caption">activas en catálogo</p>
         </div>
+      </div>
+    </section>
+
+    <!-- ================= COMPARACIÓN DE SEDES ================= -->
+    <section id="sec-comparacion" class="scroll-mt-24 fade-in">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="section-title">🏢 Comparación de sedes</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Rendimiento consolidado de todas las sucursales en tiempo real.</p>
+        </div>
+        <button onclick="window.cambiarSede('1')" class="text-[10px] text-indigo-500 hover:text-indigo-700 font-bold uppercase tracking-widest">Ver todas →</button>
+      </div>
+      <div id="sede-comparacion-grid" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="text-center py-8 text-slate-400 text-sm">Cargando sedes...</div>
+      </div>
+    </section>
+
+    <!-- ================= ALERTAS DEL SISTEMA ================= -->
+    <section id="sec-alertas" class="scroll-mt-24 fade-in">
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <h2 class="section-title">🚨 Alertas de stock e incidencias</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Monitoreo en tiempo real de inventario y problemas operativos.</p>
+        </div>
+        <span id="alertas-contador" class="text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full">0 alertas</span>
+      </div>
+      <div id="alertas-grid" class="space-y-3">
+        <div class="text-center py-8 text-slate-400 text-sm">Cargando alertas...</div>
       </div>
     </section>
 
@@ -196,11 +233,29 @@
           <h3 class="chart-title">Distribución de stock por categoría</h3>
           <div class="h-60"><canvas id="chart-categorias"></canvas></div>
         </div>
-        <div class="chart-box lg:col-span-5">
+        <div class="chart-box lg:col-span-3">
+          <h3 class="chart-title">Comparación de sedes <span class="text-slate-400 font-medium">(ventas vs efectivo en caja)</span></h3>
+          <div class="h-56"><canvas id="chart-comparacion-sedes"></canvas></div>
+        </div>
+        <div class="chart-box lg:col-span-2">
           <h3 class="chart-title">Top productos vendidos <span class="text-slate-400 font-medium">(unidades · 7 días)</span></h3>
           <div class="h-56"><canvas id="chart-top"></canvas></div>
         </div>
       </div>
+    </section>
+
+    <!-- ================= RESUMEN FINANCIERO ================= -->
+    <section id="sec-finanzas" class="card-exec p-6 sm:p-8 scroll-mt-24 fade-in">
+      <header class="flex items-start justify-between flex-wrap gap-4 mb-6">
+        <div>
+          <h2 class="section-title">💰 Resumen financiero consolidado</h2>
+          <p class="text-xs text-slate-400 mt-0.5">Ingresos, IVA recaudado y flujo de efectivo por sede.</p>
+        </div>
+      </header>
+      <div id="finanzas-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+        <div class="text-center py-8 text-slate-400 text-sm col-span-full">Cargando...</div>
+      </div>
+      <div id="finanzas-sedes" class="grid grid-cols-1 lg:grid-cols-3 gap-5"></div>
     </section>
 
     <!-- ================= INVENTARIO ================= -->
@@ -526,7 +581,7 @@
   <footer class="border-t border-slate-200 bg-white/60">
     <div class="max-w-[1400px] mx-auto px-4 sm:px-8 py-5 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
       <p><span class="font-bold text-slate-500">TiendaMenos S.A. de C.V.</span> · Suite Ejecutiva v2.0</p>
-      <p>© <span id="anio"></span> — Documento de uso interno · Entregable 2</p>
+      <p>© <span id="anio"></span> — TiendaMenos S.A.C. · Suite Ejecutiva v3.0</p>
     </div>
   </footer>
   </div><!-- /lg:pl-64 -->

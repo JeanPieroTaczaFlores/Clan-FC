@@ -5,12 +5,12 @@
  * Los datos salen SIEMPRE de api.js (funciona en modo mock y API real).
  * ========================================================================== */
 
-import { getReporteSemanal, getProductos } from "./api.js";
+import { getReporteSemanal, getProductos, getComparacionSedes } from "./api.js";
 
 /* ------------------------------- Estado ---------------------------------- */
 
 let cacheReporte = null; // resultado de getReporteSemanal()
-const charts = { ventas: null, top: null, categorias: null };
+const charts = { ventas: null, top: null, categorias: null, comparacion: null };
 
 const PALETA = [
   "#6366f1", "#10b981", "#f59e0b", "#ef4444",
@@ -405,4 +405,62 @@ export async function initReportesAdmin() {
   document.getElementById("btn-rep-pdf").addEventListener("click", exportarPdf);
   document.getElementById("btn-rep-refresh").addEventListener("click", cargarReporte);
   await cargarReporte();
+  await renderGraficaComparacion();
+}
+
+/** Renderiza gráfica comparativa de sedes (ventas + efectivo lado a lado). */
+export async function renderGraficaComparacion() {
+  if (typeof Chart === "undefined") return;
+  try {
+    const sedes = await getComparacionSedes();
+    const canvas = document.getElementById("chart-comparacion-sedes");
+    if (!canvas) return;
+
+    if (charts.comparacion) { charts.comparacion.destroy(); charts.comparacion = null; }
+
+    charts.comparacion = new Chart(canvas, {
+      type: "bar",
+      data: {
+        labels: sedes.map((s) => s.nombre),
+        datasets: [
+          {
+            label: "Ventas totales (S/)",
+            data: sedes.map((s) => s.totalVentas),
+            backgroundColor: ["rgba(99, 102, 241, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(245, 158, 11, 0.8)"],
+            borderRadius: 8,
+            maxBarThickness: 50,
+          },
+          {
+            label: "Efectivo en caja (S/)",
+            data: sedes.map((s) => s.efectivo),
+            backgroundColor: ["rgba(99, 102, 241, 0.25)", "rgba(16, 185, 129, 0.25)", "rgba(245, 158, 11, 0.25)"],
+            borderColor: ["rgba(99, 102, 241, 1)", "rgba(16, 185, 129, 1)", "rgba(245, 158, 11, 1)"],
+            borderWidth: 2,
+            borderRadius: 8,
+            maxBarThickness: 50,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "top", labels: { boxWidth: 12, font: { size: 11 } } },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.dataset.label}: S/ ${Number(ctx.parsed.y).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`,
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { callback: (v) => "S/ " + v.toLocaleString("es-PE") },
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.error("Error renderizando gráfica comparativa:", err);
+  }
 }
