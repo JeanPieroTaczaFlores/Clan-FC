@@ -585,9 +585,10 @@ async function renderComparacionSedes() {
     if (!grid) return;
 
     const colores = {
-      1: { gradient: "from-blue-500 to-indigo-600", ring: "ring-blue-200" },
-      2: { gradient: "from-emerald-500 to-teal-600", ring: "ring-emerald-200" },
-      3: { gradient: "from-amber-500 to-orange-600", ring: "ring-amber-200" },
+      1: { gradient: "from-rose-500 to-pink-600", ring: "ring-rose-200" },
+      2: { gradient: "from-sky-500 to-blue-600", ring: "ring-sky-200" },
+      3: { gradient: "from-emerald-500 to-teal-600", ring: "ring-emerald-200" },
+      4: { gradient: "from-amber-500 to-orange-600", ring: "ring-amber-200" },
     };
 
     grid.innerHTML = sedes.map((s) => {
@@ -598,10 +599,10 @@ async function renderComparacionSedes() {
              onclick="window.cambiarSede('${s.idSede}')">
           <div class="absolute -right-6 -top-6 w-24 h-24 rounded-full bg-gradient-to-br ${c.gradient} opacity-10 blur-xl"></div>
           <div class="flex items-center gap-2 mb-3">
-            <span class="w-8 h-8 rounded-lg bg-gradient-to-br ${c.gradient} flex items-center justify-center text-white text-xs font-black shadow">T${s.idSede}</span>
+            <span class="w-8 h-8 rounded-lg bg-gradient-to-br ${c.gradient} flex items-center justify-center text-white text-[10px] font-black shadow">T${s.idSede}</span>
             <div>
               <h3 class="font-bold text-slate-800 text-sm">${s.nombre}</h3>
-              <p class="text-[10px] text-slate-400">${s.ordenesPagadas} órdenes pagadas</p>
+              <p class="text-[10px] text-slate-400">${s.ordenesPagadas} órdenes · ${s.incidenciasAbiertas + s.stockBajo} alertas</p>
             </div>
             ${isActive ? '<span class="ml-auto text-[9px] font-bold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">ACTIVA</span>' : ""}
           </div>

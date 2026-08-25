@@ -426,15 +426,15 @@ export async function renderGraficaComparacion() {
           {
             label: "Ventas totales (S/)",
             data: sedes.map((s) => s.totalVentas),
-            backgroundColor: ["rgba(99, 102, 241, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(245, 158, 11, 0.8)"],
+            backgroundColor: ["rgba(244, 63, 94, 0.8)", "rgba(14, 165, 233, 0.8)", "rgba(16, 185, 129, 0.8)", "rgba(245, 158, 11, 0.8)"],
             borderRadius: 8,
             maxBarThickness: 50,
           },
           {
             label: "Efectivo en caja (S/)",
             data: sedes.map((s) => s.efectivo),
-            backgroundColor: ["rgba(99, 102, 241, 0.25)", "rgba(16, 185, 129, 0.25)", "rgba(245, 158, 11, 0.25)"],
-            borderColor: ["rgba(99, 102, 241, 1)", "rgba(16, 185, 129, 1)", "rgba(245, 158, 11, 1)"],
+            backgroundColor: ["rgba(244, 63, 94, 0.25)", "rgba(14, 165, 233, 0.25)", "rgba(16, 185, 129, 0.25)", "rgba(245, 158, 11, 0.25)"],
+            borderColor: ["rgba(244, 63, 94, 1)", "rgba(14, 165, 233, 1)", "rgba(16, 185, 129, 1)", "rgba(245, 158, 11, 1)"],
             borderWidth: 2,
             borderRadius: 8,
             maxBarThickness: 50,

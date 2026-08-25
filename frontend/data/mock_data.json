@@ -1,8 +1,9 @@
 {
   "sedes": [
-    { "idSede": 1, "nombre": "Lima", "direccion": "Av. Javier Prado Este 4600, Santiago de Surco", "telefono": "01-555-0101", "activa": true },
-    { "idSede": 2, "nombre": "Arequipa", "direccion": "Calle Mercaderes 201, Cercado de Arequipa", "telefono": "054-231-0202", "activa": true },
-    { "idSede": 3, "nombre": "Trujillo", "direccion": "Av. Espana 680, Trujillo Centro", "telefono": "044-231-0303", "activa": true }
+    { "idSede": 1, "nombre": "Villa El Salvador", "direccion": "Av. Municipal 3001, Villa El Salvador", "telefono": "01-555-0101", "activa": true },
+    { "idSede": 2, "nombre": "Chorrillos", "direccion": "Av. Resbalon 450, Chorrillos Centro", "telefono": "01-555-0202", "activa": true },
+    { "idSede": 3, "nombre": "San Juan de Lurigancho", "direccion": "Av. Cajaruro 1200, SJL Centro", "telefono": "01-555-0303", "activa": true },
+    { "idSede": 4, "nombre": "Surco", "direccion": "Av. Benavides 3500, Santiago de Surco", "telefono": "01-555-0404", "activa": true }
   ],
   "categorias": [
     { "idCategoria": 1, "nombre": "Audio", "descripcion": "Audifonos, bocinas y microfonos", "activa": true },
@@ -15,130 +16,130 @@
     {
       "idProducto": 1, "sku": "AUD-001", "nombre": "Diadema OneOdio Pro-10 con Cable",
       "descripcion": "Diadema cerrada para DJ y estudio, cable desmontable compartido",
-      "precioBase": 549, "stock": 48, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Audio",
+      "precioBase": 549, "stock": 96, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Audio",
       "imagenUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
-      "sedeStock": { "1": 25, "2": 15, "3": 8 }
+      "sedeStock": { "1": 28, "2": 18, "3": 32, "4": 18 }
     },
     {
       "idProducto": 2, "sku": "AUD-002", "nombre": "Audifonos TWS Inalambricos Pro",
       "descripcion": "Bluetooth 5.3, cancelacion de ruido activa, estuche de carga USB-C",
-      "precioBase": 799, "stock": 58, "stockMinimo": 10, "categoriaId": 1, "categoriaNombre": "Audio",
+      "precioBase": 799, "stock": 72, "stockMinimo": 10, "categoriaId": 1, "categoriaNombre": "Audio",
       "imagenUrl": "https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 6, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
-      "sedeStock": { "1": 30, "2": 18, "3": 10 }
+      "sedeStock": { "1": 22, "2": 12, "3": 28, "4": 10 }
     },
     {
       "idProducto": 3, "sku": "BOC-001", "nombre": "Bocina Bluetooth Portatil 20W",
       "descripcion": "Resistente al agua IPX7, bateria de 12 horas, modo party link",
-      "precioBase": 649, "stock": 74, "stockMinimo": 10, "categoriaId": 1, "categoriaNombre": "Audio",
+      "precioBase": 649, "stock": 88, "stockMinimo": 10, "categoriaId": 1, "categoriaNombre": "Audio",
       "imagenUrl": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
-      "sedeStock": { "1": 40, "2": 22, "3": 12 }
+      "sedeStock": { "1": 35, "2": 25, "3": 18, "4": 10 }
     },
     {
       "idProducto": 4, "sku": "MIC-001", "nombre": "Microfono Condensador USB",
       "descripcion": "Patron cardioide, efecto de boton, ideal para streaming y podcast",
-      "precioBase": 899, "stock": 32, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Audio",
+      "precioBase": 899, "stock": 38, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Audio",
       "imagenUrl": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
-      "sedeStock": { "1": 18, "2": 10, "3": 4 }
+      "sedeStock": { "1": 10, "2": 6, "3": 14, "4": 8 }
     },
     {
       "idProducto": 5, "sku": "TEC-001", "nombre": "Teclado Mecanico RGB 87 Teclas",
       "descripcion": "Switches Outemu Blue, retroiluminacion RGB por tecla, aluminio",
-      "precioBase": 899, "stock": 50, "stockMinimo": 8, "categoriaId": 2, "categoriaNombre": "Computacion",
+      "precioBase": 899, "stock": 58, "stockMinimo": 8, "categoriaId": 2, "categoriaNombre": "Computacion",
       "imagenUrl": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 24, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
-      "sedeStock": { "1": 30, "2": 14, "3": 6 }
+      "sedeStock": { "1": 18, "2": 10, "3": 22, "4": 8 }
     },
     {
       "idProducto": 6, "sku": "RAT-001", "nombre": "Mouse Inalambrico Ergonomico",
       "descripcion": "Sensor 4000 DPI, silencioso, recargable USB-C",
-      "precioBase": 349, "stock": 20, "stockMinimo": 8, "categoriaId": 2, "categoriaNombre": "Computacion",
+      "precioBase": 349, "stock": 26, "stockMinimo": 8, "categoriaId": 2, "categoriaNombre": "Computacion",
       "imagenUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
-      "sedeStock": { "1": 12, "2": 6, "3": 2 }
+      "sedeStock": { "1": 3, "2": 7, "3": 10, "4": 6 }
     },
     {
       "idProducto": 7, "sku": "MON-001", "nombre": "Monitor LED 27\" 144Hz QHD",
       "descripcion": "2560x1440, FreeSync, 1ms, HDMI 2.0 + DisplayPort",
-      "precioBase": 3899, "stock": 13, "stockMinimo": 3, "categoriaId": 2, "categoriaNombre": "Computacion",
+      "precioBase": 3899, "stock": 18, "stockMinimo": 3, "categoriaId": 2, "categoriaNombre": "Computacion",
       "imagenUrl": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 24, "proveedorId": 3, "proveedorNombre": "Importadora ElectroNorte",
-      "sedeStock": { "1": 8, "2": 4, "3": 1 }
+      "sedeStock": { "1": 2, "2": 5, "3": 7, "4": 4 }
     },
     {
       "idProducto": 8, "sku": "LAP-001", "nombre": "Laptop 14\" Core i5 16GB 512GB",
       "descripcion": "FHD IPS, Windows 11, lector huella, 1.4 kg",
-      "precioBase": 12499, "stock": 9, "stockMinimo": 2, "categoriaId": 2, "categoriaNombre": "Computacion",
+      "precioBase": 12499, "stock": 12, "stockMinimo": 2, "categoriaId": 2, "categoriaNombre": "Computacion",
       "imagenUrl": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 24, "proveedorId": 3, "proveedorNombre": "Importadora ElectroNorte",
-      "sedeStock": { "1": 5, "2": 3, "3": 1 }
+      "sedeStock": { "1": 1, "2": 3, "3": 4, "4": 4 }
     },
     {
       "idProducto": 9, "sku": "CEL-001", "nombre": "Smartphone 6.7\" 128GB Dual SIM",
       "descripcion": "AMOLED 120Hz, camara triple 50MP, carga rapida 33W",
-      "precioBase": 8999, "stock": 17, "stockMinimo": 3, "categoriaId": 3, "categoriaNombre": "Smartphones",
+      "precioBase": 8999, "stock": 22, "stockMinimo": 3, "categoriaId": 3, "categoriaNombre": "Smartphones",
       "imagenUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 3, "proveedorNombre": "Importadora ElectroNorte",
-      "sedeStock": { "1": 10, "2": 5, "3": 2 }
+      "sedeStock": { "1": 2, "2": 4, "3": 8, "4": 8 }
     },
     {
       "idProducto": 10, "sku": "CAR-001", "nombre": "Power Bank 20000mAh PD 22.5W",
       "descripcion": "Carga rapida USB-C Power Delivery y QC 3.0, doble salida",
-      "precioBase": 429, "stock": 69, "stockMinimo": 10, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "precioBase": 429, "stock": 82, "stockMinimo": 10, "categoriaId": 5, "categoriaNombre": "Accesorios",
       "imagenUrl": "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 6, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
-      "sedeStock": { "1": 35, "2": 20, "3": 14 }
+      "sedeStock": { "1": 30, "2": 18, "3": 24, "4": 10 }
     },
     {
       "idProducto": 11, "sku": "CAR-002", "nombre": "Cargador GaN 65W 3 Puertos",
       "descripcion": "GaN II compacto: 2 USB-C + USB-A, compatible laptops",
-      "precioBase": 389, "stock": 80, "stockMinimo": 10, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "precioBase": 389, "stock": 92, "stockMinimo": 10, "categoriaId": 5, "categoriaNombre": "Accesorios",
       "imagenUrl": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
-      "sedeStock": { "1": 40, "2": 25, "3": 15 }
+      "sedeStock": { "1": 38, "2": 22, "3": 20, "4": 12 }
     },
     {
       "idProducto": 12, "sku": "GAM-001", "nombre": "Control Inalambrico Pro PC/Switch",
       "descripcion": "Joysticks Hall Effect, gatillos analogicos, vibracion HD",
-      "precioBase": 1499, "stock": 26, "stockMinimo": 3, "categoriaId": 4, "categoriaNombre": "Gaming",
+      "precioBase": 1499, "stock": 30, "stockMinimo": 3, "categoriaId": 4, "categoriaNombre": "Gaming",
       "imagenUrl": "https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
-      "sedeStock": { "1": 15, "2": 8, "3": 3 }
+      "sedeStock": { "1": 10, "2": 6, "3": 8, "4": 6 }
     },
     {
       "idProducto": 13, "sku": "GAM-002", "nombre": "Diadema Gaming 7.1 RGB",
       "descripcion": "Sonido envolvente virtual, microfono abatible con cancelacion",
-      "precioBase": 799, "stock": 37, "stockMinimo": 4, "categoriaId": 4, "categoriaNombre": "Gaming",
+      "precioBase": 799, "stock": 42, "stockMinimo": 4, "categoriaId": 4, "categoriaNombre": "Gaming",
       "imagenUrl": "https://images.unsplash.com/photo-1612444530582-fc66f8ddd681?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
-      "sedeStock": { "1": 20, "2": 12, "3": 5 }
+      "sedeStock": { "1": 15, "2": 10, "3": 12, "4": 5 }
     },
     {
       "idProducto": 14, "sku": "ACC-001", "nombre": "Hub USB-C 7-en-1",
       "descripcion": "HDMI 4K@60, 2x USB 3.0, SD/microSD, PD 100W, Ethernet",
-      "precioBase": 549, "stock": 44, "stockMinimo": 6, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "precioBase": 549, "stock": 52, "stockMinimo": 6, "categoriaId": 5, "categoriaNombre": "Accesorios",
       "imagenUrl": "https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
-      "sedeStock": { "1": 22, "2": 14, "3": 8 }
+      "sedeStock": { "1": 16, "2": 12, "3": 18, "4": 6 }
     },
     {
       "idProducto": 15, "sku": "ACC-002", "nombre": "Cable HDMI 2.1 2m 8K",
       "descripcion": "8K@60 / 4K@120, eARC, certificado, conectores reforzados",
-      "precioBase": 189, "stock": 115, "stockMinimo": 15, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "precioBase": 189, "stock": 130, "stockMinimo": 15, "categoriaId": 5, "categoriaNombre": "Accesorios",
       "imagenUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 6, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
-      "sedeStock": { "1": 60, "2": 35, "3": 20 }
+      "sedeStock": { "1": 55, "2": 35, "3": 25, "4": 15 }
     },
     {
       "idProducto": 16, "sku": "ACC-003", "nombre": "Soporte Laptop Aluminio Ajustable",
       "descripcion": "6 niveles, ventilacion, antideslizante, hasta 17 pulgadas",
-      "precioBase": 299, "stock": 48, "stockMinimo": 8, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "precioBase": 299, "stock": 56, "stockMinimo": 8, "categoriaId": 5, "categoriaNombre": "Accesorios",
       "imagenUrl": "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&h=400&fit=crop",
       "activo": true, "garantiaMeses": 12, "proveedorId": 3, "proveedorNombre": "Importadora ElectroNorte",
-      "sedeStock": { "1": 25, "2": 15, "3": 8 }
+      "sedeStock": { "1": 20, "2": 14, "3": 15, "4": 7 }
     }
   ],
   "paises": [
@@ -162,149 +163,137 @@
     { "username": "cajero", "password": "cajero123", "rol": "CAJERO", "nombreCompleto": "Carlos Punto Venta", "idPais": 1, "sedeId": 1, "cajaNumero": 1 },
     { "username": "cliente", "password": "cliente123", "rol": "CLIENTE", "nombreCompleto": "Maria Compradora", "idPais": 1, "sedeId": null, "cajaNumero": null },
     { "username": "carmen", "password": "carmen123", "rol": "CAJERO", "nombreCompleto": "Carmen Flores", "idPais": 1, "sedeId": 2, "cajaNumero": 1 },
-    { "username": "pedro", "password": "pedro123", "rol": "CAJERO", "nombreCompleto": "Pedro Quispe", "idPais": 1, "sedeId": 3, "cajaNumero": 1 }
+    { "username": "pedro", "password": "pedro123", "rol": "CAJERO", "nombreCompleto": "Pedro Quispe", "idPais": 1, "sedeId": 3, "cajaNumero": 1 },
+    { "username": "roberto", "password": "roberto123", "rol": "CAJERO", "nombreCompleto": "Roberto Silva", "idPais": 1, "sedeId": 4, "cajaNumero": 1 }
   ],
   "proveedores": [
     { "idProveedor": 1, "nombre": "AudioMax Distribucion", "contactoNombre": "Rosa Medina", "telefono": "01-555-7788", "email": "ventas@audiomax.demo", "activo": true },
     { "idProveedor": 2, "nombre": "TechSupply Global", "contactoNombre": "Jorge Castaneda", "telefono": "01-4455-9010", "email": "pedidos@techsupply.demo", "activo": true },
-    { "idProveedor": 3, "nombre": "Importadora ElectroNorte", "contactoNombre": "Ana Villalobos", "telefono": "044-233-5588", "email": "contacto@electronorte.demo", "activo": true }
+    { "idProveedor": 3, "nombre": "Importadora ElectroNorte", "contactoNombre": "Ana Villalobos", "telefono": "01-233-5588", "email": "contacto@electronorte.demo", "activo": true }
   ],
   "cajas": {
-    "1": { "efectivo": 4250.00 },
+    "1": { "efectivo": 3200.00 },
     "2": { "efectivo": 1875.50 },
-    "3": { "efectivo": 620.00 }
+    "3": { "efectivo": 4100.00 },
+    "4": { "efectivo": 5650.00 }
   },
   "cajaMovimientos": [
-    { "tipo": "FONDO", "sedeId": 1, "monto": 5000, "nota": "Fondo inicial de apertura - Sede Lima", "usuarioNombre": "cajero", "fecha": "2026-08-18T08:00:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 1, "monto": 2499.00, "nota": "Venta ORD-20260818-001", "usuarioNombre": "cajero", "fecha": "2026-08-18T10:23:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 1, "monto": 1698.00, "nota": "Venta ORD-20260818-002", "usuarioNombre": "cajero", "fecha": "2026-08-18T14:10:00.000Z" },
-    { "tipo": "RETIRO", "sedeId": 1, "monto": 1500, "nota": "Deposito a caja chica banco", "usuarioNombre": "cajero", "fecha": "2026-08-18T17:30:00.000Z" },
+    { "tipo": "FONDO", "sedeId": 1, "monto": 4000, "nota": "Fondo inicial - Villa El Salvador", "usuarioNombre": "cajero", "fecha": "2026-08-18T08:00:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 1, "monto": 1698.00, "nota": "Venta ORD-20260818-001", "usuarioNombre": "cajero", "fecha": "2026-08-18T10:23:00.000Z" },
     { "tipo": "VENTA", "sedeId": 1, "monto": 899.00, "nota": "Venta ORD-20260819-001", "usuarioNombre": "cajero", "fecha": "2026-08-19T09:45:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 1, "monto": 12499.00, "nota": "Venta ORD-20260819-002", "usuarioNombre": "cajero", "fecha": "2026-08-19T11:20:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 1, "monto": 3899.00, "nota": "Venta ORD-20260820-001", "usuarioNombre": "cajero", "fecha": "2026-08-20T10:00:00.000Z" },
-    { "tipo": "RETIRO", "sedeId": 1, "monto": 3000, "nota": "Cierre parcial - deposito", "usuarioNombre": "cajero", "fecha": "2026-08-20T16:00:00.000Z" },
     { "tipo": "VENTA", "sedeId": 1, "monto": 549.00, "nota": "Venta ORD-20260821-001", "usuarioNombre": "cajero", "fecha": "2026-08-21T13:30:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 1, "monto": 1598.00, "nota": "Venta ORD-20260822-001", "usuarioNombre": "cajero", "fecha": "2026-08-22T11:15:00.000Z" },
-    { "tipo": "FONDO", "sedeId": 2, "monto": 2500, "nota": "Fondo inicial - Sede Arequipa", "usuarioNombre": "carmen", "fecha": "2026-08-18T08:05:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 2, "monto": 1298.00, "nota": "Venta ORD-20260819-003", "usuarioNombre": "carmen", "fecha": "2026-08-19T15:20:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 2, "monto": 2398.00, "nota": "Venta ORD-20260820-002", "usuarioNombre": "carmen", "fecha": "2026-08-20T14:00:00.000Z" },
-    { "tipo": "RETIRO", "sedeId": 2, "monto": 800, "nota": "Retiro para gastos operativos", "usuarioNombre": "carmen", "fecha": "2026-08-21T10:00:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 2, "monto": 749.50, "nota": "Venta ORD-20260822-002", "usuarioNombre": "carmen", "fecha": "2026-08-22T09:30:00.000Z" },
-    { "tipo": "FONDO", "sedeId": 3, "monto": 1000, "nota": "Fondo inicial - Sede Trujillo", "usuarioNombre": "pedro", "fecha": "2026-08-18T08:10:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 3, "monto": 389.00, "nota": "Venta ORD-20260820-003", "usuarioNombre": "pedro", "fecha": "2026-08-20T16:30:00.000Z" },
-    { "tipo": "VENTA", "sedeId": 3, "monto": 189.00, "nota": "Venta ORD-20260822-003", "usuarioNombre": "pedro", "fecha": "2026-08-22T12:00:00.000Z" },
-    { "tipo": "RETIRO", "sedeId": 3, "monto": 380, "nota": "Retiro emergencia - reparacion aire acondicionado", "usuarioNombre": "pedro", "fecha": "2026-08-23T11:00:00.000Z" }
+    { "tipo": "VENTA", "sedeId": 1, "monto": 389.00, "nota": "Venta ORD-20260824-001", "usuarioNombre": "cajero", "fecha": "2026-08-24T09:00:00.000Z" },
+    { "tipo": "RETIRO", "sedeId": 1, "monto": 1500, "nota": "Deposito a banco", "usuarioNombre": "cajero", "fecha": "2026-08-25T17:00:00.000Z" },
+    { "tipo": "FONDO", "sedeId": 2, "monto": 3000, "nota": "Fondo inicial - Chorrillos", "usuarioNombre": "carmen", "fecha": "2026-08-18T08:05:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 2, "monto": 1298.00, "nota": "Venta ORD-20260819-002", "usuarioNombre": "carmen", "fecha": "2026-08-19T15:20:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 2, "monto": 2398.00, "nota": "Venta ORD-20260820-001", "usuarioNombre": "carmen", "fecha": "2026-08-20T14:00:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 2, "monto": 749.50, "nota": "Venta ORD-20260822-001", "usuarioNombre": "carmen", "fecha": "2026-08-22T09:30:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 2, "monto": 649.00, "nota": "Venta ORD-20260824-002", "usuarioNombre": "carmen", "fecha": "2026-08-24T11:45:00.000Z" },
+    { "tipo": "RETIRO", "sedeId": 2, "monto": 800, "nota": "Retiro para gastos", "usuarioNombre": "carmen", "fecha": "2026-08-25T16:00:00.000Z" },
+    { "tipo": "FONDO", "sedeId": 3, "monto": 5000, "nota": "Fondo inicial - SJL", "usuarioNombre": "pedro", "fecha": "2026-08-18T08:10:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 3, "monto": 1499.00, "nota": "Venta ORD-20260819-003", "usuarioNombre": "pedro", "fecha": "2026-08-19T11:00:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 3, "monto": 3899.00, "nota": "Venta ORD-20260820-002", "usuarioNombre": "pedro", "fecha": "2026-08-20T10:00:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 3, "monto": 899.00, "nota": "Venta ORD-20260822-002", "usuarioNombre": "pedro", "fecha": "2026-08-22T11:15:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 3, "monto": 1498.00, "nota": "Venta ORD-20260825-001", "usuarioNombre": "pedro", "fecha": "2026-08-25T14:00:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 3, "monto": 14990.00, "nota": "Venta ORD-20260825-002", "usuarioNombre": "pedro", "fecha": "2026-08-25T16:45:00.000Z" },
+    { "tipo": "FONDO", "sedeId": 4, "monto": 6000, "nota": "Fondo inicial - Surco", "usuarioNombre": "roberto", "fecha": "2026-08-18T08:00:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 4, "monto": 12499.00, "nota": "Venta ORD-20260819-004", "usuarioNombre": "roberto", "fecha": "2026-08-19T11:20:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 4, "monto": 6359.00, "nota": "Venta ORD-20260821-002", "usuarioNombre": "roberto", "fecha": "2026-08-21T10:30:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 4, "monto": 1899.00, "nota": "Venta ORD-20260823-001", "usuarioNombre": "roberto", "fecha": "2026-08-23T14:20:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 4, "monto": 8999.00, "nota": "Venta ORD-20260824-003", "usuarioNombre": "roberto", "fecha": "2026-08-24T15:00:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 4, "monto": 1499.00, "nota": "Venta ORD-20260825-003", "usuarioNombre": "roberto", "fecha": "2026-08-25T10:15:00.000Z" },
+    { "tipo": "VENTA", "sedeId": 4, "monto": 429.00, "nota": "Venta ORD-20260825-004", "usuarioNombre": "roberto", "fecha": "2026-08-25T17:30:00.000Z" },
+    { "tipo": "RETIRO", "sedeId": 4, "monto": 3000, "nota": "Cierre parcial - depo Banco de la Nacion", "usuarioNombre": "roberto", "fecha": "2026-08-25T18:00:00.000Z" }
   ],
   "ordenes": [
-    { "idOrden": 1755489780000, "folio": "ORD-20260818-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": 1, "empresaNombre": "Comercial Andina del Sur SAC", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 2117.80, "iva": 381.20, "total": 2499.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-18T10:23:00.000Z", "items": [{ "sku": "AUD-002", "nombreProducto": "Audifonos TWS Inalambricos Pro", "cantidad": 2, "precioUnitario": 799, "ivaLinea": 287.64, "subtotalLinea": 1598.00 }, { "sku": "GAM-002", "nombreProducto": "Diadema Gaming 7.1 RGB", "cantidad": 1, "precioUnitario": 799, "ivaLinea": 143.82, "subtotalLinea": 799.00 }] },
-    { "idOrden": 1755510600000, "folio": "ORD-20260818-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1438.98, "iva": 259.02, "total": 1698.00, "metodoPago": "YAPE", "yapeComprobante": null, "yapeOperacion": "YAP-88774411", "fechaCreacion": "2026-08-18T14:10:00.000Z", "items": [{ "sku": "TEC-001", "nombreProducto": "Teclado Mecanico RGB 87 Teclas", "cantidad": 1, "precioUnitario": 899, "ivaLinea": 161.82, "subtotalLinea": 899.00 }, { "sku": "RAT-001", "nombreProducto": "Mouse Inalambrico Ergonomico", "cantidad": 1, "precioUnitario": 349, "ivaLinea": 62.82, "subtotalLinea": 349.00 }, { "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 2, "precioUnitario": 189, "ivaLinea": 68.04, "subtotalLinea": 378.00 }] },
-    { "idOrden": 1755638700000, "folio": "ORD-20260819-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 761.86, "iva": 137.14, "total": 899.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-19T09:45:00.000Z", "items": [{ "sku": "MIC-001", "nombreProducto": "Microfono Condensador USB", "cantidad": 1, "precioUnitario": 899, "ivaLinea": 161.82, "subtotalLinea": 899.00 }] },
-    { "idOrden": 1755649200000, "folio": "ORD-20260819-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": 4, "empresaNombre": "Minera Horizonte SRL", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 10592.37, "iva": 1906.63, "total": 12499.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-19T11:20:00.000Z", "items": [{ "sku": "LAP-001", "nombreProducto": "Laptop 14\" Core i5 16GB 512GB", "cantidad": 1, "precioUnitario": 12499, "ivaLinea": 1906.63, "subtotalLinea": 12499.00 }] },
-    { "idOrden": 1755724800000, "folio": "ORD-20260820-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 3304.24, "iva": 594.76, "total": 3899.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-20T10:00:00.000Z", "items": [{ "sku": "MON-001", "nombreProducto": "Monitor LED 27\" 144Hz QHD", "cantidad": 1, "precioUnitario": 3899, "ivaLinea": 594.76, "subtotalLinea": 3899.00 }] },
-    { "idOrden": 1755811200000, "folio": "ORD-20260821-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 465.25, "iva": 83.75, "total": 549.00, "metodoPago": "PLIN", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-21T13:30:00.000Z", "items": [{ "sku": "AUD-001", "nombreProducto": "Diadema OneOdio Pro-10 con Cable", "cantidad": 1, "precioUnitario": 549, "ivaLinea": 98.82, "subtotalLinea": 549.00 }] },
-    { "idOrden": 1755897600000, "folio": "ORD-20260822-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": 1, "empresaNombre": "Comercial Andina del Sur SAC", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1354.24, "iva": 243.76, "total": 1598.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-22T11:15:00.000Z", "items": [{ "sku": "CAR-002", "nombreProducto": "Cargador GaN 65W 3 Puertos", "cantidad": 2, "precioUnitario": 389, "ivaLinea": 140.04, "subtotalLinea": 778.00 }, { "sku": "ACC-003", "nombreProducto": "Soporte Laptop Aluminio Ajustable", "cantidad": 1, "precioUnitario": 299, "ivaLinea": 53.82, "subtotalLinea": 299.00 }, { "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 1, "precioUnitario": 189, "ivaLinea": 34.02, "subtotalLinea": 189.00 }] },
-    { "idOrden": 1755984000000, "folio": "ORD-20260823-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 5389.83, "iva": 969.17, "total": 6359.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-23T10:30:00.000Z", "items": [{ "sku": "CEL-001", "nombreProducto": "Smartphone 6.7\" 128GB Dual SIM", "cantidad": 1, "precioUnitario": 8999, "ivaLinea": 1383.35, "subtotalLinea": 7626.27 }, { "sku": "CAR-001", "nombreProducto": "Power Bank 20000mAh PD 22.5W", "cantidad": 1, "precioUnitario": 429, "ivaLinea": 69.59, "subtotalLinea": 385.25 }] },
-    { "idOrden": 1756070400000, "folio": "ORD-20260824-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 761.86, "iva": 137.14, "total": 899.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-24T09:00:00.000Z", "items": [{ "sku": "GAM-002", "nombreProducto": "Diadema Gaming 7.1 RGB", "cantidad": 1, "precioUnitario": 799, "ivaLinea": 143.82, "subtotalLinea": 799.00 }] },
-    { "idOrden": 1756156800000, "folio": "ORD-20260825-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": 2, "empresaNombre": "Instituto Educativo San Martin", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "EXENTO", "tasaIva": 18, "subtotal": 5266.10, "iva": 807.90, "total": 6074.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-25T08:30:00.000Z", "items": [{ "sku": "TEC-001", "nombreProducto": "Teclado Mecanico RGB 87 Teclas", "cantidad": 3, "precioUnitario": 899, "ivaLinea": 485.46, "subtotalLinea": 2697.00 }, { "sku": "AUD-002", "nombreProducto": "Audifonos TWS Inalambricos Pro", "cantidad": 2, "precioUnitario": 799, "ivaLinea": 287.64, "subtotalLinea": 1598.00 }, { "sku": "ACC-003", "nombreProducto": "Soporte Laptop Aluminio Ajustable", "cantidad": 1, "precioUnitario": 299, "ivaLinea": 53.82, "subtotalLinea": 299.00 }] },
-    { "idOrden": 1756243200000, "folio": "ORD-20260825-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 465.25, "iva": 83.75, "total": 549.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-25T14:00:00.000Z", "items": [{ "sku": "AUD-001", "nombreProducto": "Diadema OneOdio Pro-10 con Cable", "cantidad": 1, "precioUnitario": 549, "ivaLinea": 98.82, "subtotalLinea": 549.00 }] },
-    { "idOrden": 1756329600000, "folio": "ORD-20260825-003", "canal": "WEB", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cliente", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 12694.92, "iva": 2295.08, "total": 14990.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-25T16:45:00.000Z", "items": [{ "sku": "LAP-001", "nombreProducto": "Laptop 14\" Core i5 16GB 512GB", "cantidad": 1, "precioUnitario": 12499, "ivaLinea": 1906.63, "subtotalLinea": 10592.37 }, { "sku": "ACC-001", "nombreProducto": "Hub USB-C 7-en-1", "cantidad": 1, "precioUnitario": 549, "ivaLinea": 99.50, "subtotalLinea": 449.59 }, { "sku": "CAR-002", "nombreProducto": "Cargador GaN 65W 3 Puertos", "cantidad": 1, "precioUnitario": 389, "ivaLinea": 70.14, "subtotalLinea": 319.04 }] },
-    { "idOrden": 1756416000000, "folio": "ORD-20260826-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1269.49, "iva": 228.51, "total": 1498.00, "metodoPago": "YAPE", "yapeComprobante": null, "yapeOperacion": "YAP-22336699", "fechaCreacion": "2026-08-26T10:00:00.000Z", "items": [{ "sku": "GAM-001", "nombreProducto": "Control Inalambrico Pro PC/Switch", "cantidad": 1, "precioUnitario": 1499, "ivaLinea": 272.49, "subtotalLinea": 1499.00 }] },
-    { "idOrden": 1755640000000, "folio": "ORD-20260819-003", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1100.00, "iva": 198.00, "total": 1298.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-19T15:20:00.000Z", "items": [{ "sku": "BOC-001", "nombreProducto": "Bocina Bluetooth Portatil 20W", "cantidad": 2, "precioUnitario": 649, "ivaLinea": 233.64, "subtotalLinea": 1298.00 }] },
-    { "idOrden": 1755726800000, "folio": "ORD-20260820-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": 3, "empresaNombre": "Transportes Rapidos del Norte SAC", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "REDUCIDO", "tasaIva": 18, "subtotal": 2032.20, "iva": 365.80, "total": 2398.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-20T14:00:00.000Z", "items": [{ "sku": "ACC-001", "nombreProducto": "Hub USB-C 7-en-1", "cantidad": 2, "precioUnitario": 549, "ivaLinea": 197.64, "subtotalLinea": 1098.00 }, { "sku": "CAR-001", "nombreProducto": "Power Bank 20000mAh PD 22.5W", "cantidad": 1, "precioUnitario": 429, "ivaLinea": 77.22, "subtotalLinea": 429.00 }, { "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 3, "precioUnitario": 189, "ivaLinea": 102.06, "subtotalLinea": 567.00 }] },
-    { "idOrden": 1755813000000, "folio": "ORD-20260821-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1269.49, "iva": 228.51, "total": 1498.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-21T16:10:00.000Z", "items": [{ "sku": "GAM-001", "nombreProducto": "Control Inalambrico Pro PC/Switch", "cantidad": 1, "precioUnitario": 1499, "ivaLinea": 272.49, "subtotalLinea": 1499.00 }] },
-    { "idOrden": 1755900000000, "folio": "ORD-20260822-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 634.75, "iva": 114.75, "total": 749.50, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-22T09:30:00.000Z", "items": [{ "sku": "GAM-002", "nombreProducto": "Diadema Gaming 7.1 RGB", "cantidad": 1, "precioUnitario": 799, "ivaLinea": 143.82, "subtotalLinea": 799.00 }] },
-    { "idOrden": 1755986400000, "folio": "ORD-20260823-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 365.25, "iva": 65.75, "total": 431.00, "metodoPago": "PLIN", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-23T14:20:00.000Z", "items": [{ "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 1, "precioUnitario": 189, "ivaLinea": 34.02, "subtotalLinea": 189.00 }, { "sku": "ACC-003", "nombreProducto": "Soporte Laptop Aluminio Ajustable", "cantidad": 1, "precioUnitario": 299, "ivaLinea": 53.82, "subtotalLinea": 299.00 }] },
-    { "idOrden": 1756072800000, "folio": "ORD-20260824-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 550.00, "iva": 99.00, "total": 649.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-24T11:45:00.000Z", "items": [{ "sku": "BOC-001", "nombreProducto": "Bocina Bluetooth Portatil 20W", "cantidad": 1, "precioUnitario": 649, "ivaLinea": 117.11, "subtotalLinea": 649.00 }] },
-    { "idOrden": 1756159200000, "folio": "ORD-20260825-004", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": 3, "empresaNombre": "Transportes Rapidos del Norte SAC", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "REDUCIDO", "tasaIva": 18, "subtotal": 1609.32, "iva": 289.68, "total": 1899.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-25T10:15:00.000Z", "items": [{ "sku": "CEL-001", "nombreProducto": "Smartphone 6.7\" 128GB Dual SIM", "cantidad": 1, "precioUnitario": 8999, "ivaLinea": 1383.35, "subtotalLinea": 7626.27 }, { "sku": "AUD-002", "nombreProducto": "Audifonos TWS Inalambricos Pro", "cantidad": 2, "precioUnitario": 799, "ivaLinea": 287.64, "subtotalLinea": 1598.00 }, { "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 4, "precioUnitario": 189, "ivaLinea": 136.08, "subtotalLinea": 756.00 }] },
-    { "idOrden": 1755728000000, "folio": "ORD-20260820-003", "canal": "CAJA", "estado": "PAGADA", "sedeId": 3, "usuarioNombre": "pedro", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 329.66, "iva": 59.34, "total": 389.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-20T16:30:00.000Z", "items": [{ "sku": "CAR-002", "nombreProducto": "Cargador GaN 65W 3 Puertos", "cantidad": 1, "precioUnitario": 389, "ivaLinea": 70.14, "subtotalLinea": 389.00 }] },
-    { "idOrden": 1755902400000, "folio": "ORD-20260822-003", "canal": "CAJA", "estado": "PAGADA", "sedeId": 3, "usuarioNombre": "pedro", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 160.17, "iva": 28.83, "total": 189.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-22T12:00:00.000Z", "items": [{ "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 1, "precioUnitario": 189, "ivaLinea": 34.02, "subtotalLinea": 189.00 }] },
-    { "idOrden": 1756075200000, "folio": "ORD-20260824-003", "canal": "CAJA", "estado": "PENDIENTE", "sedeId": 3, "usuarioNombre": "pedro", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1269.49, "iva": 228.51, "total": 1498.00, "metodoPago": "YAPE", "yapeComprobante": null, "yapeOperacion": "YAP-77553311", "fechaCreacion": "2026-08-24T15:00:00.000Z", "items": [{ "sku": "GAM-001", "nombreProducto": "Control Inalambrico Pro PC/Switch", "cantidad": 1, "precioUnitario": 1499, "ivaLinea": 272.49, "subtotalLinea": 1499.00 }] },
-    { "idOrden": 1755500000000, "folio": "ORD-20260818-003", "canal": "WEB", "estado": "CANCELADA", "sedeId": 3, "usuarioNombre": "cliente", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "🇵🇪", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 10592.37, "iva": 1906.63, "total": 12499.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-18T09:00:00.000Z", "items": [{ "sku": "LAP-001", "nombreProducto": "Laptop 14\" Core i5 16GB 512GB", "cantidad": 1, "precioUnitario": 12499, "ivaLinea": 1906.63, "subtotalLinea": 12499.00 }] }
+    { "idOrden": 1755489780000, "folio": "ORD-20260818-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1438.98, "iva": 259.02, "total": 1698.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-18T10:23:00.000Z", "items": [{ "sku": "TEC-001", "nombreProducto": "Teclado Mecanico RGB 87 Teclas", "cantidad": 1, "precioUnitario": 899, "ivaLinea": 161.82, "subtotalLinea": 899.00 }, { "sku": "RAT-001", "nombreProducto": "Mouse Inalambrico Ergonomico", "cantidad": 1, "precioUnitario": 349, "ivaLinea": 62.82, "subtotalLinea": 349.00 }] },
+    { "idOrden": 1755638700000, "folio": "ORD-20260819-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 761.86, "iva": 137.14, "total": 899.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-19T09:45:00.000Z", "items": [{ "sku": "MIC-001", "nombreProducto": "Microfono Condensador USB", "cantidad": 1, "precioUnitario": 899, "ivaLinea": 161.82, "subtotalLinea": 899.00 }] },
+    { "idOrden": 1755811200000, "folio": "ORD-20260821-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 465.25, "iva": 83.75, "total": 549.00, "metodoPago": "PLIN", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-21T13:30:00.000Z", "items": [{ "sku": "AUD-001", "nombreProducto": "Diadema OneOdio Pro-10 con Cable", "cantidad": 1, "precioUnitario": 549, "ivaLinea": 98.82, "subtotalLinea": 549.00 }] },
+    { "idOrden": 1756070400000, "folio": "ORD-20260824-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 1, "usuarioNombre": "cajero", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 329.66, "iva": 59.34, "total": 389.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-24T09:00:00.000Z", "items": [{ "sku": "CAR-002", "nombreProducto": "Cargador GaN 65W 3 Puertos", "cantidad": 1, "precioUnitario": 389, "ivaLinea": 70.14, "subtotalLinea": 389.00 }] },
+    { "idOrden": 1755640000000, "folio": "ORD-20260819-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1100.00, "iva": 198.00, "total": 1298.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-19T15:20:00.000Z", "items": [{ "sku": "BOC-001", "nombreProducto": "Bocina Bluetooth Portatil 20W", "cantidad": 2, "precioUnitario": 649, "ivaLinea": 233.64, "subtotalLinea": 1298.00 }] },
+    { "idOrden": 1755726800000, "folio": "ORD-20260820-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": 3, "empresaNombre": "Transportes Rapidos del Norte SAC", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "REDUCIDO", "tasaIva": 18, "subtotal": 2032.20, "iva": 365.80, "total": 2398.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-20T14:00:00.000Z", "items": [{ "sku": "ACC-001", "nombreProducto": "Hub USB-C 7-en-1", "cantidad": 2, "precioUnitario": 549, "ivaLinea": 197.64, "subtotalLinea": 1098.00 }, { "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 3, "precioUnitario": 189, "ivaLinea": 102.06, "subtotalLinea": 567.00 }] },
+    { "idOrden": 1755900000000, "folio": "ORD-20260822-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 634.75, "iva": 114.75, "total": 749.50, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-22T09:30:00.000Z", "items": [{ "sku": "GAM-002", "nombreProducto": "Diadema Gaming 7.1 RGB", "cantidad": 1, "precioUnitario": 799, "ivaLinea": 143.82, "subtotalLinea": 799.00 }] },
+    { "idOrden": 1756072800000, "folio": "ORD-20260824-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 2, "usuarioNombre": "carmen", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 550.00, "iva": 99.00, "total": 649.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-24T11:45:00.000Z", "items": [{ "sku": "BOC-001", "nombreProducto": "Bocina Bluetooth Portatil 20W", "cantidad": 1, "precioUnitario": 649, "ivaLinea": 117.11, "subtotalLinea": 649.00 }] },
+    { "idOrden": 1755728000000, "folio": "ORD-20260819-003", "canal": "CAJA", "estado": "PAGADA", "sedeId": 3, "usuarioNombre": "pedro", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1269.49, "iva": 229.51, "total": 1499.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-19T11:00:00.000Z", "items": [{ "sku": "GAM-001", "nombreProducto": "Control Inalambrico Pro PC/Switch", "cantidad": 1, "precioUnitario": 1499, "ivaLinea": 272.49, "subtotalLinea": 1499.00 }] },
+    { "idOrden": 1755724800000, "folio": "ORD-20260820-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 3, "usuarioNombre": "pedro", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 3304.24, "iva": 594.76, "total": 3899.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-20T10:00:00.000Z", "items": [{ "sku": "MON-001", "nombreProducto": "Monitor LED 27\" 144Hz QHD", "cantidad": 1, "precioUnitario": 3899, "ivaLinea": 594.76, "subtotalLinea": 3899.00 }] },
+    { "idOrden": 1755897600000, "folio": "ORD-20260822-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 3, "usuarioNombre": "pedro", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 761.86, "iva": 137.14, "total": 899.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-22T11:15:00.000Z", "items": [{ "sku": "MIC-001", "nombreProducto": "Microfono Condensador USB", "cantidad": 1, "precioUnitario": 899, "ivaLinea": 161.82, "subtotalLinea": 899.00 }] },
+    { "idOrden": 1756329600000, "folio": "ORD-20260825-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 3, "usuarioNombre": "pedro", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1269.49, "iva": 228.51, "total": 1498.00, "metodoPago": "YAPE", "yapeComprobante": null, "yapeOperacion": "YAP-88442211", "fechaCreacion": "2026-08-25T14:00:00.000Z", "items": [{ "sku": "GAM-001", "nombreProducto": "Control Inalambrico Pro PC/Switch", "cantidad": 1, "precioUnitario": 1499, "ivaLinea": 272.49, "subtotalLinea": 1499.00 }] },
+    { "idOrden": 1756329600001, "folio": "ORD-20260825-002", "canal": "WEB", "estado": "PAGADA", "sedeId": 3, "usuarioNombre": "pedro", "empresaId": 1, "empresaNombre": "Comercial Andina del Sur SAC", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 12694.92, "iva": 2295.08, "total": 14990.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-25T16:45:00.000Z", "items": [{ "sku": "LAP-001", "nombreProducto": "Laptop 14\" Core i5 16GB 512GB", "cantidad": 1, "precioUnitario": 12499, "ivaLinea": 1906.63, "subtotalLinea": 12499.00 }, { "sku": "CAR-001", "nombreProducto": "Power Bank 20000mAh PD 22.5W", "cantidad": 1, "precioUnitario": 429, "ivaLinea": 69.59, "subtotalLinea": 385.25 }, { "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 1, "precioUnitario": 189, "ivaLinea": 34.02, "subtotalLinea": 189.00 }] },
+    { "idOrden": 1755649200000, "folio": "ORD-20260819-004", "canal": "CAJA", "estado": "PAGADA", "sedeId": 4, "usuarioNombre": "roberto", "empresaId": 4, "empresaNombre": "Minera Horizonte SRL", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 10592.37, "iva": 1906.63, "total": 12499.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-19T11:20:00.000Z", "items": [{ "sku": "LAP-001", "nombreProducto": "Laptop 14\" Core i5 16GB 512GB", "cantidad": 1, "precioUnitario": 12499, "ivaLinea": 1906.63, "subtotalLinea": 12499.00 }] },
+    { "idOrden": 1755984000000, "folio": "ORD-20260821-002", "canal": "CAJA", "estado": "PAGADA", "sedeId": 4, "usuarioNombre": "roberto", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 5389.83, "iva": 969.17, "total": 6359.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-21T10:30:00.000Z", "items": [{ "sku": "CEL-001", "nombreProducto": "Smartphone 6.7\" 128GB Dual SIM", "cantidad": 1, "precioUnitario": 8999, "ivaLinea": 1383.35, "subtotalLinea": 7626.27 }, { "sku": "ACC-003", "nombreProducto": "Soporte Laptop Aluminio Ajustable", "cantidad": 1, "precioUnitario": 299, "ivaLinea": 53.82, "subtotalLinea": 299.00 }] },
+    { "idOrden": 1756159200000, "folio": "ORD-20260823-001", "canal": "CAJA", "estado": "PAGADA", "sedeId": 4, "usuarioNombre": "roberto", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1609.32, "iva": 289.68, "total": 1899.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-23T14:20:00.000Z", "items": [{ "sku": "CEL-001", "nombreProducto": "Smartphone 6.7\" 128GB Dual SIM", "cantidad": 1, "precioUnitario": 8999, "ivaLinea": 1383.35, "subtotalLinea": 7626.27 }, { "sku": "AUD-002", "nombreProducto": "Audifonos TWS Inalambricos Pro", "cantidad": 2, "precioUnitario": 799, "ivaLinea": 287.64, "subtotalLinea": 1598.00 }, { "sku": "ACC-002", "nombreProducto": "Cable HDMI 2.1 2m 8K", "cantidad": 4, "precioUnitario": 189, "ivaLinea": 136.08, "subtotalLinea": 756.00 }] },
+    { "idOrden": 1756075200000, "folio": "ORD-20260824-003", "canal": "CAJA", "estado": "PAGADA", "sedeId": 4, "usuarioNombre": "roberto", "empresaId": 2, "empresaNombre": "Instituto Educativo San Martin", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "EXENTO", "tasaIva": 18, "subtotal": 7626.27, "iva": 1372.73, "total": 8999.00, "metodoPago": "TARJETA", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-24T15:00:00.000Z", "items": [{ "sku": "CEL-001", "nombreProducto": "Smartphone 6.7\" 128GB Dual SIM", "cantidad": 1, "precioUnitario": 8999, "ivaLinea": 1383.35, "subtotalLinea": 8999.00 }] },
+    { "idOrden": 1756156800000, "folio": "ORD-20260825-003", "canal": "CAJA", "estado": "PAGADA", "sedeId": 4, "usuarioNombre": "roberto", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1269.49, "iva": 229.51, "total": 1499.00, "metodoPago": "EFECTIVO", "yapeComprobante": null, "yapeOperacion": null, "fechaCreacion": "2026-08-25T10:15:00.000Z", "items": [{ "sku": "GAM-001", "nombreProducto": "Control Inalambrico Pro PC/Switch", "cantidad": 1, "precioUnitario": 1499, "ivaLinea": 272.49, "subtotalLinea": 1499.00 }] },
+    { "idOrden": 1756243200000, "folio": "ORD-20260825-004", "canal": "CAJA", "estado": "PAGADA", "sedeId": 4, "usuarioNombre": "roberto", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 363.56, "iva": 65.44, "total": 429.00, "metodoPago": "YAPE", "yapeComprobante": null, "yapeOperacion": "YAP-55667788", "fechaCreacion": "2026-08-25T17:30:00.000Z", "items": [{ "sku": "CAR-001", "nombreProducto": "Power Bank 20000mAh PD 22.5W", "cantidad": 1, "precioUnitario": 429, "ivaLinea": 77.22, "subtotalLinea": 429.00 }] },
+    { "idOrden": 1756416000000, "folio": "ORD-20260826-001", "canal": "CAJA", "estado": "PENDIENTE", "sedeId": 4, "usuarioNombre": "roberto", "empresaId": null, "empresaNombre": "Consumidor final", "paisNombre": "Peru", "banderaEmoji": "\ud83c\uddf5\ud83c\uddfa", "regimenFiscal": "GENERAL", "tasaIva": 18, "subtotal": 1269.49, "iva": 228.51, "total": 1498.00, "metodoPago": "YAPE", "yapeComprobante": null, "yapeOperacion": "YAP-11223344", "fechaCreacion": "2026-08-26T10:00:00.000Z", "items": [{ "sku": "GAM-001", "nombreProducto": "Control Inalambrico Pro PC/Switch", "cantidad": 1, "precioUnitario": 1499, "ivaLinea": 272.49, "subtotalLinea": 1499.00 }] }
   ],
-  "movimientos": [
-    { "idMovimiento": 1755489780001, "tipo": "SALIDA_VENTA", "productoId": 2, "cantidad": 2, "stockResultante": 28, "referencia": "ORD-20260818-001", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-18T10:23:00.000Z" },
-    { "idMovimiento": 1755489780002, "tipo": "SALIDA_VENTA", "productoId": 13, "cantidad": 1, "stockResultante": 19, "referencia": "ORD-20260818-001", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-18T10:23:00.000Z" },
-    { "idMovimiento": 1755510600001, "tipo": "SALIDA_VENTA", "productoId": 5, "cantidad": 1, "stockResultante": 29, "referencia": "ORD-20260818-002", "nota": null, "proveedorId": 2, "usuarioNombre": "cajero", "fecha": "2026-08-18T14:10:00.000Z" },
-    { "idMovimiento": 1755510600002, "tipo": "SALIDA_VENTA", "productoId": 6, "cantidad": 1, "stockResultante": 11, "referencia": "ORD-20260818-002", "nota": null, "proveedorId": 2, "usuarioNombre": "cajero", "fecha": "2026-08-18T14:10:00.000Z" },
-    { "idMovimiento": 1755510600003, "tipo": "SALIDA_VENTA", "productoId": 15, "cantidad": 2, "stockResultante": 58, "referencia": "ORD-20260818-002", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-18T14:10:00.000Z" },
-    { "idMovimiento": 1755638700001, "tipo": "SALIDA_VENTA", "productoId": 4, "cantidad": 1, "stockResultante": 17, "referencia": "ORD-20260819-001", "nota": null, "proveedorId": 2, "usuarioNombre": "cajero", "fecha": "2026-08-19T09:45:00.000Z" },
-    { "idMovimiento": 1755649200001, "tipo": "SALIDA_VENTA", "productoId": 8, "cantidad": 1, "stockResultante": 4, "referencia": "ORD-20260819-002", "nota": null, "proveedorId": 3, "usuarioNombre": "cajero", "fecha": "2026-08-19T11:20:00.000Z" },
-    { "idMovimiento": 1755724800001, "tipo": "SALIDA_VENTA", "productoId": 7, "cantidad": 1, "stockResultante": 7, "referencia": "ORD-20260820-001", "nota": null, "proveedorId": 3, "usuarioNombre": "cajero", "fecha": "2026-08-20T10:00:00.000Z" },
-    { "idMovimiento": 1755811200001, "tipo": "SALIDA_VENTA", "productoId": 1, "cantidad": 1, "stockResultante": 24, "referencia": "ORD-20260821-001", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-21T13:30:00.000Z" },
-    { "idMovimiento": 1755897600001, "tipo": "SALIDA_VENTA", "productoId": 11, "cantidad": 2, "stockResultante": 38, "referencia": "ORD-20260822-001", "nota": null, "proveedorId": 2, "usuarioNombre": "cajero", "fecha": "2026-08-22T11:15:00.000Z" },
-    { "idMovimiento": 1755897600002, "tipo": "SALIDA_VENTA", "productoId": 16, "cantidad": 1, "stockResultante": 24, "referencia": "ORD-20260822-001", "nota": null, "proveedorId": 3, "usuarioNombre": "cajero", "fecha": "2026-08-22T11:15:00.000Z" },
-    { "idMovimiento": 1755897600003, "tipo": "SALIDA_VENTA", "productoId": 15, "cantidad": 1, "stockResultante": 57, "referencia": "ORD-20260822-001", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-22T11:15:00.000Z" },
-    { "idMovimiento": 1755984000001, "tipo": "SALIDA_VENTA", "productoId": 9, "cantidad": 1, "stockResultante": 9, "referencia": "ORD-20260823-001", "nota": null, "proveedorId": 3, "usuarioNombre": "cajero", "fecha": "2026-08-23T10:30:00.000Z" },
-    { "idMovimiento": 1755984000002, "tipo": "SALIDA_VENTA", "productoId": 10, "cantidad": 1, "stockResultante": 34, "referencia": "ORD-20260823-001", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-23T10:30:00.000Z" },
-    { "idMovimiento": 1756070400001, "tipo": "SALIDA_VENTA", "productoId": 13, "cantidad": 1, "stockResultante": 18, "referencia": "ORD-20260824-001", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-24T09:00:00.000Z" },
-    { "idMovimiento": 1756156800001, "tipo": "SALIDA_VENTA", "productoId": 5, "cantidad": 3, "stockResultante": 26, "referencia": "ORD-20260825-001", "nota": null, "proveedorId": 2, "usuarioNombre": "cajero", "fecha": "2026-08-25T08:30:00.000Z" },
-    { "idMovimiento": 1756156800002, "tipo": "SALIDA_VENTA", "productoId": 2, "cantidad": 2, "stockResultante": 26, "referencia": "ORD-20260825-001", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-25T08:30:00.000Z" },
-    { "idMovimiento": 1756156800003, "tipo": "SALIDA_VENTA", "productoId": 16, "cantidad": 1, "stockResultante": 23, "referencia": "ORD-20260825-001", "nota": null, "proveedorId": 3, "usuarioNombre": "cajero", "fecha": "2026-08-25T08:30:00.000Z" },
-    { "idMovimiento": 1756243200001, "tipo": "SALIDA_VENTA", "productoId": 1, "cantidad": 1, "stockResultante": 23, "referencia": "ORD-20260825-002", "nota": null, "proveedorId": 1, "usuarioNombre": "cajero", "fecha": "2026-08-25T14:00:00.000Z" },
-    { "idMovimiento": 1756329600001, "tipo": "SALIDA_VENTA", "productoId": 8, "cantidad": 1, "stockResultante": 3, "referencia": "ORD-20260825-003", "nota": null, "proveedorId": 3, "usuarioNombre": "cajero", "fecha": "2026-08-25T16:45:00.000Z" },
-    { "idMovimiento": 1756416000001, "tipo": "SALIDA_VENTA", "productoId": 12, "cantidad": 1, "stockResultante": 14, "referencia": "ORD-20260826-001", "nota": null, "proveedorId": 2, "usuarioNombre": "cajero", "fecha": "2026-08-26T10:00:00.000Z" },
-    { "idMovimiento": 1755640000001, "tipo": "SALIDA_VENTA", "productoId": 3, "cantidad": 2, "stockResultante": 20, "referencia": "ORD-20260819-003", "nota": null, "proveedorId": 1, "usuarioNombre": "carmen", "fecha": "2026-08-19T15:20:00.000Z" },
-    { "idMovimiento": 1755726800001, "tipo": "SALIDA_VENTA", "productoId": 14, "cantidad": 2, "stockResultante": 12, "referencia": "ORD-20260820-002", "nota": null, "proveedorId": 2, "usuarioNombre": "carmen", "fecha": "2026-08-20T14:00:00.000Z" },
-    { "idMovimiento": 1755726800002, "tipo": "SALIDA_VENTA", "productoId": 10, "cantidad": 1, "stockResultante": 19, "referencia": "ORD-20260820-002", "nota": null, "proveedorId": 1, "usuarioNombre": "carmen", "fecha": "2026-08-20T14:00:00.000Z" },
-    { "idMovimiento": 1755726800003, "tipo": "SALIDA_VENTA", "productoId": 15, "cantidad": 3, "stockResultante": 32, "referencia": "ORD-20260820-002", "nota": null, "proveedorId": 1, "usuarioNombre": "carmen", "fecha": "2026-08-20T14:00:00.000Z" },
-    { "idMovimiento": 1755813000001, "tipo": "SALIDA_VENTA", "productoId": 12, "cantidad": 1, "stockResultante": 7, "referencia": "ORD-20260821-002", "nota": null, "proveedorId": 2, "usuarioNombre": "carmen", "fecha": "2026-08-21T16:10:00.000Z" },
-    { "idMovimiento": 1755900000001, "tipo": "SALIDA_VENTA", "productoId": 13, "cantidad": 1, "stockResultante": 11, "referencia": "ORD-20260822-002", "nota": null, "proveedorId": 1, "usuarioNombre": "carmen", "fecha": "2026-08-22T09:30:00.000Z" },
-    { "idMovimiento": 1755986400001, "tipo": "SALIDA_VENTA", "productoId": 15, "cantidad": 1, "stockResultante": 31, "referencia": "ORD-20260823-002", "nota": null, "proveedorId": 1, "usuarioNombre": "carmen", "fecha": "2026-08-23T14:20:00.000Z" },
-    { "idMovimiento": 1755986400002, "tipo": "SALIDA_VENTA", "productoId": 16, "cantidad": 1, "stockResultante": 14, "referencia": "ORD-20260823-002", "nota": null, "proveedorId": 3, "usuarioNombre": "carmen", "fecha": "2026-08-23T14:20:00.000Z" },
-    { "idMovimiento": 1756072800001, "tipo": "SALIDA_VENTA", "productoId": 3, "cantidad": 1, "stockResultante": 19, "referencia": "ORD-20260824-002", "nota": null, "proveedorId": 1, "usuarioNombre": "carmen", "fecha": "2026-08-24T11:45:00.000Z" },
-    { "idMovimiento": 1756159200001, "tipo": "SALIDA_VENTA", "productoId": 9, "cantidad": 1, "stockResultante": 4, "referencia": "ORD-20260825-004", "nota": null, "proveedorId": 3, "usuarioNombre": "carmen", "fecha": "2026-08-25T10:15:00.000Z" },
-    { "idMovimiento": 1755728000001, "tipo": "SALIDA_VENTA", "productoId": 11, "cantidad": 1, "stockResultante": 14, "referencia": "ORD-20260820-003", "nota": null, "proveedorId": 2, "usuarioNombre": "pedro", "fecha": "2026-08-20T16:30:00.000Z" },
-    { "idMovimiento": 1755902400001, "tipo": "SALIDA_VENTA", "productoId": 15, "cantidad": 1, "stockResultante": 19, "referencia": "ORD-20260822-003", "nota": null, "proveedorId": 1, "usuarioNombre": "pedro", "fecha": "2026-08-22T12:00:00.000Z" },
-    { "idMovimiento": 1756075200001, "tipo": "SALIDA_VENTA", "productoId": 12, "cantidad": 1, "stockResultante": 2, "referencia": "ORD-20260824-003", "nota": null, "proveedorId": 2, "usuarioNombre": "pedro", "fecha": "2026-08-24T15:00:00.000Z" }
-  ],
+  "movimientos": [],
   "incidencias": [
     {
       "idIncidencia": 1001, "sedeId": 1, "tipo": "DAÑO", "estado": "RESUELTA",
       "productoId": 13, "productoNombre": "Diadema Gaming 7.1 RGB", "sku": "GAM-002",
-      "descripcion": "Una unidad presento falla en el auricular izquierdo tras 3 dias de uso. Cliente solicitó cambio. Unidad reemplazada en garantia.",
+      "descripcion": "Una unidad con falla en auricular izquierdo tras 3 dias. Cliente solicitó cambio. Unidad reemplazada.",
       "usuarioNombre": "cajero", "fecha": "2026-08-21T14:00:00.000Z", "fechaResolucion": "2026-08-22T10:00:00.000Z"
+    },
+    {
+      "idIncidencia": 1002, "sedeId": 1, "tipo": "STOCK", "estado": "ABIERTA",
+      "productoId": 7, "productoNombre": "Monitor LED 27\" 144Hz QHD", "sku": "MON-001",
+      "descripcion": "Solo 2 monitores disponibles. Demanda alta por cyber cafes de la zona. Repo urgente.",
+      "usuarioNombre": "cajero", "fecha": "2026-08-23T09:00:00.000Z", "fechaResolucion": null
+    },
+    {
+      "idIncidencia": 1003, "sedeId": 1, "tipo": "DAÑO", "estado": "ABIERTA",
+      "productoId": 8, "productoNombre": "Laptop 14\" Core i5 16GB 512GB", "sku": "LAP-001",
+      "descripcion": "Ultima unidad con defecto de pantalla. Sin stock de repuesto. Cliente amenaza con reclamo.",
+      "usuarioNombre": "cajero", "fecha": "2026-08-24T16:00:00.000Z", "fechaResolucion": null
     },
     {
       "idIncidencia": 2001, "sedeId": 2, "tipo": "STOCK", "estado": "ABIERTA",
       "productoId": 12, "productoNombre": "Control Inalambrico Pro PC/Switch", "sku": "GAM-001",
-      "descripcion": "Stock bajo (8 unidades) y demanda creciente por temporada de videojuegos. Se necesita reposicion urgente del proveedor.",
+      "descripcion": "Stock bajo (6 unidades) y demanda creciente por temporada de videojuegos.",
       "usuarioNombre": "carmen", "fecha": "2026-08-22T16:00:00.000Z", "fechaResolucion": null
     },
     {
       "idIncidencia": 2002, "sedeId": 2, "tipo": "DEVOLUCION", "estado": "EN_PROCESO",
       "productoId": 15, "productoNombre": "Cable HDMI 2.1 2m 8K", "sku": "ACC-002",
-      "descripcion": "Cliente devolvio cable con conector danado. Solicita reembolso. Producto inspeccionado, defecto de fabrica confirmado.",
+      "descripcion": "Cliente devolvio cable con conector danado. Solicita reembolso. Defecto de fabrica confirmado.",
       "usuarioNombre": "carmen", "fecha": "2026-08-24T11:00:00.000Z", "fechaResolucion": null
     },
     {
       "idIncidencia": 3001, "sedeId": 3, "tipo": "STOCK", "estado": "ABIERTA",
       "productoId": 7, "productoNombre": "Monitor LED 27\" 144Hz QHD", "sku": "MON-001",
-      "descripcion": "CRITICO: Solo 1 unidad disponible en toda la sede. Demanda alta por apertura de ciber cafe local. Reposicion pendiente desde hace 2 semanas.",
+      "descripcion": "Solo 2 unidades disponibles. Demanda alta por apertura de ciber cafe local. Repo pendiente.",
       "usuarioNombre": "pedro", "fecha": "2026-08-19T09:00:00.000Z", "fechaResolucion": null
     },
     {
       "idIncidencia": 3002, "sedeId": 3, "tipo": "DAÑO", "estado": "ABIERTA",
       "productoId": 8, "productoNombre": "Laptop 14\" Core i5 16GB 512GB", "sku": "LAP-001",
-      "descripcion": "CRITICO: Unidad con pantalla con pixeles muertos. Cliente amenaza con reclamo formal ante Indecopi. Requiere reemplazo inmediato.",
+      "descripcion": "Unidad con pixeles muertos. Requiere reemplazo inmediato.",
       "usuarioNombre": "pedro", "fecha": "2026-08-20T17:00:00.000Z", "fechaResolucion": null
     },
     {
       "idIncidencia": 3003, "sedeId": 3, "tipo": "DAÑO", "estado": "ABIERTA",
       "productoId": 12, "productoNombre": "Control Inalambrico Pro PC/Switch", "sku": "GAM-001",
-      "descripcion": "Solo 2 unidades funcionales de 3. Un control con drift en joystick izquierdo, otro con gatillo stuck. Necesita devolucion al proveedor.",
+      "descripcion": "2 controles con drift en joystick y gatillo stuck. Devolucion al proveedor pendiente.",
       "usuarioNombre": "pedro", "fecha": "2026-08-22T14:30:00.000Z", "fechaResolucion": null
     },
     {
       "idIncidencia": 3004, "sedeId": 3, "tipo": "STOCK", "estado": "ABIERTA",
       "productoId": 9, "productoNombre": "Smartphone 6.7\" 128GB Dual SIM", "sku": "CEL-001",
-      "descripcion": "Solo 2 smartphones disponibles. Ultimo modelo con alta demanda. Sin reposicion programada. Sede en riesgo de quedarse sin inventario.",
+      "descripcion": "Solo 2 smartphones disponibles. Ultimo modelo con alta demanda. Riesgo de quedar sin stock.",
       "usuarioNombre": "pedro", "fecha": "2026-08-24T08:00:00.000Z", "fechaResolucion": null
     },
     {
-      "idIncidencia": 3005, "sedeId": 3, "tipo": "DEVOLUCION", "estado": "EN_PROCESO",
+      "idIncidencia": 4001, "sedeId": 4, "tipo": "DEVOLUCION", "estado": "EN_PROCESO",
       "productoId": 11, "productoNombre": "Cargador GaN 65W 3 Puertos", "sku": "CAR-002",
-      "descripcion": "Cliente reporta que cargador no entrega 65W completos en laptop. Sospecha de carga reducida. Pendiente prueba tecnica en sede.",
-      "usuarioNombre": "pedro", "fecha": "2026-08-25T10:00:00.000Z", "fechaResolucion": null
+      "descripcion": "Cliente reporta que cargador no entrega 65W completos. Pendiente prueba tecnica.",
+      "usuarioNombre": "roberto", "fecha": "2026-08-25T10:00:00.000Z", "fechaResolucion": null
+    },
+    {
+      "idIncidencia": 4002, "sedeId": 4, "tipo": "STOCK", "estado": "ABIERTA",
+      "productoId": 5, "productoNombre": "Teclado Mecanico RGB 87 Teclas", "sku": "TEC-001",
+      "descripcion": "Solo 8 teclados. Alta demanda de oficinas corporativas del distrito. Repo urgente.",
+      "usuarioNombre": "roberto", "fecha": "2026-08-24T14:00:00.000Z", "fechaResolucion": null
     }
   ],
   "usuarios": []

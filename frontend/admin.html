@@ -67,9 +67,10 @@
           <select id="sede-selector"
                   class="input-exec bg-white rounded-lg px-3 py-2 mr-2"
                   onchange="window.cambiarSede(this.value)">
-            <option value="1">Lima</option>
-            <option value="2">Arequipa</option>
-            <option value="3">Trujillo</option>
+            <option value="1">Villa El Salvador</option>
+            <option value="2">Chorrillos</option>
+            <option value="3">San Juan de Lurigancho</option>
+            <option value="4">Surco</option>
           </select>
         </div>
         <!-- Notificaciones + sesión -->
@@ -602,7 +603,7 @@
       localStorage.setItem("tm_sede_actual", Number(sedeId));
       // Disparar evento para que admin.js recargue datos
       window.dispatchEvent(new CustomEvent("sedeCambiada", { detail: { sedeId: Number(sedeId) } }));
-      const nombres = { 1: "Lima", 2: "Arequipa", 3: "Trujillo" };
+      const nombres = { 1: "Villa El Salvador", 2: "Chorrillos", 3: "San Juan de Lurigancho", 4: "Surco" };
       mostrarToast("Sede cambiada a " + (nombres[sedeId] || sedeId));
     };
 
