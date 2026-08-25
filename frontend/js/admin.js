@@ -15,7 +15,11 @@ import {
   crearEmpresa,
   getUsuarios,
   crearUsuario,
+  getProveedores,
+  crearProveedor,
+  getSedes,
 } from "./api.js";
+import { initReportesAdmin } from "./reportes-admin.js";
 
 const $form = document.getElementById("form-producto");
 const $formTitulo = document.getElementById("form-titulo");
@@ -141,7 +145,7 @@ async function renderTabla() {
             <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full">${p.categoriaNombre ?? "-"}</span>
           </td>
           <td class="px-4 py-3 text-right">
-            <p class="font-bold text-slate-800">$${Number(p.precioBase).toLocaleString("es-MX", { minimumFractionDigits: 2 })}</p>
+            <p class="font-bold text-slate-800">S/ ${Number(p.precioBase).toLocaleString("es-PE", { minimumFractionDigits: 2 })}</p>
             <p class="text-[10px] text-slate-400">sin IVA</p>
           </td>
           <td class="px-4 py-3 text-center font-semibold">${p.stock}</td>
@@ -172,7 +176,7 @@ function renderStats(productos) {
 
   document.getElementById("stat-total").textContent = total;
   document.getElementById("stat-valor").textContent =
-    "$" + valor.toLocaleString("es-MX", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    "S/ " + valor.toLocaleString("es-PE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   document.getElementById("stat-bajo").textContent = bajos;
   document.getElementById("stat-categorias").textContent =
     cacheCategorias.filter((c) => c.activa !== false).length;
@@ -295,10 +299,19 @@ $btnResetMock.addEventListener("click", () => {
 (async function init() {
   renderSesionAdmin();
   await cargarCategoriasEnSelect();
-  await initProveedores(); // llena el select del formulario + tabla
+  await initProveedores();
   await renderTabla();
-  await initEmpresas(); // módulo B2B: registro con país + listado con banderas
+  await initEmpresas();
+  await initReportesAdmin();
+  document.getElementById("rep-generado").textContent = sesionActual?.username ? `Generado por ${sesionActual.username}` : ``;
 })();
+
+/* ------------------- Escuchar cambio de sede para recargar datos ----------- */
+window.addEventListener("sedeCambiada", async () => {
+  await renderTabla();
+  await initReportesAdmin();
+  document.getElementById("rep-generado").textContent = sesionActual?.username ? `Generado por ${sesionActual.username}` : ``;
+});
 
 /* ============================================================================
  * PROVEEDORES — cadena de suministro: alta y catálogo (solo ADMIN).
@@ -498,6 +511,8 @@ async function renderUsuarios() {
           <p class="text-[11px] font-mono text-slate-400">@${u.username}</p>
         </td>
         <td class="px-4 py-3 text-center">${badgeRol(u.rol)}</td>
+        <td class="px-4 py-3 text-xs text-slate-500">${u.sedeNombre ?? "—"}</td>
+        <td class="px-4 py-3 text-center text-xs font-mono text-slate-600">${u.cajaNumero != null ? "Caja #" + u.cajaNumero : "—"}</td>
         <td class="px-4 py-3 text-xs text-slate-500">${u.email ?? "-"}</td>
         <td class="px-5 py-3 text-right text-slate-600">${u.paisNombre ?? "🌐 s/país"}</td>
       </tr>`
@@ -517,13 +532,15 @@ $formUsuario.addEventListener("submit", async (e) => {
         password: datos.password,
         nombreCompleto: datos.nombreCompleto.trim(),
         idPais: Number(datos.idPais),
+        sedeId: datos.sedeId ? Number(datos.sedeId) : null,
+        cajaNumero: datos.cajaNumero ? Number(datos.cajaNumero) : null,
       },
       datos.rol
     );
 
     mostrarToast(`✔ Usuario @${datos.username} creado como ${datos.rol}`, "exito");
     $formUsuario.reset();
-    await cargarPaises(); // repoblar selects tras reset()
+    await cargarPaises();
     await renderUsuarios();
   } catch (err) {
     console.error(err);
@@ -532,5 +549,15 @@ $formUsuario.addEventListener("submit", async (e) => {
 });
 
 (async function initUsuarios() {
+  // Cargar sedes en el select
+  try {
+    const sedes = await getSedes();
+    const $selectSede = $formUsuario.elements["sedeId"];
+    if ($selectSede) {
+      sedes.forEach((s) =>
+        $selectSede.insertAdjacentHTML("beforeend", `<option value="${s.idSede}">${s.nombre}</option>`)
+      );
+    }
+  } catch (err) { console.error(err); }
   await renderUsuarios();
 })();

@@ -14,6 +14,7 @@ import {
   getProveedores, registrarMovimiento, getMovimientos,
   crearIncidencia, getIncidencias, cambiarEstadoIncidencia,
   getReporteSemanal, getOrdenes, getCaja, registrarMovimientoCaja,
+  getSedeActual, getSedes,
 } from "./api.js";
 
 /* ------------------- Guardia de acceso CAJERO / ADMIN --------------------- */
@@ -44,7 +45,7 @@ const $lineas = document.getElementById("pos-lineas");
 const $vacioTicket = document.getElementById("pos-vacio-ticket");
 const $btnCobrar = document.getElementById("btn-cobrar");
 
-const fmt = (n) => "$" + Number(n).toLocaleString("es-MX", { minimumFractionDigits: 2 });
+const fmt = (n) => "S/ " + Number(n).toLocaleString("es-PE", { minimumFractionDigits: 2 });
 // Catálogo enfocado en ELECTRÓNICA: un emoji representativo por categoría.
 const EMOJIS = {
   Audio: ["🎧", "🎙️", "🔊", "🎵"],
@@ -58,13 +59,27 @@ const emojiDe = (p) => (EMOJIS[p.categoriaNombre] ?? ["📦"])[p.idProducto % 4]
 let catalogo = [];            // productos activos disponibles para vender
 let ticket = [];              // líneas actuales [{productoId, cantidad, nombre, precioBase}]
 let metodoPago = "EFECTIVO";  // método seleccionado
+let cajaHabilitada = false;   // ¿la caja ya fue habilitada con fondo inicial?
 
-document.getElementById("pos-cajero").textContent = `Cajero: ${sesion.username}`;
+const $posCajero = document.getElementById("pos-cajero");
+const $posSede = document.getElementById("pos-sede");
+const $posCajaNum = document.getElementById("pos-caja-num");
+
+// Mostrar info del cajero, sede y número de caja
+$posCajero.textContent = `Cajero: ${sesion.username}`;
+if (sesion.sedeNombre) {
+  $posSede.textContent = `📍 ${sesion.sedeNombre}`;
+  $posSede.classList.remove("hidden");
+}
+if (sesion.cajaNumero != null) {
+  $posCajaNum.textContent = `🧾 Caja #${sesion.cajaNumero}`;
+  $posCajaNum.classList.remove("hidden");
+}
 
 // Reloj de caja (ambiente POS).
 setInterval(() => {
   document.getElementById("pos-reloj").textContent =
-    new Date().toLocaleString("es-MX", { dateStyle: "medium", timeStyle: "short" });
+    new Date().toLocaleString("es-PE", { dateStyle: "medium", timeStyle: "short" });
 }, 1000);
 
 /* ------------------------------ Ticket ------------------------------------ */
@@ -151,6 +166,13 @@ function renderCatalogo() {
 
 async function cobrar() {
   if (!ticket.length) return;
+  if (!cajaHabilitada) {
+    document.getElementById("modal-habilitar").classList.remove("hidden");
+    document.getElementById("hab-sede").textContent = sesion.sedeNombre || "Sin sede";
+    document.getElementById("hab-caja").textContent = sesion.cajaNumero != null ? `#${sesion.cajaNumero}` : "Sin asignar";
+    document.getElementById("hab-cajero").textContent = `${sesion.username} (${sesion.rol})`;
+    return mostrarToast("Debes habilitar la caja antes de cobrar", "error");
+  }
 
   // Pago móvil (Yape): sin captura del comprobante no se permite cobrar.
   if (metodoPago === "YAPE" && !yapeComprobante)
@@ -381,7 +403,7 @@ async function refrescarKardex() {
     ? movs
         .map((m) => `
       <tr class="hover:bg-slate-700/30">
-        <td class="px-3 py-2 whitespace-nowrap text-slate-400">${new Date(m.fecha).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}</td>
+        <td class="px-3 py-2 whitespace-nowrap text-slate-400">${new Date(m.fecha).toLocaleString("es-PE", { dateStyle: "short", timeStyle: "short" })}</td>
         <td class="px-3 py-2">
           <span class="px-2 py-0.5 rounded-full font-bold ${ESTILO_MOV[m.tipo] ?? ""}">${ICONO_MOV[m.tipo] ?? ""} ${m.tipo}</span>
         </td>
@@ -457,7 +479,7 @@ async function refrescarIncidencias() {
         </div>
         <p class="text-xs text-slate-300">${i.descripcion}</p>
         <p class="text-[10px] text-slate-500 mt-1">
-          Reportó <b>${i.reportadoPor ?? "—"}</b> · ${new Date(i.fechaReporte).toLocaleString("es-MX")}
+          Reportó <b>${i.reportadoPor ?? "—"}</b> · ${new Date(i.fechaReporte).toLocaleString("es-PE")}
           ${i.resolucion ? `· Resolución: ${i.resolucion}` : ""}
         </p>
         ${
@@ -616,6 +638,40 @@ document.getElementById("btn-refresh-reporte").addEventListener("click", () => r
 
 /* ------------------------------ CAJA FÍSICA ------------------------------- */
 
+const HAB_KEY = `tm_caja_habilitada_${sesion.username}_${getSedeActual()}`;
+
+function verificarHabilitacion() {
+  const estado = localStorage.getItem(HAB_KEY);
+  if (estado === "true") {
+    cajaHabilitada = true;
+    document.getElementById("modal-habilitar").classList.add("hidden");
+  } else {
+    cajaHabilitada = false;
+    document.getElementById("modal-habilitar").classList.remove("hidden");
+    // Llenar info del modal
+    document.getElementById("hab-sede").textContent = sesion.sedeNombre || "Sin sede";
+    document.getElementById("hab-caja").textContent = sesion.cajaNumero != null ? `#${sesion.cajaNumero}` : "Sin asignar";
+    document.getElementById("hab-cajero").textContent = `${sesion.username} (${sesion.rol})`;
+  }
+}
+
+document.getElementById("btn-habilitar").addEventListener("click", async () => {
+  const monto = Number(document.getElementById("hab-monto").value);
+  if (!monto || monto <= 0) return mostrarToast("Ingresa un monto válido para el fondo inicial", "error");
+
+  try {
+    await registrarMovimientoCaja("FONDO", monto, "Fondo inicial de apertura de caja");
+    localStorage.setItem(HAB_KEY, "true");
+    cajaHabilitada = true;
+    document.getElementById("modal-habilitar").classList.add("hidden");
+    mostrarToast(`✅ Caja habilitada con fondo de ${fmt(monto)}`, "exito");
+    refrescarChipCaja();
+  } catch (err) {
+    console.error(err);
+    mostrarToast(err.message, "error");
+  }
+});
+
 async function refrescarChipCaja() {
   try {
     const { efectivo } = await getCaja();
@@ -646,7 +702,7 @@ async function renderCaja() {
         </div>
         <span class="text-right shrink-0">
           <b class="${COLOR_CAJA[m.tipo] ?? ""}">${m.tipo === "RETIRO" ? "−" : "+"}${fmt(m.monto)}</b>
-          <br/><span class="text-[9px] text-slate-500">${new Date(m.fecha).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}</span>
+          <br/><span class="text-[9px] text-slate-500">${new Date(m.fecha).toLocaleString("es-PE", { dateStyle: "short", timeStyle: "short" })}</span>
         </span>
       </li>`)
         .join("")
@@ -713,7 +769,7 @@ async function renderHistorial() {
         .map((o) => `
       <tr class="hover:bg-slate-700/30">
         <td class="px-4 py-2 font-mono text-[10px] text-emerald-400">${o.folio}</td>
-        <td class="px-4 py-2 whitespace-nowrap text-slate-300">${new Date(o.fechaCreacion).toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" })}</td>
+        <td class="px-4 py-2 whitespace-nowrap text-slate-300">${new Date(o.fechaCreacion).toLocaleString("es-PE", { dateStyle: "short", timeStyle: "short" })}</td>
         <td class="px-4 py-2 text-slate-400 max-w-[160px] truncate">${o.banderaEmoji ?? ""} ${o.empresaNombre ?? "—"}</td>
         <td class="px-4 py-2 text-center">${(o.items ?? []).reduce((s, i) => s + i.cantidad, 0)}</td>
         <td class="px-4 py-2 text-slate-400">${METODO_ICONO[o.metodoPago] ?? ""} ${o.metodoPago ?? ""}</td>
@@ -739,7 +795,7 @@ document.getElementById("tbody-historial").addEventListener("click", (e) => {
 
   document.getElementById("detalle-folio").textContent = orden.folio;
   document.getElementById("detalle-meta").textContent =
-    `${new Date(orden.fechaCreacion).toLocaleString("es-MX")} · ${orden.canal} · ${orden.metodoPago}` +
+    `${new Date(orden.fechaCreacion).toLocaleString("es-PE")} · ${orden.canal} · ${orden.metodoPago}` +
     (orden.paisNombre ? ` · ${orden.banderaEmoji ?? ""} ${orden.paisNombre}` : "");
   document.getElementById("detalle-lineas").innerHTML = (orden.items ?? [])
     .map(
@@ -791,6 +847,7 @@ async function cargarProductos() {
 (async function init() {
   pintarMetodos();
   renderTicket();
+  verificarHabilitacion();
 
   const [categorias, empresas] = await Promise.all([getCategorias(), getEmpresas()]);
   categorias.forEach((c) =>

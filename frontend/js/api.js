@@ -71,6 +71,24 @@ const MockDB = {
   },
 };
 
+/* ------------------------- SEDES (multi-sucursal) ------------------------- */
+
+/** Obtiene el ID de la sede seleccionada actualmente (localStorage). */
+export function getSedeActual() {
+  return Number(localStorage.getItem("tm_sede_actual")) || 1;
+}
+
+/** Establece la sede activa y la guarda en localStorage. */
+export function setSedeActual(idSede) {
+  localStorage.setItem("tm_sede_actual", Number(idSede));
+}
+
+/** Lista todas las sedes activas. */
+export async function getSedes() {
+  if (CONFIG.USE_API) return apiFetch("/sedes");
+  return MockDB.init().then((db) => (db.sedes ?? []).filter((s) => s.activa !== false));
+}
+
 /* ------------------------------ AUTENTICACIÓN ----------------------------- */
 
 /**
@@ -114,6 +132,9 @@ export async function validarLogin(username, password) {
     cuenta = perfil;
   }
   const pais = (db.paises ?? []).find((p) => p.idPais === Number(cuenta.idPais));
+  const sede = (db.sedes ?? []).find((s) => s.idSede === Number(cuenta.sedeId));
+  // Establecer sede activa al iniciar sesión
+  if (cuenta.sedeId) setSedeActual(cuenta.sedeId);
   return {
     username: cuenta.username,
     nombreCompleto: cuenta.nombreCompleto ?? null,
@@ -121,6 +142,9 @@ export async function validarLogin(username, password) {
     paisCodigo: pais ? pais.codigoIso2 : null,
     paisNombre: pais ? pais.nombre : null,
     banderaEmoji: banderaDe(pais ? pais.codigoIso2 : null),
+    sedeId: cuenta.sedeId ?? null,
+    sedeNombre: sede ? sede.nombre : null,
+    cajaNumero: cuenta.cajaNumero ?? null,
     credencialBase64: btoa(`${username}:${password}`),
   };
 }
@@ -196,6 +220,8 @@ export async function getUsuarios() {
     nombreCompleto: p.nombreCompleto,
     rol: p.rol,
     idPais: p.idPais ?? null,
+    sedeId: p.sedeId ?? null,
+    cajaNumero: p.cajaNumero ?? null,
     activo: true,
   }));
   const desdeUsuarios = (db.usuarios ?? []).map((u) => ({
@@ -205,15 +231,20 @@ export async function getUsuarios() {
     nombreCompleto: u.nombreCompleto,
     rol: u.rol,
     idPais: u.idPais ?? null,
+    sedeId: u.sedeId ?? null,
+    cajaNumero: u.cajaNumero ?? null,
     activo: u.activo !== false,
   }));
-  // Enriquecer con país/bandera antes de devolver.
+  // Enriquecer con país/bandera/sede antes de devolver.
+  const sedes = db.sedes ?? [];
   return [...desdePerfiles, ...desdeUsuarios].map((u) => {
     const pais = (db.paises ?? []).find((p) => p.idPais === Number(u.idPais));
+    const sede = sedes.find((s) => s.idSede === Number(u.sedeId));
     return {
       ...u,
       paisNombre: pais ? pais.nombre : null,
       banderaEmoji: banderaDe(pais ? pais.codigoIso2 : null),
+      sedeNombre: sede ? sede.nombre : null,
     };
   });
 }
@@ -241,7 +272,15 @@ export function crearUsuario(payload, rol) {
     if (!["CLIENTE", "CAJERO", "ADMIN"].includes(rol)) throw new Error("Rol inválido");
 
     db.usuarios = db.usuarios ?? [];
-    db.usuarios.push({ ...payload, idPais: pais.idPais, rol, activo: true, idUsuario: Date.now() });
+    db.usuarios.push({
+      ...payload,
+      idPais: pais.idPais,
+      sedeId: payload.sedeId ? Number(payload.sedeId) : null,
+      cajaNumero: payload.cajaNumero ? Number(payload.cajaNumero) : null,
+      rol,
+      activo: true,
+      idUsuario: Date.now(),
+    });
     MockDB.save(db);
     return { ok: true };
   })();
@@ -436,15 +475,24 @@ async function procesarVenta(payload, canal, endpointApi) {
 
   let acumuladoBase = 0;
   const items = [];
+  const sedeId = getSedeActual();
 
   for (const item of payload.items) {
     const producto = db.productos.find((p) => p.idProducto === Number(item.productoId));
     if (!producto) throw new Error(`Producto ${item.productoId} no encontrado`);
     const cantidad = Number(item.cantidad);
 
-    // Validación + descuento definitivo de stock (simula el UPDATE atómico).
-    if (producto.stock < cantidad)
-      throw new Error(`Stock insuficiente para "${producto.nombre}" (disponible: ${producto.stock})`);
+    // Stock real de la sede actual
+    const stockSede = (producto.sedeStock && producto.sedeStock[String(sedeId)] != null)
+      ? producto.sedeStock[String(sedeId)]
+      : producto.stock;
+    if (stockSede < cantidad)
+      throw new Error(`Stock insuficiente para "${producto.nombre}" (disponible: ${stockSede})`);
+
+    // Descontar del sedeStock y del stock global
+    if (producto.sedeStock) {
+      producto.sedeStock[String(sedeId)] = stockSede - cantidad;
+    }
     producto.stock -= cantidad;
 
     const precioUnitario = Number(producto.precioBase);
@@ -485,6 +533,7 @@ async function procesarVenta(payload, canal, endpointApi) {
     folio: folioMock(),
     canal,
     estado: "PAGADA",
+    sedeId,
     usuarioNombre: sesion.username,
     empresaId: empresa ? empresa.idEmpresa : null,
     empresaNombre: empresa ? empresa.razonSocial : "Consumidor final",
@@ -510,13 +559,16 @@ async function procesarVenta(payload, canal, endpointApi) {
   const nuevosMovs = db.movimientos.slice(-items.length);
   nuevosMovs.forEach((m) => (m.referencia = orden.folio));
 
-  // Caja física: los pagos en EFECTIVO engrosan el dinero en caja.
+  // Caja física: los pagos en EFECTIVO engrosan el dinero en caja de la sede.
   if (orden.metodoPago === "EFECTIVO") {
-    db.caja = db.caja ?? { efectivo: 1500 };
-    db.caja.efectivo = Math.round((Number(db.caja.efectivo) + orden.total) * 100) / 100;
+    const key = String(sedeId);
+    db.cajas = db.cajas ?? {};
+    db.cajas[key] = db.cajas[key] ?? { efectivo: 0 };
+    db.cajas[key].efectivo = Math.round((Number(db.cajas[key].efectivo) + orden.total) * 100) / 100;
     db.cajaMovimientos = db.cajaMovimientos ?? [];
     db.cajaMovimientos.push({
       tipo: "VENTA",
+      sedeId,
       monto: orden.total,
       nota: `Venta ${orden.folio}`,
       usuarioNombre: sesion.username,
@@ -543,10 +595,11 @@ export function getOrdenes() {
   if (CONFIG.USE_API) return apiFetch("/ordenes");
   return MockDB.init().then((db) => {
     const sesion = Sesion.obtener();
+    const sedeId = getSedeActual();
     const ordenes = db.ordenes ?? [];
     if (!sesion) return [];
-    if (sesion.rol === "ADMIN") return [...ordenes].reverse();
-    if (sesion.rol === "CAJERO") return [...ordenes].reverse().filter((o) => o.canal === "CAJA");
+    if (sesion.rol === "ADMIN") return [...ordenes].filter((o) => o.sedeId === sedeId || o.sedeId == null).reverse();
+    if (sesion.rol === "CAJERO") return [...ordenes].reverse().filter((o) => o.canal === "CAJA" && (o.sedeId === sedeId || o.sedeId == null));
     return [...ordenes].reverse().filter((o) => o.usuarioNombre === sesion.username);
   });
 }
@@ -593,7 +646,16 @@ export async function getProductos(filtros = {}) {
       (p) => p.nombre.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q)
     );
   }
-  return structuredClone(productos);
+  // Aplicar stock de la sede actual
+  const sedeId = getSedeActual();
+  productos = productos.map((p) => {
+    const clone = structuredClone(p);
+    if (p.sedeStock && p.sedeStock[String(sedeId)] != null) {
+      clone.stock = p.sedeStock[String(sedeId)];
+    }
+    return clone;
+  });
+  return productos;
 }
 
 export function getProducto(id) {
@@ -601,7 +663,12 @@ export function getProducto(id) {
   return MockDB.init().then((db) => {
     const p = db.productos.find((x) => x.idProducto === Number(id));
     if (!p) throw new Error(`Producto ${id} no encontrado`);
-    return structuredClone(p);
+    const clone = structuredClone(p);
+    const sedeId = getSedeActual();
+    if (p.sedeStock && p.sedeStock[String(sedeId)] != null) {
+      clone.stock = p.sedeStock[String(sedeId)];
+    }
+    return clone;
   });
 }
 
@@ -906,8 +973,12 @@ export async function getReporteSemanal() {
   if (CONFIG.USE_API) return apiFetch("/reportes/semanal");
 
   const db = await MockDB.init();
+  const sedeId = getSedeActual();
 
-  // --- Ventas por día (7 días, incluido hoy; días sin ventas = $0) ---
+  // Filtrar órdenes por sede
+  const ordenesSede = (db.ordenes ?? []).filter((o) => o.sedeId === sedeId || o.sedeId == null);
+
+  // --- Ventas por día (7 días, incluido hoy; días sin ventas = S/ 0) ---
   const hoy = new Date();
   hoy.setHours(23, 59, 59, 999);
   const dias = [];
@@ -917,7 +988,7 @@ export async function getReporteSemanal() {
   for (let i = 6; i >= 0; i--) {
     const fin = new Date(hoy.getTime() - i * 24 * 3600 * 1000);
     const inicio = new Date(fin); inicio.setHours(0, 0, 0, 0);
-    const ordenesDia = (db.ordenes ?? []).filter((o) => {
+    const ordenesDia = ordenesSede.filter((o) => {
       const f = new Date(o.fechaCreacion);
       return o.estado === "PAGADA" && f >= inicio && f <= fin;
     });
@@ -935,7 +1006,7 @@ export async function getReporteSemanal() {
 
   // --- Top productos por unidades vendidas ---
   const acumulado = {};
-  for (const orden of db.ordenes ?? []) {
+  for (const orden of ordenesSede) {
     if (orden.estado !== "PAGADA") continue;
     for (const it of orden.items ?? []) {
       acumulado[it.sku] = acumulado[it.sku] ?? {
@@ -955,15 +1026,26 @@ export async function getReporteSemanal() {
 
   // --- Bajo stock (en o debajo del mínimo): para pedir al proveedor ---
   const bajoStock = db.productos
-    .filter((p) => p.activo !== false && p.stock <= p.stockMinimo)
-    .map((p) => ({
-      idProducto: p.idProducto,
-      sku: p.sku,
-      nombre: p.nombre,
-      stock: p.stock,
-      stockMinimo: p.stockMinimo,
-      proveedorNombre: p.proveedorNombre ?? null,
-    }));
+    .filter((p) => {
+      if (p.activo === false) return false;
+      const stockActual = (p.sedeStock && p.sedeStock[String(sedeId)] != null)
+        ? p.sedeStock[String(sedeId)]
+        : p.stock;
+      return stockActual <= p.stockMinimo;
+    })
+    .map((p) => {
+      const stockActual = (p.sedeStock && p.sedeStock[String(sedeId)] != null)
+        ? p.sedeStock[String(sedeId)]
+        : p.stock;
+      return {
+        idProducto: p.idProducto,
+        sku: p.sku,
+        nombre: p.nombre,
+        stock: stockActual,
+        stockMinimo: p.stockMinimo,
+        proveedorNombre: p.proveedorNombre ?? null,
+      };
+    });
 
   return {
     totalVentas,
@@ -977,20 +1059,23 @@ export async function getReporteSemanal() {
 
 /* --------------------------- CAJA FÍSICA (EFECTIVO) ----------------------- */
 
-/** Estado del dinero en caja + últimos movimientos (ventas, fondos, retiros). */
+/** Estado del dinero en caja + últimos movimientos (ventas, fondos, retiros) para la sede actual. */
 export async function getCaja() {
   const db = await MockDB.init();
-  db.caja = db.caja ?? { efectivo: 1500 };
+  const sedeId = getSedeActual();
+  const cajas = db.cajas ?? {};
+  const caja = cajas[String(sedeId)] ?? { efectivo: 0 };
   return {
-    efectivo: Number(db.caja.efectivo),
+    efectivo: Number(caja.efectivo),
     movimientos: [...(db.cajaMovimientos ?? [])]
+      .filter((m) => m.sedeId === sedeId || m.sedeId == null)
       .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
       .slice(0, 20),
   };
 }
 
 /**
- * Movimiento de caja manual:
+ * Movimiento de caja manual (por sede):
  *  - FONDO: el cajero agrega efectivo (cambio para empezar el día, solicitar más).
  *  - RETIRO: saca dinero (a bóveda/depósito) — no puede dejar la caja negativa.
  */
@@ -1001,25 +1086,29 @@ export async function registrarMovimientoCaja(tipo, monto, nota) {
   const m = Math.round(Number(monto) * 100) / 100;
   if (!Number.isFinite(m) || m <= 0) throw new Error("Monto inválido");
 
+  const sedeId = getSedeActual();
   const db = await MockDB.init();
-  db.caja = db.caja ?? { efectivo: 1500 };
-  if (tipo === "RETIRO" && m > Number(db.caja.efectivo))
-    throw new Error(`No hay suficiente efectivo en caja ($${Number(db.caja.efectivo).toFixed(2)})`);
+  db.cajas = db.cajas ?? {};
+  const key = String(sedeId);
+  db.cajas[key] = db.cajas[key] ?? { efectivo: 0 };
+  if (tipo === "RETIRO" && m > Number(db.cajas[key].efectivo))
+    throw new Error(`No hay suficiente efectivo en caja (S/ ${Number(db.cajas[key].efectivo).toFixed(2)})`);
 
-  db.caja.efectivo = Math.round(
-    (tipo === "FONDO" ? Number(db.caja.efectivo) + m : Number(db.caja.efectivo) - m) * 100
+  db.cajas[key].efectivo = Math.round(
+    (tipo === "FONDO" ? Number(db.cajas[key].efectivo) + m : Number(db.cajas[key].efectivo) - m) * 100
   ) / 100;
 
   db.cajaMovimientos = db.cajaMovimientos ?? [];
   db.cajaMovimientos.push({
     tipo,
+    sedeId,
     monto: m,
     nota: (nota || "").trim() || null,
     usuarioNombre: sesion.username,
     fecha: new Date().toISOString(),
   });
   MockDB.save(db);
-  return { efectivo: db.caja.efectivo };
+  return { efectivo: db.cajas[key].efectivo };
 }
 
 /* ---------------------------- LO MÁS POPULAR ------------------------------ */
@@ -1031,9 +1120,10 @@ export async function registrarMovimientoCaja(tipo, monto, nota) {
  */
 export async function getProductosPopulares(limite = 8) {
   const db = await MockDB.init();
+  const sedeId = getSedeActual();
 
   const unidadesPorSku = {};
-  for (const orden of db.ordenes ?? []) {
+  for (const orden of (db.ordenes ?? []).filter((o) => o.sedeId === sedeId || o.sedeId == null)) {
     if (orden.estado !== "PAGADA") continue;
     for (const it of orden.items ?? []) {
       unidadesPorSku[it.sku] = (unidadesPorSku[it.sku] ?? 0) + it.cantidad;
@@ -1041,8 +1131,19 @@ export async function getProductosPopulares(limite = 8) {
   }
 
   const populares = db.productos
-    .filter((p) => p.activo !== false && p.stock > 0)
-    .map((p) => ({ ...p, unidadesVendidas: unidadesPorSku[p.sku] ?? 0 }))
+    .filter((p) => {
+      if (p.activo === false) return false;
+      const stockActual = (p.sedeStock && p.sedeStock[String(sedeId)] != null)
+        ? p.sedeStock[String(sedeId)]
+        : p.stock;
+      return stockActual > 0;
+    })
+    .map((p) => {
+      const stockActual = (p.sedeStock && p.sedeStock[String(sedeId)] != null)
+        ? p.sedeStock[String(sedeId)]
+        : p.stock;
+      return { ...p, stock: stockActual, unidadesVendidas: unidadesPorSku[p.sku] ?? 0 };
+    })
     .sort((a, b) => b.unidadesVendidas - a.unidadesVendidas)
     .slice(0, limite);
 

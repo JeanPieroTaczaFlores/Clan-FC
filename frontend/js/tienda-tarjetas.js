@@ -96,8 +96,8 @@ export function tarjetaProducto(p) {
 
       <div class="flex items-end justify-between mt-auto pt-2">
         <div>
-          <p class="text-lg font-extrabold text-slate-900">$${Number(p.precioBase).toLocaleString("es-MX", { minimumFractionDigits: 2 })}</p>
-          <p class="text-[10px] text-slate-400">12 MSI de $${(Number(p.precioBase) / 12).toFixed(2)}</p>
+          <p class="text-lg font-extrabold text-slate-900">S/ ${Number(p.precioBase).toLocaleString("es-PE", { minimumFractionDigits: 2 })}</p>
+          <p class="text-[10px] text-slate-400">12 MSI de S/ ${(Number(p.precioBase) / 12).toFixed(2)}</p>
           <p class="text-[9px] uppercase tracking-wide text-slate-300 mt-0.5">IVA no incluido*</p>
         </div>
         <button data-agregar="${p.idProducto}" ${agotado ? "disabled" : ""}

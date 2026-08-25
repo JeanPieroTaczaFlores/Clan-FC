@@ -3,93 +3,240 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TiendaMenos — Panel Admin</title>
+  <title>TiendaMenos — Suite Ejecutiva</title>
+
+  <!-- Tipografía corporativa -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"] } } } };
+  </script>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="bg-slate-100 min-h-screen">
+<body class="bg-slate-100 min-h-screen font-sans text-slate-800">
 
-  <!-- ================= NAVBAR ================= -->
-  <header class="bg-slate-800 text-white shadow-md">
-    <nav class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-      <a href="admin.html" class="text-xl font-bold">⚙️ TiendaMenos · Admin</a>
-      <!-- Zona de sesión (render por admin.js) -->
-      <div id="zona-sesion" class="ml-auto flex items-center gap-3"></div>
-    </nav>
-  </header>
-
-  <main class="max-w-7xl mx-auto px-4 py-8">
-
-    <!-- ================= TARJETAS DE MÉTRICAS ================= -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
-        <div class="flex items-center justify-between">
-          <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Productos</p>
-          <span class="text-xl">📦</span>
-        </div>
-        <p id="stat-total" class="text-2xl font-extrabold text-slate-800 mt-1">—</p>
-        <p class="text-[11px] text-slate-400">en inventario</p>
-      </div>
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
-        <div class="flex items-center justify-between">
-          <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Valor inventario</p>
-          <span class="text-xl">💰</span>
-        </div>
-        <p id="stat-valor" class="text-2xl font-extrabold text-emerald-600 mt-1">—</p>
-        <p class="text-[11px] text-slate-400">precio base · sin IVA</p>
-      </div>
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
-        <div class="flex items-center justify-between">
-          <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Stock bajo</p>
-          <span class="text-xl">⚠️</span>
-        </div>
-        <p id="stat-bajo" class="text-2xl font-extrabold text-amber-500 mt-1">—</p>
-        <p class="text-[11px] text-slate-400">requieren reposición</p>
-      </div>
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
-        <div class="flex items-center justify-between">
-          <p class="text-xs font-bold uppercase tracking-wide text-slate-400">Categorías</p>
-          <span class="text-xl">🏷️</span>
-        </div>
-        <p id="stat-categorias" class="text-2xl font-extrabold text-indigo-600 mt-1">—</p>
-        <p class="text-[11px] text-slate-400">activas en catálogo</p>
-      </div>
+  <!-- ================= SIDEBAR EJECUTIVO ================= -->
+  <aside id="sidebar"
+         class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full lg:translate-x-0 transition-transform duration-300
+                bg-gradient-to-b from-slate-950 via-slate-900 to-indigo-950 text-slate-300 flex flex-col">
+    <!-- Marca -->
+    <div class="px-6 py-6 border-b border-white/10">
+      <p class="text-[10px] uppercase tracking-[0.25em] text-indigo-400 font-semibold">Suite ejecutiva</p>
+      <a href="admin.html" class="mt-2 flex items-center gap-2.5">
+        <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-black shadow-lg shadow-indigo-900/50">T</span>
+        <span class="text-lg font-extrabold text-white tracking-tight">TiendaMenos</span>
+      </a>
     </div>
 
-    <!-- ================= FORMULARIO + TABLA ================= -->
-    <div class="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-8">
+    <!-- Navegación (scrollspy desde admin.js) -->
+    <nav class="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
+      <p class="px-3 pb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">General</p>
+      <a href="#sec-resumen"    data-nav class="exec-link"><span>🏛️</span> Resumen ejecutivo</a>
+      <a href="#seccion-reportes" data-nav class="exec-link"><span>📊</span> Reportes y gráficas</a>
+      <p class="px-3 pt-4 pb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">Operación</p>
+      <a href="#sec-inventario"  data-nav class="exec-link"><span>📦</span> Inventario</a>
+      <a href="#sec-proveedores" data-nav class="exec-link"><span>🚚</span> Proveedores</a>
+      <a href="#sec-empresas"    data-nav class="exec-link"><span>🌎</span> Empresas B2B</a>
+      <a href="#sec-usuarios"    data-nav class="exec-link"><span>👥</span> Usuarios</a>
+    </nav>
+
+    <!-- Pie del sidebar -->
+    <div class="px-6 py-4 border-t border-white/10 text-[11px] leading-relaxed text-slate-500">
+      <p class="font-semibold text-slate-400">TiendaMenos S.A. de C.V.</p>
+      <p>v2.0 · Documento de uso interno</p>
+    </div>
+  </aside>
+  <div id="sidebar-backdrop" class="fixed inset-0 z-30 bg-slate-950/50 backdrop-blur-sm hidden lg:hidden"></div>
+
+  <!-- ================= CONTENIDO PRINCIPAL ================= -->
+  <div class="lg:pl-64">
+
+    <!-- Topbar -->
+    <header class="sticky top-0 z-20 bg-white/85 backdrop-blur border-b border-slate-200">
+      <div class="max-w-[1400px] mx-auto px-4 sm:px-8 py-3.5 flex items-center gap-4">
+        <button id="btn-menu"
+                class="lg:hidden w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 grid place-items-center text-slate-600">☰</button>
+        <div class="min-w-0">
+          <h1 class="text-sm font-bold text-slate-900 truncate">Centro de administración</h1>
+          <p class="text-[11px] text-slate-400 hidden sm:block" id="fecha-hoy"></p>
+          <select id="sede-selector"
+                  class="input-exec bg-white rounded-lg px-3 py-2 mr-2"
+                  onchange="window.cambiarSede(this.value)">
+            <option value="1">Lima</option>
+            <option value="2">Arequipa</option>
+            <option value="3">Trujillo</option>
+          </select>
+        </div>
+        <!-- Zona de sesión (render por admin.js) -->
+        <div id="zona-sesion" class="ml-auto flex items-center gap-3"></div>
+      </div>
+    </header>
+
+    <main class="max-w-[1400px] mx-auto px-4 sm:px-8 py-8 space-y-10">
+
+      <!-- ================= RESUMEN EJECUTIVO ================= -->
+      <section id="sec-resumen" class="scroll-mt-24 fade-in">
+        <!-- Banda de bienvenida -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-700 via-indigo-600 to-violet-600
+                    text-white p-7 sm:p-9 shadow-xl shadow-indigo-900/20">
+          <div class="absolute -right-14 -top-16 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+          <div class="absolute right-28 -bottom-24 w-56 h-56 rounded-full bg-emerald-400/20 blur-2xl pointer-events-none"></div>
+          <p class="text-[11px] font-bold uppercase tracking-[0.3em] text-indigo-200">Dirección general</p>
+          <h2 class="mt-2 text-2xl sm:text-3xl font-black tracking-tight">Resumen ejecutivo del negocio</h2>
+          <p class="mt-2 max-w-xl text-sm text-indigo-100">
+            Panorama consolidado del inventario, las ventas y la cadena de suministro.
+            Exporte el reporte semanal en el formato que requiera su junta directiva.
+          </p>
+        </div>
+
+      <!-- Tarjetas KPI de inventario -->
+      <div class="grid grid-cols-2 xl:grid-cols-4 gap-5 mt-6">
+        <div class="kpi-card">
+          <div class="flex items-center justify-between">
+            <p class="kpi-label">Productos</p>
+            <span class="kpi-icon bg-indigo-100 text-indigo-600">📦</span>
+          </div>
+          <p id="stat-total" class="kpi-value text-slate-900">—</p>
+          <p class="kpi-caption">en inventario activo</p>
+        </div>
+        <div class="kpi-card">
+          <div class="flex items-center justify-between">
+            <p class="kpi-label">Valor inventario</p>
+            <span class="kpi-icon bg-emerald-100 text-emerald-600">💰</span>
+          </div>
+          <p id="stat-valor" class="kpi-value text-emerald-600">—</p>
+          <p class="kpi-caption">precio base · sin IVA</p>
+        </div>
+        <div class="kpi-card">
+          <div class="flex items-center justify-between">
+            <p class="kpi-label">Stock bajo</p>
+            <span class="kpi-icon bg-amber-100 text-amber-600">⚠️</span>
+          </div>
+          <p id="stat-bajo" class="kpi-value text-amber-500">—</p>
+          <p class="kpi-caption">requieren reposición</p>
+        </div>
+        <div class="kpi-card">
+          <div class="flex items-center justify-between">
+            <p class="kpi-label">Categorías</p>
+            <span class="kpi-icon bg-violet-100 text-violet-600">🏷️</span>
+          </div>
+          <p id="stat-categorias" class="kpi-value text-indigo-600">—</p>
+          <p class="kpi-caption">activas en catálogo</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= REPORTES Y GRÁFICAS ================= -->
+    <section id="seccion-reportes" class="card-exec p-6 sm:p-8 scroll-mt-24">
+      <header class="flex items-start justify-between flex-wrap gap-4 mb-6">
+        <div>
+          <div class="flex items-center gap-3 flex-wrap">
+            <h2 class="section-title">📊 Reportes y gráficas</h2>
+            <span id="rep-periodo"
+                  class="text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100 px-3 py-1 rounded-full">
+              últimos 7 días
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">
+            Reporte semanal consolidado — listo para presentación a dirección.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mr-1 hidden md:inline">Exportar</span>
+          <button id="btn-rep-excel"
+                  class="btn-export bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/25">⬇ Excel (.xlsx)</button>
+          <button id="btn-rep-word"
+                  class="btn-export bg-sky-600 hover:bg-sky-700 shadow-sky-600/25">⬇ Word (.doc)</button>
+          <button id="btn-rep-pdf"
+                  class="btn-export bg-red-600 hover:bg-red-700 shadow-red-600/25">⬇ PDF (.pdf)</button>
+          <button id="btn-rep-refresh" title="Recargar datos del reporte"
+                  class="text-xs text-slate-400 hover:text-indigo-600 underline decoration-dotted ml-1">
+            Actualizar ↻
+          </button>
+        </div>
+      </header>
+
+      <!-- KPIs del período + sparkline -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-7">
+        <div class="rounded-2xl bg-slate-50 border border-slate-100 p-5">
+          <div class="flex items-center justify-between">
+            <p class="kpi-label">Ventas 7 días</p>
+            <span class="kpi-icon bg-emerald-100 text-emerald-600">📈</span>
+          </div>
+          <p id="rep-kpi-ventas" class="text-2xl font-black text-emerald-600 mt-0.5">—</p>
+          <div class="h-9 mt-2"><canvas id="chart-spark"></canvas></div>
+        </div>
+        <div class="rounded-2xl bg-slate-50 border border-slate-100 p-5">
+          <div class="flex items-center justify-between">
+            <p class="kpi-label">Órdenes pagadas</p>
+            <span class="kpi-icon bg-indigo-100 text-indigo-600">🧾</span>
+          </div>
+          <p id="rep-kpi-ordenes" class="text-2xl font-black text-indigo-600 mt-0.5">—</p>
+          <p class="text-[11px] text-slate-400 mt-3">CAJA + WEB · estado PAGADA</p>
+        </div>
+        <div class="rounded-2xl bg-slate-50 border border-slate-100 p-5">
+          <div class="flex items-center justify-between">
+            <p class="kpi-label">Ticket promedio</p>
+            <span class="kpi-icon bg-violet-100 text-violet-600">🎯</span>
+          </div>
+          <p id="rep-kpi-ticket" class="text-2xl font-black text-slate-900 mt-0.5">—</p>
+          <p class="text-[11px] text-slate-400 mt-3" id="rep-generado"></p>
+        </div>
+      </div>
+
+      <!-- Gráficas -->
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div class="chart-box lg:col-span-3">
+          <h3 class="chart-title">Evolución de ventas por día <span class="text-slate-400 font-medium">(S/)</span></h3>
+          <div class="h-60"><canvas id="chart-ventas"></canvas></div>
+        </div>
+        <div class="chart-box lg:col-span-2">
+          <h3 class="chart-title">Distribución de stock por categoría</h3>
+          <div class="h-60"><canvas id="chart-categorias"></canvas></div>
+        </div>
+        <div class="chart-box lg:col-span-5">
+          <h3 class="chart-title">Top productos vendidos <span class="text-slate-400 font-medium">(unidades · 7 días)</span></h3>
+          <div class="h-56"><canvas id="chart-top"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= INVENTARIO ================= -->
+    <section id="sec-inventario" class="grid grid-cols-1 xl:grid-cols-[360px_1fr] gap-8 items-start scroll-mt-24">
 
     <!-- ================= FORMULARIO PRODUCTO ================= -->
-    <aside class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 h-fit lg:sticky lg:top-24">
+    <aside class="card-exec p-6 h-fit lg:sticky lg:top-24">
       <h2 id="form-titulo" class="text-lg font-bold text-slate-800 mb-4">➕ Agregar producto</h2>
 
       <!-- Nota: name= en cada input para leerlos con new FormData() -->
       <form id="form-producto" class="space-y-3 text-sm">
 
         <input name="sku" required placeholder="SKU (ej. ELEC-005)" 
-               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+               class="input-exec" />
 
         <input name="nombre" required placeholder="Nombre del producto"
-               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+               class="input-exec" />
 
         <textarea name="descripcion" rows="2" placeholder="Descripción"
-                  class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none"></textarea>
+                  class="input-exec"></textarea>
 
         <select name="categoriaId" required
-                class="w-full border rounded-lg px-3 py-2 bg-white outline-none">
+                class="input-exec bg-white outline-none">
           <option value="">— Seleccione categoría —</option>
         </select>
 
         <div class="grid grid-cols-2 gap-3">
           <label class="block">
-            <span class="text-xs text-slate-500">Precio base (MXN)</span>
+            <span class="text-xs text-slate-500">Precio base (S/)</span>
             <input name="precioBase" type="number" step="0.01" min="0" required
-                   class="w-full border rounded-lg px-3 py-2" />
+                   class="input-exec" />
           </label>
           <label class="block">
             <span class="text-xs text-slate-500">Stock</span>
             <input name="stock" type="number" min="0" required value="0"
-                   class="w-full border rounded-lg px-3 py-2" />
+                   class="input-exec" />
           </label>
         </div>
 
@@ -97,18 +244,18 @@
           <label class="block">
             <span class="text-xs text-slate-500">Stock mínimo</span>
             <input name="stockMinimo" type="number" min="0" required value="5"
-                   class="w-full border rounded-lg px-3 py-2" />
+                   class="input-exec" />
           </label>
           <label class="block">
             <span class="text-xs text-slate-500">Garantía (meses)</span>
             <input name="garantiaMeses" type="number" min="0" max="60" required value="12"
-                   class="w-full border rounded-lg px-3 py-2" />
+                   class="input-exec" />
           </label>
         </div>
 
         <!-- Proveedor: quién surte este producto (se llena desde api.getProveedores) -->
         <select name="proveedorId"
-                class="w-full border rounded-lg px-3 py-2 bg-white outline-none">
+                class="input-exec bg-white outline-none">
           <option value="">— Sin proveedor asignado —</option>
         </select>
 
@@ -118,7 +265,7 @@
         </label>
 
         <input name="imagenUrl" type="url" placeholder="URL de imagen (opcional)"
-               class="w-full border rounded-lg px-3 py-2" />
+               class="input-exec" />
 
         <div class="flex gap-2 pt-2">
           <button type="submit" id="btn-guardar"
@@ -136,7 +283,7 @@
     </aside>
 
     <!-- ================= TABLA INVENTARIO ================= -->
-    <section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <section class="card-exec overflow-hidden">
       <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between flex-wrap gap-2">
         <h2 class="text-lg font-bold text-slate-800">📦 Gestión de inventario</h2>
         <div class="flex items-center gap-3">
@@ -151,7 +298,7 @@
 
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
-          <thead class="bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
+          <thead class="thead-exec bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
             <tr>
               <th class="px-5 py-3">Producto</th>
               <th class="px-4 py-3">Categoría</th>
@@ -165,13 +312,13 @@
         </table>
       </div>
     </section>
-    </div><!-- /grid -->
+    </section><!-- /sec-inventario -->
 
     <!-- ================= PROVEEDORES (CADENA DE SUMINISTRO) ================= -->
-    <section class="mt-8 grid lg:grid-cols-[380px_1fr] gap-6 items-start">
+    <section id="sec-proveedores" class="grid xl:grid-cols-[380px_1fr] gap-6 items-start scroll-mt-24">
 
       <!-- Alta de proveedor -->
-      <aside class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+      <aside class="card-exec p-6">
         <h2 class="text-lg font-bold text-slate-800 mb-1">🚚 Nuevo proveedor</h2>
         <p class="text-xs text-slate-400 mb-5">
           Quiénes surten el inventario; las entradas de almacén quedan ligadas a ellos.
@@ -179,14 +326,14 @@
 
         <form id="form-proveedor" class="space-y-3 text-sm">
           <input name="nombre" required maxlength="120" placeholder="Nombre comercial *"
-                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec" />
           <input name="contactoNombre" maxlength="120" placeholder="Persona de contacto"
-                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec" />
           <div class="grid grid-cols-2 gap-3">
             <input name="telefono" maxlength="30" placeholder="Teléfono"
-                   class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                   class="input-exec" />
             <input name="email" type="email" maxlength="100" placeholder="Email"
-                   class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                   class="input-exec" />
           </div>
           <button type="submit"
                   class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition">
@@ -197,14 +344,14 @@
       </aside>
 
       <!-- Listado -->
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="card-exec overflow-hidden">
         <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <h2 class="text-lg font-bold text-slate-800">🚚 Proveedores activos</h2>
           <span id="proveedores-contador" class="text-xs text-slate-400"></span>
         </header>
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-left">
-            <thead class="bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
+            <thead class="thead-exec bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
               <tr>
                 <th class="px-5 py-3">Proveedor</th>
                 <th class="px-4 py-3">Contacto</th>
@@ -219,10 +366,10 @@
     </section>
 
     <!-- ================= EMPRESAS CLIENTES B2B (IVA POR PAÍS) ================= -->
-    <section class="mt-8 grid lg:grid-cols-[380px_1fr] gap-6 items-start">
+    <section id="sec-empresas" class="grid xl:grid-cols-[380px_1fr] gap-6 items-start scroll-mt-24">
 
       <!-- Formulario de registro: el país define las tasas de IVA -->
-      <aside class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+      <aside class="card-exec p-6">
         <h2 class="text-lg font-bold text-slate-800 mb-1">🏢 Registrar empresa cliente</h2>
         <p class="text-xs text-slate-400 mb-5">
           El IVA depende del país elegido; la tasa se calcula sola según su régimen.
@@ -230,17 +377,17 @@
 
         <form id="form-empresa" class="space-y-3 text-sm">
           <input name="razonSocial" required maxlength="150" placeholder="Razón social *"
-                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec" />
 
           <input name="rfc" required minlength="10" maxlength="13"
                  placeholder="RFC / NIT / RUC (10–13 caracteres) *"
-                 class="w-full border rounded-lg px-3 py-2 font-mono focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec font-mono focus:ring-2 focus:ring-indigo-400 outline-none" />
 
           <!-- Selector de país con banderas (se llena desde api.getPaises) -->
           <label class="block">
             <span class="text-xs font-semibold text-slate-500">País fiscal *</span>
             <select name="idPais" required
-                    class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+                    class="mt-1 input-exec bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
               <option value="">Cargando países…</option>
             </select>
           </label>
@@ -248,7 +395,7 @@
           <label class="block">
             <span class="text-xs font-semibold text-slate-500">Régimen fiscal</span>
             <select name="regimenFiscal"
-                    class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+                    class="mt-1 input-exec bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
               <option value="GENERAL">GENERAL — tasa general del país</option>
               <option value="REDUCIDO">REDUCIDO — tasa reducida del país</option>
               <option value="EXENTO">EXENTO — sin IVA (0%)</option>
@@ -256,7 +403,7 @@
           </label>
 
           <input name="contactoEmail" type="email" placeholder="Email de contacto (opcional)"
-                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec" />
 
           <button type="submit"
                   class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition">
@@ -267,14 +414,14 @@
       </aside>
 
       <!-- Listado de empresas con bandera, país y tasa aplicada -->
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="card-exec overflow-hidden">
         <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <h2 class="text-lg font-bold text-slate-800">🌎 Empresas clientes por país</h2>
           <span id="empresas-contador" class="text-xs text-slate-400"></span>
         </header>
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-left">
-            <thead class="bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
+            <thead class="thead-exec bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
               <tr>
                 <th class="px-5 py-3">Empresa</th>
                 <th class="px-4 py-3">País</th>
@@ -290,10 +437,10 @@
     </section>
 
     <!-- ================= USUARIOS DEL SISTEMA ================= -->
-    <section class="mt-8 grid lg:grid-cols-[380px_1fr] gap-6 items-start">
+    <section id="sec-usuarios" class="grid xl:grid-cols-[380px_1fr] gap-6 items-start scroll-mt-24">
 
       <!-- Alta de personal: cajeros y admins (clientes se autoregistran) -->
-      <aside class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+      <aside class="card-exec p-6">
         <h2 class="text-lg font-bold text-slate-800 mb-1">👤 Dar de alta usuario</h2>
         <p class="text-xs text-slate-400 mb-5">
           Crea cuentas de CAJERO o ADMIN. Los clientes se registran solos en la tienda.
@@ -301,16 +448,16 @@
 
         <form id="form-usuario" class="space-y-3 text-sm">
           <input name="nombreCompleto" required minlength="3" placeholder="Nombre completo *"
-                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec" />
           <input name="username" required minlength="3" placeholder="Usuario para iniciar sesión *"
-                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec" />
           <input name="email" type="email" required placeholder="Correo electrónico *"
-                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec" />
 
           <label class="block">
             <span class="text-xs font-semibold text-slate-500">Rol *</span>
             <select name="rol"
-                    class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+                    class="mt-1 input-exec bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
               <option value="CAJERO">CAJERO — punto de venta</option>
               <option value="ADMIN">ADMIN — panel de administración</option>
               <option value="CLIENTE">CLIENTE — compras web</option>
@@ -318,16 +465,30 @@
           </label>
 
           <label class="block">
+            <span class="text-xs font-semibold text-slate-500">Sede *</span>
+            <select name="sedeId"
+                    class="mt-1 input-exec bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+              <option value="">Sin sede</option>
+            </select>
+          </label>
+
+          <label class="block">
+            <span class="text-xs font-semibold text-slate-500">N° de caja (solo cajeros)</span>
+            <input name="cajaNumero" type="number" min="1" max="20" placeholder="Ej. 1"
+                   class="input-exec" />
+          </label>
+
+          <label class="block">
             <span class="text-xs font-semibold text-slate-500">País fiscal *</span>
             <select name="idPais" required
-                    class="mt-1 w-full border rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
+                    class="mt-1 input-exec bg-white focus:ring-2 focus:ring-indigo-400 outline-none">
               <option value="">Selecciona país…</option>
             </select>
           </label>
 
           <input name="password" type="password" required minlength="6" placeholder="Contraseña (mín. 6) *"
                  autocomplete="new-password"
-                 class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-400 outline-none" />
+                 class="input-exec" />
 
           <button type="submit"
                   class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg transition">
@@ -338,17 +499,19 @@
       </aside>
 
       <!-- Listado de usuarios con rol y país -->
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+      <div class="card-exec overflow-hidden">
         <header class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
           <h2 class="text-lg font-bold text-slate-800">👥 Usuarios del sistema</h2>
           <span id="usuarios-contador" class="text-xs text-slate-400"></span>
         </header>
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-left">
-            <thead class="bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
+            <thead class="thead-exec bg-slate-50/80 text-slate-500 uppercase text-[11px] tracking-wide">
               <tr>
                 <th class="px-5 py-3">Usuario</th>
                 <th class="px-4 py-3">Rol</th>
+                <th class="px-4 py-3">Sede</th>
+                <th class="px-4 py-3 text-center">Caja</th>
                 <th class="px-4 py-3">Correo</th>
                 <th class="px-5 py-3 text-right">País</th>
               </tr>
@@ -360,13 +523,43 @@
     </section>
   </main>
 
-  <footer class="text-center text-xs text-slate-400 py-6">
-    TiendaMenos · Panel de administración · Entregable 2
+  <footer class="border-t border-slate-200 bg-white/60">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-8 py-5 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+      <p><span class="font-bold text-slate-500">TiendaMenos S.A. de C.V.</span> · Suite Ejecutiva v2.0</p>
+      <p>© <span id="anio"></span> — Documento de uso interno · Entregable 2</p>
+    </div>
   </footer>
+  </div><!-- /lg:pl-64 -->
 
   <div id="toast-container" class="fixed bottom-6 right-6 space-y-2 z-50"></div>
 
+  <!-- Librerías de reportes: gráficas y exportación Excel/Word/PDF -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
   <script src="js/config.js"></script>
   <script type="module" src="js/admin.js"></script>
+  <script>
+    // Función para cambiar de sede y guardarla en localStorage
+    window.cambiarSede = function(sedeId) {
+      localStorage.setItem("tm_sede_actual", Number(sedeId));
+      // Disparar evento para que admin.js recargue datos
+      window.dispatchEvent(new CustomEvent("sedeCambiada", { detail: { sedeId: Number(sedeId) } }));
+      const nombres = { 1: "Lima", 2: "Arequipa", 3: "Trujillo" };
+      mostrarToast("Sede cambiada a " + (nombres[sedeId] || sedeId));
+    };
+
+    // Al cargar la página, recuperar la sede guardada (si existe)
+    document.addEventListener("DOMContentLoaded", function() {
+      const sedeGuardada = localStorage.getItem("tm_sede_actual") || "1";
+      const selector = document.getElementById("sede-selector");
+      if (selector) {
+        selector.value = sedeGuardada;
+        // No disparar evento al cargar, solo sincronizar selector
+      }
+    });
+  </script>
 </body>
 </html>

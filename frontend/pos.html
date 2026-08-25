@@ -15,6 +15,8 @@
       <a href="index.html" class="text-lg font-extrabold">Tienda<span class="text-emerald-400">Menos</span></a>
       <span class="text-xs bg-emerald-600 px-2.5 py-1 rounded-full font-bold tracking-wide">🧾 CAJA / POS</span>
       <span id="pos-cajero" class="text-xs text-slate-400"></span>
+      <span id="pos-sede" class="text-xs bg-slate-700 text-emerald-300 px-2.5 py-1 rounded-full font-bold hidden"></span>
+      <span id="pos-caja-num" class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-full font-bold hidden"></span>
       <div class="ml-auto flex items-center gap-3 text-sm">
         <span class="hidden md:inline text-xs text-slate-500" id="pos-reloj"></span>
         <a href="index.html" class="text-xs underline decoration-dotted hover:text-white">Tienda</a>
@@ -76,7 +78,7 @@
           <h2 class="font-extrabold tracking-wide">TICKET DE VENTA</h2>
           <div class="flex items-center gap-2">
             <span id="chip-caja" title="Efectivo disponible en caja"
-                  class="text-[10px] bg-black/20 hover:bg-black/30 cursor-pointer px-2 py-1 rounded-full font-bold transition">💵 $0.00</span>
+                  class="text-[10px] bg-black/20 hover:bg-black/30 cursor-pointer px-2 py-1 rounded-full font-bold transition">💵 S/ 0.00</span>
             <button id="pos-limpiar" title="Cancelar venta actual"
                     class="text-xs bg-white/20 hover:bg-white/30 px-2.5 py-1 rounded-full transition">✕ Limpiar</button>
           </div>
@@ -127,12 +129,12 @@
 
         <!-- Totales EN VIVO -->
         <div class="p-4 space-y-1.5 text-sm border-t border-dashed border-slate-300">
-          <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><b id="pos-subtotal">$0.00</b></div>
-          <div class="flex justify-between"><span class="text-slate-500">IVA (<span id="pos-tasa">16.00</span>%)</span><b id="pos-iva">$0.00</b></div>
+          <div class="flex justify-between"><span class="text-slate-500">Subtotal</span><b id="pos-subtotal">S/ 0.00</b></div>
+          <div class="flex justify-between"><span class="text-slate-500">IVA (<span id="pos-tasa">16.00</span>%)</span><b id="pos-iva">S/ 0.00</b></div>
           <p id="pos-regimen" class="text-[10px] text-slate-400"></p>
           <div class="flex justify-between items-end pt-2">
             <span class="font-extrabold text-slate-800 text-lg">TOTAL</span>
-            <b id="pos-total" class="text-3xl font-extrabold text-emerald-600 tracking-tight">$0.00</b>
+            <b id="pos-total" class="text-3xl font-extrabold text-emerald-600 tracking-tight">S/ 0.00</b>
           </div>
         </div>
 
@@ -311,11 +313,11 @@
       <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <div class="bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-2xl p-4 shadow-lg">
           <p class="text-[11px] font-bold uppercase tracking-widest text-emerald-100">Ventas 7 días</p>
-          <p class="text-2xl font-extrabold mt-1" id="rep-total">$0.00</p>
+          <p class="text-2xl font-extrabold mt-1" id="rep-total">S/ 0.00</p>
         </div>
         <div class="bg-gradient-to-br from-sky-600 to-sky-700 rounded-2xl p-4 shadow-lg">
           <p class="text-[11px] font-bold uppercase tracking-widest text-sky-100">Ventas de HOY</p>
-          <p class="text-2xl font-extrabold mt-1" id="rep-hoy">$0.00</p>
+          <p class="text-2xl font-extrabold mt-1" id="rep-hoy">S/ 0.00</p>
           <p class="text-[11px] text-sky-200" id="rep-hoy-ordenes">0 cobros</p>
         </div>
         <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-4">
@@ -324,7 +326,7 @@
         </div>
         <div class="bg-slate-800/60 border border-slate-700 rounded-2xl p-4">
           <p class="text-[11px] font-bold uppercase tracking-widest text-slate-400">Ticket promedio</p>
-          <p class="text-2xl font-extrabold mt-1" id="rep-promedio">$0.00</p>
+          <p class="text-2xl font-extrabold mt-1" id="rep-promedio">S/ 0.00</p>
         </div>
         <div class="bg-amber-500/10 border border-amber-500/40 rounded-2xl p-4">
           <p class="text-[11px] font-bold uppercase tracking-widest text-amber-400">Por surtir</p>
@@ -351,7 +353,7 @@
       <div class="grid lg:grid-cols-[1fr_1fr] gap-4 items-start">
         <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-2xl p-5">
           <p class="text-[11px] font-bold uppercase tracking-widest text-slate-400">💵 Efectivo en caja ahora</p>
-          <p class="text-4xl font-extrabold mt-2 text-emerald-400" id="caja-efectivo">$0.00</p>
+          <p class="text-4xl font-extrabold mt-2 text-emerald-400" id="caja-efectivo">S/ 0.00</p>
 
           <div class="mt-5 space-y-2">
             <label class="block">
@@ -480,6 +482,31 @@
       <button id="btn-nueva-venta" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition">
         Nueva venta →
       </button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL HABILITACIÓN DE CAJA ================= -->
+  <div id="modal-habilitar" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white text-slate-800 rounded-3xl shadow-2xl max-w-md w-full p-8 text-center fade-in">
+      <p class="text-6xl mb-3">🔐</p>
+      <h3 class="text-2xl font-extrabold">Habilitación de Caja</h3>
+      <p class="text-sm text-slate-500 mt-1 mb-2">Ingresa el fondo inicial para comenzar a operar.</p>
+      <div id="hab-info" class="bg-slate-50 rounded-2xl border border-slate-100 p-4 text-left text-sm space-y-1.5 mb-6">
+        <div class="flex justify-between"><span class="text-slate-500">Sede</span><b id="hab-sede" class="text-slate-800">—</b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Caja N°</span><b id="hab-caja" class="text-slate-800">—</b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Cajero</span><b id="hab-cajero" class="text-slate-800">—</b></div>
+      </div>
+      <label class="block text-left mb-4">
+        <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Fondo inicial (S/)</span>
+        <input id="hab-monto" type="number" min="1" step="0.01" value="200" placeholder="200.00"
+               class="mt-1 w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-lg font-bold text-center
+                      focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition" />
+      </label>
+      <button id="btn-habilitar"
+              class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-lg py-3.5 rounded-xl shadow-lg transition">
+        ✅ Habilitar Caja
+      </button>
+      <p class="text-[10px] text-slate-400 mt-3">Este monto representa el efectivo disponible para cambio al inicio del turno.</p>
     </div>
   </div>
 

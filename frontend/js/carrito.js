@@ -21,7 +21,7 @@ const $selectRegimen = document.getElementById("select-regimen");
 const $metodoPago = document.getElementById("metodo-pago");
 const $btnConfirmar = document.getElementById("btn-confirmar");
 
-const fmt = (n) => "$" + Number(n).toLocaleString("es-MX", { minimumFractionDigits: 2 });
+const fmt = (n) => "S/ " + Number(n).toLocaleString("es-PE", { minimumFractionDigits: 2 });
 
 /* ------------------------------ Render líneas ----------------------------- */
 

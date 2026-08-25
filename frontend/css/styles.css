@@ -60,3 +60,151 @@
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ============================================================
+   SUITE EJECUTIVA (panel admin) — componentes premium.
+   Clases usadas solo por admin.html / reportes-admin.js.
+   ============================================================ */
+
+/* ---------- Tipografía base del panel ---------- */
+body.font-sans {
+  font-feature-settings: "cv02", "cv03", "ss01";
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Tarjeta ejecutiva ---------- */
+.card-exec {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  border: 1px solid #f1f5f9;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 16px 40px -20px rgba(15, 23, 42, 0.15);
+}
+
+/* ---------- Tarjeta KPI ---------- */
+.kpi-card {
+  background-color: #ffffff;
+  border-radius: 1.5rem;
+  border: 1px solid #f1f5f9;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 44px -20px rgba(79, 70, 229, 0.28);
+}
+.kpi-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+.kpi-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.875rem;
+  font-size: 1.05rem;
+}
+.kpi-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-top: 0.15rem;
+  letter-spacing: -0.02em;
+}
+.kpi-caption { font-size: 11px; color: #94a3b8; }
+
+/* ---------- Títulos de sección y de gráfica ---------- */
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #1e293b;
+  letter-spacing: -0.01em;
+}
+.chart-box {
+  background-color: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 1.25rem;
+  padding: 1.1rem 1.2rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+.chart-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 0.75rem;
+}
+
+/* ---------- Botones de exportación del reporte ---------- */
+.btn-export {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0.55rem 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 20px -8px var(--tw-shadow-color, rgba(15, 23, 42, 0.35));
+  transition: all 0.18s ease;
+}
+.btn-export:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.btn-export:active { transform: translateY(0); }
+
+/* ---------- Inputs del panel ejecutivo ---------- */
+.input-exec {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 0.55rem 0.85rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.input-exec:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+.field-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* ---------- Navegación lateral ---------- */
+.exec-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.75rem;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.exec-link:hover { background-color: rgba(255, 255, 255, 0.06); color: #ffffff; }
+.exec-link.nav-activa {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.25), rgba(99, 102, 241, 0.08));
+  color: #ffffff;
+  box-shadow: inset 2px 0 0 #818cf8;
+}
+
+/* ---------- Tablas ejecutivas ---------- */
+.thead-exec th {
+  position: sticky;
+  top: 0;
+  background-color: #f8fafc;
+  z-index: 1;
+}
+
+/* ---------- Scrollbar discreto ---------- */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb {
+  background: #c7d2fe;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-track { background: transparent; }

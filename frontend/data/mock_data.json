@@ -1,628 +1,174 @@
 {
+  "sedes": [
+    { "idSede": 1, "nombre": "Lima", "direccion": "Av. Javier Prado Este 4600, Santiago de Surco", "telefono": "01-555-0101", "activa": true },
+    { "idSede": 2, "nombre": "Arequipa", "direccion": "Calle Mercaderes 201, Cercado de Arequipa", "telefono": "054-231-0202", "activa": true },
+    { "idSede": 3, "nombre": "Trujillo", "direccion": "Av. Espana 680, Trujillo Centro", "telefono": "044-231-0303", "activa": true }
+  ],
   "categorias": [
-    {
-      "idCategoria": 1,
-      "nombre": "Audio",
-      "descripcion": "Audifonos, bocinas y microfonos",
-      "activa": true
-    },
-    {
-      "idCategoria": 2,
-      "nombre": "Computacion",
-      "descripcion": "Laptops, monitores, teclados y mouses",
-      "activa": true
-    },
-    {
-      "idCategoria": 3,
-      "nombre": "Smartphones",
-      "descripcion": "Celulares y accesorios moviles",
-      "activa": true
-    },
-    {
-      "idCategoria": 4,
-      "nombre": "Gaming",
-      "descripcion": "Controles, diademas y perifericos gamer",
-      "activa": true
-    },
-    {
-      "idCategoria": 5,
-      "nombre": "Accesorios",
-      "descripcion": "Cables, cargadores, hubs y soportes",
-      "activa": true
-    }
+    { "idCategoria": 1, "nombre": "Audio", "descripcion": "Audifonos, bocinas y microfonos", "activa": true },
+    { "idCategoria": 2, "nombre": "Computacion", "descripcion": "Laptops, monitores, teclados y mouses", "activa": true },
+    { "idCategoria": 3, "nombre": "Smartphones", "descripcion": "Celulares y accesorios moviles", "activa": true },
+    { "idCategoria": 4, "nombre": "Gaming", "descripcion": "Controles, diademas y perifericos gamer", "activa": true },
+    { "idCategoria": 5, "nombre": "Accesorios", "descripcion": "Cables, cargadores, hubs y soportes", "activa": true }
   ],
   "productos": [
     {
-      "idProducto": 1,
-      "sku": "AUD-001",
-      "nombre": "Diadema OneOdio Pro-10 con Cable",
+      "idProducto": 1, "sku": "AUD-001", "nombre": "Diadema OneOdio Pro-10 con Cable",
       "descripcion": "Diadema cerrada para DJ y estudio, cable desmontable compartido",
-      "precioBase": 549,
-      "stock": 18,
-      "stockMinimo": 5,
-      "categoriaId": 1,
-      "categoriaNombre": "Audio",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 1,
-      "proveedorNombre": "AudioMax Distribucion"
+      "precioBase": 549, "stock": 25, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Audio",
+      "imagenUrl": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
+      "sedeStock": { "1": 25, "2": 15, "3": 8 }
     },
     {
-      "idProducto": 2,
-      "sku": "AUD-002",
-      "nombre": "Audifonos TWS Inalambricos Pro",
-      "descripcion": "Bluetooth 5.3, cancelacion de ruido ENC, estuche de carga",
-      "precioBase": 699,
-      "stock": 14,
-      "stockMinimo": 5,
-      "categoriaId": 1,
-      "categoriaNombre": "Audio",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 6,
-      "proveedorId": 1,
-      "proveedorNombre": "AudioMax Distribucion"
+      "idProducto": 2, "sku": "AUD-002", "nombre": "Audifonos TWS Inalambricos Pro",
+      "descripcion": "Bluetooth 5.3, cancelacion de ruido activa, estuche de carga USB-C",
+      "precioBase": 799, "stock": 30, "stockMinimo": 10, "categoriaId": 1, "categoriaNombre": "Audio",
+      "imagenUrl": "https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 6, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
+      "sedeStock": { "1": 30, "2": 18, "3": 10 }
     },
     {
-      "idProducto": 3,
-      "sku": "BOC-001",
-      "nombre": "Bocina Bluetooth Portatil 20W",
-      "descripcion": "Resistente al agua IPX7, 24 h de bateria, TWS pareable",
-      "precioBase": 459,
-      "stock": 22,
-      "stockMinimo": 6,
-      "categoriaId": 1,
-      "categoriaNombre": "Audio",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 1,
-      "proveedorNombre": "AudioMax Distribucion"
+      "idProducto": 3, "sku": "BOC-001", "nombre": "Bocina Bluetooth Portatil 20W",
+      "descripcion": "Resistente al agua IPX7, bateria de 12 horas, modo party link",
+      "precioBase": 649, "stock": 40, "stockMinimo": 10, "categoriaId": 1, "categoriaNombre": "Audio",
+      "imagenUrl": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
+      "sedeStock": { "1": 40, "2": 22, "3": 12 }
     },
     {
-      "idProducto": 4,
-      "sku": "MIC-001",
-      "nombre": "Microfono Condensador USB",
-      "descripcion": "Grabacion estudio 192kHz/24-bit, brazo articulado incluido",
-      "precioBase": 1299,
-      "stock": 8,
-      "stockMinimo": 3,
-      "categoriaId": 1,
-      "categoriaNombre": "Audio",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 2,
-      "proveedorNombre": "TechSupply Global"
+      "idProducto": 4, "sku": "MIC-001", "nombre": "Microfono Condensador USB",
+      "descripcion": "Patron cardioide, efecto de boton, ideal para streaming y podcast",
+      "precioBase": 899, "stock": 18, "stockMinimo": 5, "categoriaId": 1, "categoriaNombre": "Audio",
+      "imagenUrl": "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
+      "sedeStock": { "1": 18, "2": 10, "3": 4 }
     },
     {
-      "idProducto": 5,
-      "sku": "TEC-001",
-      "nombre": "Teclado Mecanico RGB 87 Teclas",
-      "descripcion": "Switches red, keycaps doble inyeccion, cable USB-C desmontable",
-      "precioBase": 1150,
-      "stock": 9,
-      "stockMinimo": 4,
-      "categoriaId": 2,
-      "categoriaNombre": "Computacion",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 24,
-      "proveedorId": 2,
-      "proveedorNombre": "TechSupply Global"
+      "idProducto": 5, "sku": "TEC-001", "nombre": "Teclado Mecanico RGB 87 Teclas",
+      "descripcion": "Switches Outemu Blue, retroiluminacion RGB por tecla, aluminio",
+      "precioBase": 899, "stock": 30, "stockMinimo": 8, "categoriaId": 2, "categoriaNombre": "Computacion",
+      "imagenUrl": "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 24, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
+      "sedeStock": { "1": 30, "2": 14, "3": 6 }
     },
     {
-      "idProducto": 6,
-      "sku": "RAT-001",
-      "nombre": "Mouse Inalambrico Ergonomico",
+      "idProducto": 6, "sku": "RAT-001", "nombre": "Mouse Inalambrico Ergonomico",
       "descripcion": "Sensor 4000 DPI, silencioso, recargable USB-C",
-      "precioBase": 349,
-      "stock": 4,
-      "stockMinimo": 8,
-      "categoriaId": 2,
-      "categoriaNombre": "Computacion",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 2,
-      "proveedorNombre": "TechSupply Global"
+      "precioBase": 349, "stock": 12, "stockMinimo": 8, "categoriaId": 2, "categoriaNombre": "Computacion",
+      "imagenUrl": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
+      "sedeStock": { "1": 12, "2": 6, "3": 2 }
     },
     {
-      "idProducto": 7,
-      "sku": "MON-001",
-      "nombre": "Monitor LED 27\" 144Hz QHD",
+      "idProducto": 7, "sku": "MON-001", "nombre": "Monitor LED 27\" 144Hz QHD",
       "descripcion": "2560x1440, FreeSync, 1ms, HDMI 2.0 + DisplayPort",
-      "precioBase": 3899,
-      "stock": 6,
-      "stockMinimo": 3,
-      "categoriaId": 2,
-      "categoriaNombre": "Computacion",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 24,
-      "proveedorId": 3,
-      "proveedorNombre": "Importadora ElectroNorte"
+      "precioBase": 3899, "stock": 8, "stockMinimo": 3, "categoriaId": 2, "categoriaNombre": "Computacion",
+      "imagenUrl": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 24, "proveedorId": 3, "proveedorNombre": "Importadora ElectroNorte",
+      "sedeStock": { "1": 8, "2": 4, "3": 1 }
     },
     {
-      "idProducto": 8,
-      "sku": "LAP-001",
-      "nombre": "Laptop 14\" Core i5 16GB 512GB",
+      "idProducto": 8, "sku": "LAP-001", "nombre": "Laptop 14\" Core i5 16GB 512GB",
       "descripcion": "FHD IPS, Windows 11, lector huella, 1.4 kg",
-      "precioBase": 12499,
-      "stock": 3,
-      "stockMinimo": 2,
-      "categoriaId": 2,
-      "categoriaNombre": "Computacion",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 24,
-      "proveedorId": 3,
-      "proveedorNombre": "Importadora ElectroNorte"
+      "precioBase": 12499, "stock": 5, "stockMinimo": 2, "categoriaId": 2, "categoriaNombre": "Computacion",
+      "imagenUrl": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 24, "proveedorId": 3, "proveedorNombre": "Importadora ElectroNorte",
+      "sedeStock": { "1": 5, "2": 3, "3": 1 }
     },
     {
-      "idProducto": 9,
-      "sku": "CEL-001",
-      "nombre": "Smartphone 6.7\" 128GB Dual SIM",
+      "idProducto": 9, "sku": "CEL-001", "nombre": "Smartphone 6.7\" 128GB Dual SIM",
       "descripcion": "AMOLED 120Hz, camara triple 50MP, carga rapida 33W",
-      "precioBase": 8999,
-      "stock": 5,
-      "stockMinimo": 3,
-      "categoriaId": 3,
-      "categoriaNombre": "Smartphones",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 3,
-      "proveedorNombre": "Importadora ElectroNorte"
+      "precioBase": 8999, "stock": 10, "stockMinimo": 3, "categoriaId": 3, "categoriaNombre": "Smartphones",
+      "imagenUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 3, "proveedorNombre": "Importadora ElectroNorte",
+      "sedeStock": { "1": 10, "2": 5, "3": 2 }
     },
     {
-      "idProducto": 10,
-      "sku": "CAR-001",
-      "nombre": "Power Bank 20000mAh PD 22.5W",
+      "idProducto": 10, "sku": "CAR-001", "nombre": "Power Bank 20000mAh PD 22.5W",
       "descripcion": "Carga rapida USB-C Power Delivery y QC 3.0, doble salida",
-      "precioBase": 429,
-      "stock": 26,
-      "stockMinimo": 10,
-      "categoriaId": 5,
-      "categoriaNombre": "Accesorios",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 6,
-      "proveedorId": 1,
-      "proveedorNombre": "AudioMax Distribucion"
+      "precioBase": 429, "stock": 35, "stockMinimo": 10, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "imagenUrl": "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 6, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
+      "sedeStock": { "1": 35, "2": 20, "3": 14 }
     },
     {
-      "idProducto": 11,
-      "sku": "CAR-002",
-      "nombre": "Cargador GaN 65W 3 Puertos",
+      "idProducto": 11, "sku": "CAR-002", "nombre": "Cargador GaN 65W 3 Puertos",
       "descripcion": "GaN II compacto: 2 USB-C + USB-A, compatible laptops",
-      "precioBase": 389,
-      "stock": 30,
-      "stockMinimo": 10,
-      "categoriaId": 5,
-      "categoriaNombre": "Accesorios",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 2,
-      "proveedorNombre": "TechSupply Global"
+      "precioBase": 389, "stock": 40, "stockMinimo": 10, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "imagenUrl": "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
+      "sedeStock": { "1": 40, "2": 25, "3": 15 }
     },
     {
-      "idProducto": 12,
-      "sku": "GAM-001",
-      "nombre": "Control Inalambrico Pro PC/Switch",
+      "idProducto": 12, "sku": "GAM-001", "nombre": "Control Inalambrico Pro PC/Switch",
       "descripcion": "Joysticks Hall Effect, gatillos analogicos, vibracion HD",
-      "precioBase": 1499,
-      "stock": 7,
-      "stockMinimo": 3,
-      "categoriaId": 4,
-      "categoriaNombre": "Gaming",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 2,
-      "proveedorNombre": "TechSupply Global"
+      "precioBase": 1499, "stock": 15, "stockMinimo": 3, "categoriaId": 4, "categoriaNombre": "Gaming",
+      "imagenUrl": "https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
+      "sedeStock": { "1": 15, "2": 8, "3": 3 }
     },
     {
-      "idProducto": 13,
-      "sku": "GAM-002",
-      "nombre": "Diadema Gaming 7.1 RGB",
+      "idProducto": 13, "sku": "GAM-002", "nombre": "Diadema Gaming 7.1 RGB",
       "descripcion": "Sonido envolvente virtual, microfono abatible con cancelacion",
-      "precioBase": 799,
-      "stock": 11,
-      "stockMinimo": 4,
-      "categoriaId": 4,
-      "categoriaNombre": "Gaming",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 1,
-      "proveedorNombre": "AudioMax Distribucion"
+      "precioBase": 799, "stock": 20, "stockMinimo": 4, "categoriaId": 4, "categoriaNombre": "Gaming",
+      "imagenUrl": "https://images.unsplash.com/photo-1612444530582-fc66f8ddd681?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
+      "sedeStock": { "1": 20, "2": 12, "3": 5 }
     },
     {
-      "idProducto": 14,
-      "sku": "ACC-001",
-      "nombre": "Hub USB-C 7-en-1",
+      "idProducto": 14, "sku": "ACC-001", "nombre": "Hub USB-C 7-en-1",
       "descripcion": "HDMI 4K@60, 2x USB 3.0, SD/microSD, PD 100W, Ethernet",
-      "precioBase": 549,
-      "stock": 16,
-      "stockMinimo": 6,
-      "categoriaId": 5,
-      "categoriaNombre": "Accesorios",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 2,
-      "proveedorNombre": "TechSupply Global"
+      "precioBase": 549, "stock": 22, "stockMinimo": 6, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "imagenUrl": "https://images.unsplash.com/photo-1625842268584-8f3296236761?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 2, "proveedorNombre": "TechSupply Global",
+      "sedeStock": { "1": 22, "2": 14, "3": 8 }
     },
     {
-      "idProducto": 15,
-      "sku": "ACC-002",
-      "nombre": "Cable HDMI 2.1 2m 8K",
+      "idProducto": 15, "sku": "ACC-002", "nombre": "Cable HDMI 2.1 2m 8K",
       "descripcion": "8K@60 / 4K@120, eARC, certificado, conectores reforzados",
-      "precioBase": 189,
-      "stock": 48,
-      "stockMinimo": 15,
-      "categoriaId": 5,
-      "categoriaNombre": "Accesorios",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 6,
-      "proveedorId": 1,
-      "proveedorNombre": "AudioMax Distribucion"
+      "precioBase": 189, "stock": 60, "stockMinimo": 15, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "imagenUrl": "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 6, "proveedorId": 1, "proveedorNombre": "AudioMax Distribucion",
+      "sedeStock": { "1": 60, "2": 35, "3": 20 }
     },
     {
-      "idProducto": 16,
-      "sku": "ACC-003",
-      "nombre": "Soporte Laptop Aluminio Ajustable",
+      "idProducto": 16, "sku": "ACC-003", "nombre": "Soporte Laptop Aluminio Ajustable",
       "descripcion": "6 niveles, ventilacion, antideslizante, hasta 17 pulgadas",
-      "precioBase": 299,
-      "stock": 19,
-      "stockMinimo": 8,
-      "categoriaId": 5,
-      "categoriaNombre": "Accesorios",
-      "imagenUrl": "",
-      "activo": true,
-      "garantiaMeses": 12,
-      "proveedorId": 3,
-      "proveedorNombre": "Importadora ElectroNorte"
+      "precioBase": 299, "stock": 25, "stockMinimo": 8, "categoriaId": 5, "categoriaNombre": "Accesorios",
+      "imagenUrl": "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&h=400&fit=crop",
+      "activo": true, "garantiaMeses": 12, "proveedorId": 3, "proveedorNombre": "Importadora ElectroNorte",
+      "sedeStock": { "1": 25, "2": 15, "3": 8 }
     }
   ],
   "paises": [
-    {
-      "idPais": 1,
-      "codigoIso2": "MX",
-      "nombre": "México",
-      "tasaIvaGeneral": 16,
-      "tasaIvaReducido": 8
-    },
-    {
-      "idPais": 2,
-      "codigoIso2": "CO",
-      "nombre": "Colombia",
-      "tasaIvaGeneral": 19,
-      "tasaIvaReducido": 5
-    },
-    {
-      "idPais": 3,
-      "codigoIso2": "PE",
-      "nombre": "Perú",
-      "tasaIvaGeneral": 18,
-      "tasaIvaReducido": 18
-    },
-    {
-      "idPais": 4,
-      "codigoIso2": "AR",
-      "nombre": "Argentina",
-      "tasaIvaGeneral": 21,
-      "tasaIvaReducido": 10.5
-    },
-    {
-      "idPais": 5,
-      "codigoIso2": "CL",
-      "nombre": "Chile",
-      "tasaIvaGeneral": 19,
-      "tasaIvaReducido": 19
-    },
-    {
-      "idPais": 6,
-      "codigoIso2": "EC",
-      "nombre": "Ecuador",
-      "tasaIvaGeneral": 15,
-      "tasaIvaReducido": 15
-    },
-    {
-      "idPais": 7,
-      "codigoIso2": "ES",
-      "nombre": "España",
-      "tasaIvaGeneral": 21,
-      "tasaIvaReducido": 10
-    },
-    {
-      "idPais": 8,
-      "codigoIso2": "US",
-      "nombre": "Estados Unidos",
-      "tasaIvaGeneral": 0,
-      "tasaIvaReducido": 0
-    }
+    { "idPais": 1, "codigoIso2": "MX", "nombre": "Mexico", "tasaIvaGeneral": 16, "tasaIvaReducido": 8 },
+    { "idPais": 2, "codigoIso2": "CO", "nombre": "Colombia", "tasaIvaGeneral": 19, "tasaIvaReducido": 5 },
+    { "idPais": 3, "codigoIso2": "PE", "nombre": "Peru", "tasaIvaGeneral": 18, "tasaIvaReducido": 18 },
+    { "idPais": 4, "codigoIso2": "AR", "nombre": "Argentina", "tasaIvaGeneral": 21, "tasaIvaReducido": 10.5 },
+    { "idPais": 5, "codigoIso2": "CL", "nombre": "Chile", "tasaIvaGeneral": 19, "tasaIvaReducido": 19 },
+    { "idPais": 6, "codigoIso2": "EC", "nombre": "Ecuador", "tasaIvaGeneral": 15, "tasaIvaReducido": 15 },
+    { "idPais": 7, "codigoIso2": "ES", "nombre": "Espana", "tasaIvaGeneral": 21, "tasaIvaReducido": 10 },
+    { "idPais": 8, "codigoIso2": "US", "nombre": "Estados Unidos", "tasaIvaGeneral": 0, "tasaIvaReducido": 0 }
   ],
   "empresas": [
-    {
-      "idEmpresa": 1,
-      "razonSocial": "Comercializadora del Norte SA de CV",
-      "rfc": "CON850101AB1",
-      "idPais": 1,
-      "regimenFiscal": "GENERAL",
-      "contactoEmail": "compras@comer-norte.mx"
-    },
-    {
-      "idEmpresa": 2,
-      "razonSocial": "Fundación Educativa Alianza AC",
-      "rfc": "FEA120314QP9",
-      "idPais": 1,
-      "regimenFiscal": "EXENTO",
-      "contactoEmail": "admin@fundalianza.org"
-    },
-    {
-      "idEmpresa": 3,
-      "razonSocial": "Talleres Mecánicos Ríos SRL",
-      "rfc": "TMR180622R4A",
-      "idPais": 1,
-      "regimenFiscal": "REDUCIDO",
-      "contactoEmail": "pagos@talleresrios.mx"
-    },
-    {
-      "idEmpresa": 4,
-      "razonSocial": "Cafés de Bogotá SAS",
-      "rfc": "CB901234567",
-      "idPais": 2,
-      "regimenFiscal": "GENERAL",
-      "contactoEmail": "finanzas@cafesbogota.co"
-    }
+    { "idEmpresa": 1, "razonSocial": "Comercializadora del Norte SA de CV", "rfc": "CON850101AB1", "idPais": 1, "regimenFiscal": "GENERAL", "contactoEmail": "compras@comer-norte.mx" },
+    { "idEmpresa": 2, "razonSocial": "Fundacion Educativa Alianza AC", "rfc": "FEA120314QP9", "idPais": 1, "regimenFiscal": "EXENTO", "contactoEmail": "admin@fundalianza.org" },
+    { "idEmpresa": 3, "razonSocial": "Talleres Mecanicos Rios SRL", "rfc": "TMR180622R4A", "idPais": 1, "regimenFiscal": "REDUCIDO", "contactoEmail": "pagos@talleresrios.mx" },
+    { "idEmpresa": 4, "razonSocial": "Cafes de Bogota SAS", "rfc": "CB901234567", "idPais": 2, "regimenFiscal": "GENERAL", "contactoEmail": "finanzas@cafesbogota.co" }
   ],
   "perfiles": [
-    {
-      "username": "admin",
-      "password": "admin123",
-      "rol": "ADMIN",
-      "nombreCompleto": "Laura Directora",
-      "idPais": 1
-    },
-    {
-      "username": "cajero",
-      "password": "cajero123",
-      "rol": "CAJERO",
-      "nombreCompleto": "Carlos Punto Venta",
-      "idPais": 1
-    },
-    {
-      "username": "cliente",
-      "password": "cliente123",
-      "rol": "CLIENTE",
-      "nombreCompleto": "María Compradora",
-      "idPais": 1
-    }
+    { "username": "admin", "password": "admin123", "rol": "ADMIN", "nombreCompleto": "Laura Directora", "idPais": 3, "sedeId": 1, "cajaNumero": null },
+    { "username": "cajero", "password": "cajero123", "rol": "CAJERO", "nombreCompleto": "Carlos Punto Venta", "idPais": 3, "sedeId": 1, "cajaNumero": 1 },
+    { "username": "cliente", "password": "cliente123", "rol": "CLIENTE", "nombreCompleto": "Maria Compradora", "idPais": 3, "sedeId": null, "cajaNumero": null },
+    { "username": "carmen", "password": "carmen123", "rol": "CAJERO", "nombreCompleto": "Carmen Flores", "idPais": 3, "sedeId": 2, "cajaNumero": 1 },
+    { "username": "pedro", "password": "pedro123", "rol": "CAJERO", "nombreCompleto": "Pedro Quispe", "idPais": 3, "sedeId": 3, "cajaNumero": 1 }
   ],
   "proveedores": [
-    {
-      "idProveedor": 1,
-      "nombre": "AudioMax Distribucion",
-      "contactoNombre": "Rosa Medina",
-      "telefono": "55-1234-7788",
-      "email": "ventas@audiomax.demo",
-      "activo": true
-    },
-    {
-      "idProveedor": 2,
-      "nombre": "TechSupply Global",
-      "contactoNombre": "Jorge Castaneda",
-      "telefono": "81-4455-9010",
-      "email": "pedidos@techsupply.demo",
-      "activo": true
-    },
-    {
-      "idProveedor": 3,
-      "nombre": "Importadora ElectroNorte",
-      "contactoNombre": "Ana Villalobos",
-      "telefono": "664-233-5588",
-      "email": "contacto@electronorte.demo",
-      "activo": true
-    }
+    { "idProveedor": 1, "nombre": "AudioMax Distribucion", "contactoNombre": "Rosa Medina", "telefono": "01-555-7788", "email": "ventas@audiomax.demo", "activo": true },
+    { "idProveedor": 2, "nombre": "TechSupply Global", "contactoNombre": "Jorge Castaneda", "telefono": "01-4455-9010", "email": "pedidos@techsupply.demo", "activo": true },
+    { "idProveedor": 3, "nombre": "Importadora ElectroNorte", "contactoNombre": "Ana Villalobos", "telefono": "044-233-5588", "email": "contacto@electronorte.demo", "activo": true }
   ],
-  "movimientos": [
-    {
-      "idMovimiento": 1,
-      "tipo": "ENTRADA",
-      "productoId": 1,
-      "cantidad": 18,
-      "stockResultante": 18,
-      "referencia": "OC-INICIAL-001",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 1,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 2,
-      "tipo": "ENTRADA",
-      "productoId": 2,
-      "cantidad": 14,
-      "stockResultante": 14,
-      "referencia": "OC-INICIAL-002",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 1,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 3,
-      "tipo": "ENTRADA",
-      "productoId": 3,
-      "cantidad": 22,
-      "stockResultante": 22,
-      "referencia": "OC-INICIAL-003",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 1,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 4,
-      "tipo": "ENTRADA",
-      "productoId": 4,
-      "cantidad": 8,
-      "stockResultante": 8,
-      "referencia": "OC-INICIAL-004",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 2,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 5,
-      "tipo": "ENTRADA",
-      "productoId": 5,
-      "cantidad": 9,
-      "stockResultante": 9,
-      "referencia": "OC-INICIAL-005",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 2,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 6,
-      "tipo": "ENTRADA",
-      "productoId": 6,
-      "cantidad": 4,
-      "stockResultante": 4,
-      "referencia": "OC-INICIAL-006",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 2,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 7,
-      "tipo": "ENTRADA",
-      "productoId": 7,
-      "cantidad": 6,
-      "stockResultante": 6,
-      "referencia": "OC-INICIAL-007",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 3,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 8,
-      "tipo": "ENTRADA",
-      "productoId": 8,
-      "cantidad": 3,
-      "stockResultante": 3,
-      "referencia": "OC-INICIAL-008",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 3,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 9,
-      "tipo": "ENTRADA",
-      "productoId": 9,
-      "cantidad": 5,
-      "stockResultante": 5,
-      "referencia": "OC-INICIAL-009",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 3,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 10,
-      "tipo": "ENTRADA",
-      "productoId": 10,
-      "cantidad": 26,
-      "stockResultante": 26,
-      "referencia": "OC-INICIAL-010",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 1,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 11,
-      "tipo": "ENTRADA",
-      "productoId": 11,
-      "cantidad": 30,
-      "stockResultante": 30,
-      "referencia": "OC-INICIAL-011",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 2,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 12,
-      "tipo": "ENTRADA",
-      "productoId": 12,
-      "cantidad": 7,
-      "stockResultante": 7,
-      "referencia": "OC-INICIAL-012",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 2,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 13,
-      "tipo": "ENTRADA",
-      "productoId": 13,
-      "cantidad": 11,
-      "stockResultante": 11,
-      "referencia": "OC-INICIAL-013",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 1,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 14,
-      "tipo": "ENTRADA",
-      "productoId": 14,
-      "cantidad": 16,
-      "stockResultante": 16,
-      "referencia": "OC-INICIAL-014",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 2,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 15,
-      "tipo": "ENTRADA",
-      "productoId": 15,
-      "cantidad": 48,
-      "stockResultante": 48,
-      "referencia": "OC-INICIAL-015",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 1,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    },
-    {
-      "idMovimiento": 16,
-      "tipo": "ENTRADA",
-      "productoId": 16,
-      "cantidad": 19,
-      "stockResultante": 19,
-      "referencia": "OC-INICIAL-016",
-      "nota": "Carga inicial de inventario",
-      "proveedorId": 3,
-      "usuarioNombre": "admin",
-      "fecha": "2026-08-21T12:53:02.728Z"
-    }
-  ],
+  "movimientos": [],
   "incidencias": []
 }
