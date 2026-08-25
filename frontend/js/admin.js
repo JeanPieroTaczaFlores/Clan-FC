@@ -299,7 +299,7 @@ $buscadorAdmin.addEventListener("input", () => renderTabla());
 // Reset solo útil en modo mock: restaura los datos semilla originales.
 $btnResetMock.addEventListener("click", () => {
   if (CONFIG.USE_API) return mostrarMensaje("Solo aplica en modo mock", true);
-  localStorage.removeItem("tm_mock_db_v3"); // clave usada por MockDB en api.js
+  localStorage.removeItem("tm_mock_db_v4"); // clave usada por MockDB en api.js
   location.reload();
 });
 

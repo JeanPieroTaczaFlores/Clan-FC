@@ -43,7 +43,7 @@ async function apiFetch(path, options = {}) {
 
 const MockDB = {
   // v3: catálogo 100% electrónica + proveedores/garantías/kardex.
-  KEY: "tm_mock_db_v3",
+  KEY: "tm_mock_db_v4",
 
   /** Carga el JSON semilla una sola vez y lo cachea en localStorage. */
   async init() {
