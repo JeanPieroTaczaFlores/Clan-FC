@@ -15,6 +15,75 @@
 BEGIN; -- Transacción única: todo o nada
 
 /* ----------------------------------------------------------------------------
+ * 0) SEDES — sucursales de TiendaMenos en Lima y otras ciudades.
+ * -------------------------------------------------------------------------- */
+CREATE TABLE IF NOT EXISTS sedes (
+    id_sede       BIGSERIAL     PRIMARY KEY,
+    nombre        VARCHAR(80)   NOT NULL UNIQUE,
+    direccion     VARCHAR(120),
+    telefono      VARCHAR(20),
+    activa        BOOLEAN       NOT NULL DEFAULT TRUE,
+    fecha_creacion TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
+/* ----------------------------------------------------------------------------
+ * 0bis) CAJAS — cajas registradoras por sede.
+ * -------------------------------------------------------------------------- */
+CREATE TABLE IF NOT EXISTS cajas (
+    id_caja       BIGSERIAL     PRIMARY KEY,
+    id_sede       BIGINT        NOT NULL REFERENCES sedes (id_sede),
+    numero_caja   INTEGER       NOT NULL DEFAULT 1,
+    efectivo      NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (efectivo >= 0),
+    estado        VARCHAR(15)   NOT NULL DEFAULT 'CERRADA'
+                  CHECK (estado IN ('ABIERTA', 'CERRADA', 'HABILITADA')),
+    id_usuario    BIGINT        REFERENCES usuarios (id_usuario),
+    fecha_creacion TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    fecha_apertura TIMESTAMPTZ,
+    fecha_cierre  TIMESTAMPTZ,
+    UNIQUE (id_sede, numero_caja)
+);
+
+CREATE INDEX IF NOT EXISTS idx_cajas_sede ON cajas (id_sede);
+
+/* ----------------------------------------------------------------------------
+ * 0ter) CAJA_MOVIMIENTOS — movimientos de efectivo por caja.
+ * -------------------------------------------------------------------------- */
+CREATE TABLE IF NOT EXISTS caja_movimientos (
+    id_movimiento  BIGSERIAL     PRIMARY KEY,
+    id_caja        BIGINT        NOT NULL REFERENCES cajas (id_caja),
+    tipo           VARCHAR(20)   NOT NULL
+                   CHECK (tipo IN ('FONDOS_INICIALES', 'VENTA', 'RETIRO', 'AJUSTE')),
+    monto          NUMERIC(12,2) NOT NULL CHECK (monto > 0),
+    saldo_despues  NUMERIC(12,2) NOT NULL,
+    referencia     VARCHAR(100),
+    id_usuario     BIGINT        NOT NULL REFERENCES usuarios (id_usuario),
+    id_sede        BIGINT        NOT NULL REFERENCES sedes (id_sede),
+    fecha          TIMESTAMPTZ   NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_caja_mov_caja ON caja_movimientos (id_caja);
+CREATE INDEX IF NOT EXISTS idx_caja_mov_sede ON caja_movimientos (id_sede);
+CREATE INDEX IF NOT EXISTS idx_caja_mov_fecha ON caja_movimientos (fecha);
+
+/* ----------------------------------------------------------------------------
+ * 0qua) PRODUCTO_SEDE_STOCK — inventario por producto y por sede.
+ * -------------------------------------------------------------------------- */
+CREATE TABLE IF NOT EXISTS producto_sede_stock (
+    id_producto_sede_stock BIGSERIAL PRIMARY KEY,
+    id_producto  BIGINT NOT NULL REFERENCES productos (id_producto),
+    id_sede      BIGINT NOT NULL REFERENCES sedes (id_sede),
+    stock        INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
+    stock_minimo INTEGER NOT NULL DEFAULT 5 CHECK (stock_minimo >= 0),
+    fecha_actualizacion TIMESTAMPTZ NOT NULL DEFAULT now(),
+    UNIQUE (id_producto, id_sede)
+);
+
+CREATE INDEX IF NOT EXISTS idx_pss_sede ON producto_sede_stock (id_sede);
+CREATE INDEX IF NOT EXISTS idx_pss_producto ON producto_sede_stock (id_producto);
+CREATE INDEX IF NOT EXISTS idx_pss_stock_bajo ON producto_sede_stock (id_sede, stock)
+    WHERE stock <= stock_minimo;
+
+/* ----------------------------------------------------------------------------
  * 1) ROLES — catálogo fijo para Spring Security (prefijo ROLE_ se agrega en Java)
  * -------------------------------------------------------------------------- */
 CREATE TABLE IF NOT EXISTS roles (
@@ -308,6 +377,35 @@ INSERT INTO proveedores (nombre, contacto_nombre, telefono, email) VALUES
     ('TechSupply Global',     'Lucía Fernández','55-1234-5602', 'pedidos@techsupply.com'),
     ('Importadora ElectroNorte','Mario Cano', '55-1234-5603', 'compras@electronorte.mx')
 ON CONFLICT (nombre) DO NOTHING;
+
+-- Sedes de TiendaMenos en Lima.
+INSERT INTO sedes (nombre, direccion, telefono) VALUES
+    ('Villa El Salvador', 'Av. Los Héroes 200, Villa El Salvador, Lima', '01-555-0001'),
+    ('Chorrillos', 'Av. Juan de Mariana 500, Chorrillos, Lima', '01-555-0002'),
+    ('San Juan de Lurigancho', 'Av. Próceres 800, SJL, Lima', '01-555-0003'),
+    ('Surco', 'Av. Benavides 1200, Surco, Lima', '01-555-0004')
+ON CONFLICT (nombre) DO NOTHING;
+
+-- Cajas iniciales por sede (1 caja por sede).
+INSERT INTO cajas (id_sede, numero_caja, efectivo, estado) VALUES
+    ((SELECT id_sede FROM sedes WHERE nombre = 'Villa El Salvador'), 1, 1500.00, 'CERRADA'),
+    ((SELECT id_sede FROM sedes WHERE nombre = 'Chorrillos'), 1, 1200.00, 'CERRADA'),
+    ((SELECT id_sede FROM sedes WHERE nombre = 'San Juan de Lurigancho'), 1, 2000.00, 'CERRADA'),
+    ((SELECT id_sede FROM sedes WHERE nombre = 'Surco'), 1, 1800.00, 'CERRADA')
+ON CONFLICT DO NOTHING;
+
+-- Stock por sede para cada producto (copiar stock base a todas las sedes con variación).
+INSERT INTO producto_sede_stock (id_producto, id_sede, stock, stock_minimo)
+SELECT p.id_producto, s.id_sede,
+       CASE
+           WHEN s.nombre = 'Villa El Salvador' THEN GREATEST(p.stock - 5, 0)
+           WHEN s.nombre = 'Chorrillos' THEN GREATEST(p.stock - 3, 0)
+           WHEN s.nombre = 'San Juan de Lurigancho' THEN p.stock + 5
+           ELSE p.stock
+       END,
+       p.stock_minimo
+FROM productos p CROSS JOIN sedes s
+ON CONFLICT (id_producto, id_sede) DO NOTHING;
 
 COMMIT;
 

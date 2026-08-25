@@ -55,6 +55,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/productos/**", "/api/categorias/**").hasRole("ADMIN")
                         // --- Alta/listado de usuarios (cajeros y admins): solo ADMIN ---
                         .requestMatchers("/api/usuarios/**").hasRole("ADMIN")
+                        // --- Sedes: lectura autenticada, escritura solo ADMIN ---
+                        .requestMatchers(HttpMethod.GET, "/api/sedes/**").authenticated()
+                        .requestMatchers("/api/sedes/**").hasRole("ADMIN")
+                        // --- Cajas y movimientos: cajero y admin ---
+                        .requestMatchers("/api/cajas/**").hasAnyRole("CAJERO", "ADMIN")
+                        // --- Dashboard ejecutivo: solo ADMIN ---
+                        .requestMatchers("/api/dashboard/**").hasRole("ADMIN")
                         // --- Checkout web del cliente ---
                         .requestMatchers(HttpMethod.POST, "/api/checkout").hasAnyRole("CLIENTE", "ADMIN")
                         // --- Punto de venta, almacén, incidencias y reportes (cajero) ---

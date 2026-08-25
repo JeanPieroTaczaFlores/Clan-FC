@@ -37,9 +37,14 @@ public class DataLoader implements CommandLineRunner {
         Rol cajero  = crearRolSiNoExiste("CAJERO",  "Cajero: punto de venta y emisión de comprobantes");
         Rol cliente = crearRolSiNoExiste("CLIENTE", "Cliente: compra web, carrito y checkout");
 
-        crearUsuarioSiNoExiste("admin",   "admin123",   "admin@tiendamenos.mx",   "Laura Directora",    admin);
-        crearUsuarioSiNoExiste("cajero",  "cajero123",  "cajero@tiendamenos.mx",  "Carlos Punto Venta", cajero);
-        crearUsuarioSiNoExiste("cliente", "cliente123", "cliente@correo.mx",      "María Compradora",   cliente);
+        crearUsuarioSiNoExiste("admin",   "admin123",   "admin@tiendamenos.pe",   "Laura Directora",    admin);
+        crearUsuarioSiNoExiste("cajero",  "cajero123",  "cajero@tiendamenos.pe",  "Carlos Punto Venta", cajero);
+        crearUsuarioSiNoExiste("cliente", "cliente123", "cliente@correo.pe",      "María Compradora",   cliente);
+        // Cajeros por sede (Lima)
+        crearUsuarioSiNoExiste("cajero1", "cajero123",  "cajero1@tiendamenos.pe", "Ana VES",    cajero);
+        crearUsuarioSiNoExiste("carmen",  "carmen123",  "carmen@tiendamenos.pe",  "Carmen Lozano", cajero);
+        crearUsuarioSiNoExiste("pedro",   "pedro123",   "pedro@tiendamenos.pe",   "Pedro Ramos",   cajero);
+        crearUsuarioSiNoExiste("roberto", "roberto123", "roberto@tiendamenos.pe", "Roberto Díaz",  cajero);
     }
 
     private Rol crearRolSiNoExiste(String nombre, String descripcion) {
