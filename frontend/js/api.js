@@ -973,10 +973,14 @@ export async function getReporteSemanal() {
   if (CONFIG.USE_API) return apiFetch("/reportes/semanal");
 
   const db = await MockDB.init();
+  const sesion = Sesion.obtener();
   const sedeId = getSedeActual();
 
-  // Filtrar órdenes por sede
-  const ordenesSede = (db.ordenes ?? []).filter((o) => o.sedeId === sedeId || o.sedeId == null);
+  // Admin (Dirección General) ve TODAS las sedes; cajero/cliente solo la suya.
+  const esAdmin = sesion?.rol === "ADMIN";
+  const ordenesFiltradas = (db.ordenes ?? []).filter((o) =>
+    esAdmin ? true : (o.sedeId === sedeId || o.sedeId == null)
+  );
 
   // --- Ventas por día (7 días, incluido hoy; días sin ventas = S/ 0) ---
   const hoy = new Date();
@@ -988,7 +992,7 @@ export async function getReporteSemanal() {
   for (let i = 6; i >= 0; i--) {
     const fin = new Date(hoy.getTime() - i * 24 * 3600 * 1000);
     const inicio = new Date(fin); inicio.setHours(0, 0, 0, 0);
-    const ordenesDia = ordenesSede.filter((o) => {
+    const ordenesDia = ordenesFiltradas.filter((o) => {
       const f = new Date(o.fechaCreacion);
       return o.estado === "PAGADA" && f >= inicio && f <= fin;
     });
@@ -1006,7 +1010,7 @@ export async function getReporteSemanal() {
 
   // --- Top productos por unidades vendidas ---
   const acumulado = {};
-  for (const orden of ordenesSede) {
+  for (const orden of ordenesFiltradas) {
     if (orden.estado !== "PAGADA") continue;
     for (const it of orden.items ?? []) {
       acumulado[it.sku] = acumulado[it.sku] ?? {
@@ -1028,12 +1032,33 @@ export async function getReporteSemanal() {
   const bajoStock = db.productos
     .filter((p) => {
       if (p.activo === false) return false;
+      if (esAdmin) {
+        // Admin ve si ALGUNA sede está baja
+        return Object.keys(p.sedeStock ?? {}).some((sk) => (p.sedeStock[sk] ?? 0) <= p.stockMinimo);
+      }
       const stockActual = (p.sedeStock && p.sedeStock[String(sedeId)] != null)
         ? p.sedeStock[String(sedeId)]
         : p.stock;
       return stockActual <= p.stockMinimo;
     })
     .map((p) => {
+      if (esAdmin) {
+        const sedesBajas = Object.entries(p.sedeStock ?? {})
+          .filter(([sk, st]) => (st ?? 0) <= p.stockMinimo)
+          .map(([sk]) => {
+            const s = (db.sedes ?? []).find((sd) => String(sd.idSede) === sk);
+            return s?.nombre ?? `Sede ${sk}`;
+          });
+        return {
+          idProducto: p.idProducto,
+          sku: p.sku,
+          nombre: p.nombre,
+          stock: Object.values(p.sedeStock ?? {}).reduce((a, b) => a + (b ?? 0), 0),
+          stockMinimo: p.stockMinimo,
+          proveedorNombre: p.proveedorNombre ?? null,
+          sedesBajas: sedesBajas.join(", "),
+        };
+      }
       const stockActual = (p.sedeStock && p.sedeStock[String(sedeId)] != null)
         ? p.sedeStock[String(sedeId)]
         : p.stock;

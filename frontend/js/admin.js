@@ -171,11 +171,18 @@ async function renderTabla() {
   }
 }
 
-/** Calcula y pinta las tarjetas de métricas del panel. */
+/** Calcula y pinta las tarjetas de métricas del panel. Usa stock por sede. */
 function renderStats(productos) {
+  const sedeId = Number(localStorage.getItem("tm_sede_actual")) || 1;
   const total = productos.length;
-  const valor = productos.reduce((sum, p) => sum + Number(p.precioBase) * p.stock, 0);
-  const bajos = productos.filter((p) => p.stock <= p.stockMinimo).length;
+  const valor = productos.reduce((sum, p) => {
+    const stockSede = (p.sedeStock && p.sedeStock[String(sedeId)] != null) ? p.sedeStock[String(sedeId)] : p.stock;
+    return sum + Number(p.precioBase) * stockSede;
+  }, 0);
+  const bajos = productos.filter((p) => {
+    const stockSede = (p.sedeStock && p.sedeStock[String(sedeId)] != null) ? p.sedeStock[String(sedeId)] : p.stock;
+    return stockSede <= p.stockMinimo;
+  }).length;
 
   document.getElementById("stat-total").textContent = total;
   document.getElementById("stat-valor").textContent =
@@ -184,7 +191,6 @@ function renderStats(productos) {
   document.getElementById("stat-categorias").textContent =
     cacheCategorias.filter((c) => c.activa !== false).length;
 
-  // Aviso proactivo si hay faltantes (anticipa alertas del dashboard, Entregable 3).
   if (bajos > 0 && !renderStats._avisado) {
     renderStats._avisado = true;
     mostrarToast(`⚠️ ${bajos} producto(s) con stock bajo requieren reposición`, "info");
