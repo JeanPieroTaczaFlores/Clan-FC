@@ -211,6 +211,7 @@ async function cobrar() {
     await cargarProductos(); // refresca stocks tras descontar
     renderTicket();
     refrescarChipCaja();
+    renderMiniAlertas(); // verificar stock bajo después de cada venta
   } catch (err) {
     console.error(err);
     mostrarToast(err.message.replace(/^API \d+:.*"error":"|".*$/s, "") || err.message, "error");
@@ -639,6 +640,7 @@ document.getElementById("btn-refresh-reporte").addEventListener("click", () => r
 /* ------------------------------ CAJA FÍSICA ------------------------------- */
 
 const HAB_KEY = `tm_caja_habilitada_${sesion.username}_${getSedeActual()}`;
+const CIERRE_KEY = `tm_caja_cerrada_${sesion.username}_${getSedeActual()}`;
 
 function verificarHabilitacion() {
   const estado = localStorage.getItem(HAB_KEY);
@@ -650,22 +652,30 @@ function verificarHabilitacion() {
     document.getElementById("modal-habilitar").classList.remove("hidden");
     // Llenar info del modal
     document.getElementById("hab-sede").textContent = sesion.sedeNombre || "Sin sede";
-    document.getElementById("hab-caja").textContent = sesion.cajaNumero != null ? `#${sesion.cajaNumero}` : "Sin asignar";
     document.getElementById("hab-cajero").textContent = `${sesion.username} (${sesion.rol})`;
+    // Pre-seleccionar la caja del cajero
+    if (sesion.cajaNumero != null) {
+      document.getElementById("hab-caja-select").value = String(sesion.cajaNumero);
+    }
   }
 }
 
 document.getElementById("btn-habilitar").addEventListener("click", async () => {
   const monto = Number(document.getElementById("hab-monto").value);
+  const cajaNum = document.getElementById("hab-caja-select").value;
   if (!monto || monto <= 0) return mostrarToast("Ingresa un monto válido para el fondo inicial", "error");
 
   try {
-    await registrarMovimientoCaja("FONDO", monto, "Fondo inicial de apertura de caja");
+    await registrarMovimientoCaja("FONDO", monto, `Fondo inicial de apertura — Caja #${cajaNum}`);
     localStorage.setItem(HAB_KEY, "true");
+    localStorage.setItem(`${HAB_KEY}_fondo`, String(monto));
+    localStorage.setItem(`${HAB_KEY}_cajaNum`, cajaNum);
+    localStorage.setItem(`${HAB_KEY}_inicio`, new Date().toISOString());
     cajaHabilitada = true;
     document.getElementById("modal-habilitar").classList.add("hidden");
-    mostrarToast(`✅ Caja habilitada con fondo de ${fmt(monto)}`, "exito");
+    mostrarToast(`✅ Caja #${cajaNum} habilitada con fondo de ${fmt(monto)}`, "exito");
     refrescarChipCaja();
+    renderMiniAlertas();
   } catch (err) {
     console.error(err);
     mostrarToast(err.message, "error");
@@ -735,6 +745,168 @@ async function moverCaja(tipo) {
 
 document.getElementById("btn-caja-fondo").addEventListener("click", () => moverCaja("FONDO"));
 document.getElementById("btn-caja-retiro").addEventListener("click", () => moverCaja("RETIRO"));
+
+/* ----------------------------- CERRAR CAJA --------------------------------- */
+
+document.getElementById("btn-cerrar-caja").addEventListener("click", async () => {
+  if (!cajaHabilitada) return mostrarToast("La caja no está habilitada", "error");
+
+  try {
+    const { efectivo, movimientos } = await getCaja();
+    const fondoInicial = Number(localStorage.getItem(`${HAB_KEY}_fondo`) || 0);
+    const cajaNum = localStorage.getItem(`${HAB_KEY}_cajaNum`) || sesion.cajaNumero || "?";
+    const inicio = localStorage.getItem(`${HAB_KEY}_inicio`);
+
+    // Calcular resumen
+    let ventasEfectivo = 0;
+    let retiros = 0;
+    let fondosExtra = 0;
+    let totalOrdenes = 0;
+    for (const m of movimientos) {
+      if (m.tipo === "VENTA") { ventasEfectivo += Number(m.monto); totalOrdenes++; }
+      if (m.tipo === "RETIRO") retiros += Number(m.monto);
+      if (m.tipo === "FONDO" && m.nota !== "Fondo inicial de apertura" && !m.nota?.includes("Fondo inicial")) {
+        fondosExtra += Number(m.monto);
+      }
+    }
+
+    // Llenar modal
+    document.getElementById("cerrar-sede").textContent = sesion.sedeNombre || "Sin sede";
+    document.getElementById("cerrar-caja-num").textContent = `#${cajaNum}`;
+    document.getElementById("cerrar-cajero").textContent = `${sesion.username} (${sesion.rol})`;
+    document.getElementById("cerrar-fondo").textContent = fmt(fondoInicial);
+    document.getElementById("cerrar-ventas").textContent = `+${fmt(ventasEfectivo)}`;
+    document.getElementById("cerrar-retiros").textContent = `−${fmt(retiros)}`;
+    document.getElementById("cerrar-fondos-extra").textContent = fondosExtra > 0 ? `+${fmt(fondosExtra)}` : "S/ 0.00";
+    document.getElementById("cerrar-efectivo").textContent = fmt(efectivo);
+    document.getElementById("cerrar-ordenes").textContent = totalOrdenes;
+
+    document.getElementById("modal-cerrar-caja").classList.remove("hidden");
+  } catch (err) {
+    console.error(err);
+    mostrarToast("No se pudo cargar el resumen de caja", "error");
+  }
+});
+
+document.getElementById("btn-cancelar-cierre").addEventListener("click", () => {
+  document.getElementById("modal-cerrar-caja").classList.add("hidden");
+});
+
+document.getElementById("modal-cerrar-caja").addEventListener("click", (e) => {
+  if (e.target.id === "modal-cerrar-caja") document.getElementById("modal-cerrar-caja").classList.add("hidden");
+});
+
+document.getElementById("btn-confirmar-cierre").addEventListener("click", async () => {
+  try {
+    const { efectivo } = await getCaja();
+    const cajaNum = localStorage.getItem(`${HAB_KEY}_cajaNum`) || "?";
+    const inicio = localStorage.getItem(`${HAB_KEY}_inicio`);
+
+    // Registrar retiro de todo el efectivo como cierre
+    if (efectivo > 0) {
+      await registrarMovimientoCaja("RETIRO", efectivo, `Cierre de caja #${cajaNum}`);
+    }
+
+    // Limpiar estado de habilitación
+    localStorage.removeItem(HAB_KEY);
+    localStorage.removeItem(`${HAB_KEY}_fondo`);
+    localStorage.removeItem(`${HAB_KEY}_cajaNum`);
+    localStorage.removeItem(`${HAB_KEY}_inicio`);
+
+    cajaHabilitada = false;
+    document.getElementById("modal-cerrar-caja").classList.add("hidden");
+    mostrarToast(`🔒 Caja #${cajaNum} cerrada correctamente. Efectivo: ${fmt(efectivo)}`, "ok");
+    refrescarChipCaja();
+
+    // Mostrar modal de habilitación para nuevo turno
+    setTimeout(() => {
+      verificarHabilitacion();
+    }, 500);
+  } catch (err) {
+    console.error(err);
+    mostrarToast("Error al cerrar la caja: " + err.message, "error");
+  }
+});
+
+/* ----------------------------- MINI ALERTAS DE STOCK (BOTÓN FLOTANTE) ----- */
+
+let alertasStock = []; // caché local de alertas activas
+
+async function renderMiniAlertas() {
+  try {
+    const rep = await getReporteSemanal();
+    const bajoStock = rep.bajoStock || [];
+    alertasStock = bajoStock.filter(p => p.stock <= p.stockMinimo);
+
+    const $badge = document.getElementById("alertas-badge");
+    const $count = document.getElementById("alertas-count");
+    const $lista = document.getElementById("alertas-lista");
+
+    // Actualizar badge
+    if (alertasStock.length > 0) {
+      $badge.textContent = alertasStock.length;
+      $badge.classList.remove("hidden");
+      $count.textContent = alertasStock.length;
+    } else {
+      $badge.classList.add("hidden");
+      $count.textContent = "0";
+    }
+
+    // Renderizar lista
+    if (alertasStock.length === 0) {
+      $lista.innerHTML = `<li class="text-center text-slate-500 py-6 text-sm">✅ Sin alertas — todo surtido</li>`;
+      return;
+    }
+
+    $lista.innerHTML = alertasStock.map(p => {
+      const esCritico = p.stock === 0;
+      const color = esCritico ? "text-rose-400" : "text-amber-400";
+      const icono = esCritico ? "🔴" : "🟡";
+      const urgencia = esCritico
+        ? "⚠️ AGOTADO — Avisar a almacén AHORA"
+        : `📦 Stock bajo — Surtrir pronto (${p.stock}/${p.stockMinimo})`;
+      return `
+        <li class="px-4 py-3 hover:bg-slate-700/30 transition">
+          <div class="flex items-start gap-3">
+            <span class="text-lg mt-0.5">${icono}</span>
+            <div class="flex-1 min-w-0">
+              <p class="font-bold text-sm ${color} truncate">${p.nombre}</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">
+                <span class="font-mono">${p.sku}</span> · 
+                Stock: <b class="${color}">${p.stock}</b> / Mín: ${p.stockMinimo}
+              </p>
+              ${p.proveedorNombre ? `<p class="text-[10px] text-slate-500 mt-0.5">Proveedor: ${p.proveedorNombre}</p>` : ""}
+              <p class="text-[10px] text-slate-400 mt-1 italic">${urgencia}</p>
+            </div>
+          </div>
+        </li>`;
+    }).join("");
+  } catch (err) {
+    console.error("Error cargando alertas:", err);
+  }
+}
+
+// Toggle del panel al hacer clic en la campana
+document.getElementById("btn-alertas-flotante").addEventListener("click", (e) => {
+  e.stopPropagation();
+  const panel = document.getElementById("alertas-panel");
+  panel.classList.toggle("hidden");
+});
+
+// Cerrar panel al hacer clic fuera
+document.addEventListener("click", (e) => {
+  const panel = document.getElementById("alertas-panel");
+  const btn = document.getElementById("btn-alertas-flotante");
+  if (!panel.contains(e.target) && !btn.contains(e.target)) {
+    panel.classList.add("hidden");
+  }
+});
+
+// Botón "Ver Reporte" dentro del panel
+document.getElementById("btn-ver-reporte").addEventListener("click", () => {
+  mostrarTab("reporte");
+  document.getElementById("alertas-panel").classList.add("hidden");
+});
 
 // El chip del ticket lleva directo al control de caja.
 document.getElementById("chip-caja").addEventListener("click", () => {
@@ -865,4 +1037,5 @@ async function cargarProductos() {
   await llenarSelectsAlmacen();
   refrescarIncidencias(); // pinta badge de pendientes desde el arranque
   refrescarChipCaja();
+  if (cajaHabilitada) renderMiniAlertas(); // mostrar alertas de stock al iniciar
 })();

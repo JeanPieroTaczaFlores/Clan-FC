@@ -363,14 +363,18 @@
             </label>
             <input id="caja-nota" type="text" maxlength="80" placeholder="Motivo (ej. fondo de cambio, depósito a bóveda…)"
                    class="w-full bg-slate-900 border border-slate-600 rounded-xl px-3 py-2.5 text-xs focus:ring-2 focus:ring-emerald-500 outline-none" />
-            <div class="grid grid-cols-2 gap-2 pt-1">
+            <div class="grid grid-cols-3 gap-2 pt-1">
               <button id="btn-caja-fondo"
                       class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-2.5 rounded-xl transition text-sm">
-                ➕ Agregar fondo
+                ➕ Fondo
               </button>
               <button id="btn-caja-retiro"
                       class="bg-rose-600/90 hover:bg-rose-600 text-white font-extrabold py-2.5 rounded-xl transition text-sm">
-                ➖ Retirar efectivo
+                ➖ Retiro
+              </button>
+              <button id="btn-cerrar-caja"
+                      class="bg-slate-700 hover:bg-slate-600 text-white font-extrabold py-2.5 rounded-xl transition text-sm">
+                🔒 Cerrar
               </button>
             </div>
             <p class="text-[10px] text-slate-500 leading-snug">
@@ -490,23 +494,112 @@
     <div class="bg-white text-slate-800 rounded-3xl shadow-2xl max-w-md w-full p-8 text-center fade-in">
       <p class="text-6xl mb-3">🔐</p>
       <h3 class="text-2xl font-extrabold">Habilitación de Caja</h3>
-      <p class="text-sm text-slate-500 mt-1 mb-2">Ingresa el fondo inicial para comenzar a operar.</p>
-      <div id="hab-info" class="bg-slate-50 rounded-2xl border border-slate-100 p-4 text-left text-sm space-y-1.5 mb-6">
+      <p class="text-sm text-slate-500 mt-1 mb-4">Configura tu caja antes de comenzar a operar.</p>
+
+      <!-- Info de sede -->
+      <div id="hab-info" class="bg-slate-50 rounded-2xl border border-slate-100 p-4 text-left text-sm space-y-1.5 mb-4">
         <div class="flex justify-between"><span class="text-slate-500">Sede</span><b id="hab-sede" class="text-slate-800">—</b></div>
-        <div class="flex justify-between"><span class="text-slate-500">Caja N°</span><b id="hab-caja" class="text-slate-800">—</b></div>
         <div class="flex justify-between"><span class="text-slate-500">Cajero</span><b id="hab-cajero" class="text-slate-800">—</b></div>
       </div>
+
+      <!-- Selector de caja -->
+      <label class="block text-left mb-3">
+        <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Caja N°</span>
+        <select id="hab-caja-select"
+                class="mt-1 w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm font-bold
+                       focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition">
+          <option value="1">Caja #1</option>
+          <option value="2">Caja #2</option>
+          <option value="3">Caja #3</option>
+        </select>
+      </label>
+
+      <!-- Fondo inicial -->
       <label class="block text-left mb-4">
         <span class="text-xs font-bold uppercase tracking-widest text-slate-400">Fondo inicial (S/)</span>
         <input id="hab-monto" type="number" min="1" step="0.01" value="200" placeholder="200.00"
                class="mt-1 w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-lg font-bold text-center
                       focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none transition" />
       </label>
+
       <button id="btn-habilitar"
               class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-lg py-3.5 rounded-xl shadow-lg transition">
         ✅ Habilitar Caja
       </button>
       <p class="text-[10px] text-slate-400 mt-3">Este monto representa el efectivo disponible para cambio al inicio del turno.</p>
+    </div>
+  </div>
+
+  <!-- ================= MODAL CERRAR CAJA ================= -->
+  <div id="modal-cerrar-caja" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white text-slate-800 rounded-3xl shadow-2xl max-w-md w-full p-8 text-center fade-in">
+      <p class="text-6xl mb-3">🔒</p>
+      <h3 class="text-2xl font-extrabold">Cerrar Caja</h3>
+      <p class="text-sm text-slate-500 mt-1 mb-4">Resumen de tu turno antes de cerrar.</p>
+
+      <div id="cerrar-resumen" class="bg-slate-50 rounded-2xl border border-slate-100 p-4 text-left text-sm space-y-2 mb-6">
+        <div class="flex justify-between"><span class="text-slate-500">Sede</span><b id="cerrar-sede">—</b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Caja N°</span><b id="cerrar-caja-num">—</b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Cajero</span><b id="cerrar-cajero">—</b></div>
+        <hr class="border-slate-200" />
+        <div class="flex justify-between"><span class="text-slate-500">Fondo inicial</span><b id="cerrar-fondo">S/ 0.00</b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Ventas en efectivo</span><b id="cerrar-ventas" class="text-emerald-600">S/ 0.00</b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Retiros</span><b id="cerrar-retiros" class="text-rose-500">S/ 0.00</b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Fondos adicionales</span><b id="cerrar-fondos-extra" class="text-sky-500">S/ 0.00</b></div>
+        <hr class="border-slate-200" />
+        <div class="flex justify-between text-base"><span class="font-bold">Efectivo en caja</span><b id="cerrar-efectivo" class="text-emerald-600 text-lg">S/ 0.00</b></div>
+        <div class="flex justify-between"><span class="text-slate-500">Total órdenes</span><b id="cerrar-ordenes">0</b></div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <button id="btn-cancelar-cierre"
+                class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-3 rounded-xl transition">
+          Cancelar
+        </button>
+        <button id="btn-confirmar-cierre"
+                class="bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-3 rounded-xl shadow-lg transition">
+          🔒 Cerrar Caja
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BOTÓN FLOTANTE DE ALERTAS ================= -->
+  <div id="alertas-flotante" class="fixed bottom-6 left-6 z-50">
+    <!-- Botón principal (campana) -->
+    <button id="btn-alertas-flotante"
+            class="relative w-14 h-14 bg-amber-500 hover:bg-amber-400 text-slate-900 rounded-full shadow-2xl 
+                   flex items-center justify-center text-2xl transition-all hover:scale-110 active:scale-95
+                   ring-4 ring-amber-500/20">
+      🔔
+      <span id="alertas-badge"
+            class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold 
+                   rounded-full min-w-[20px] h-5 grid place-items-center px-1 shadow-lg animate-pulse hidden">
+        0
+      </span>
+    </button>
+
+    <!-- Panel de notificaciones (oculto por defecto) -->
+    <div id="alertas-panel" class="hidden absolute bottom-16 left-0 w-80 bg-slate-800 border border-slate-600 
+                                  rounded-2xl shadow-2xl overflow-hidden fade-in">
+      <header class="bg-amber-500/20 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">⚠️</span>
+          <span class="text-sm font-extrabold text-amber-400">Alertas de Stock</span>
+        </div>
+        <span id="alertas-count" class="bg-amber-500 text-slate-900 text-[10px] font-bold rounded-full px-2 py-0.5">0</span>
+      </header>
+      
+      <ul id="alertas-lista" class="divide-y divide-slate-700/50 max-h-[300px] overflow-y-auto">
+        <li class="text-center text-slate-500 py-6 text-sm">Sin alertas por ahora</li>
+      </ul>
+      
+      <footer class="px-4 py-2.5 bg-slate-900/60 border-t border-slate-700 flex items-center justify-between">
+        <span class="text-[10px] text-slate-500">Se actualiza tras cada venta</span>
+        <button id="btn-ver-reporte" class="text-[11px] font-bold text-amber-400 hover:text-amber-300 underline decoration-dotted">
+          Ver Reporte →
+        </button>
+      </footer>
     </div>
   </div>
 
